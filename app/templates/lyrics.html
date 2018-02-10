@@ -2,8 +2,8 @@
 <html>
 
 <head>
-  <title>Live Lyrics</title>
-  <meta name="description" content="Real Time Lyrics" />
+  <title>colour_blue - examples</title>
+  <meta name="description" content="website description" />
   <meta name="keywords" content="website keywords, website keywords" />
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <link rel="stylesheet" type="text/css" href="style/style.css" title="style" />
@@ -22,36 +22,37 @@
       <div id="menubar">
         <ul id="menu">
           <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
-          <li class="selected"><a href="index.html">Home</a></li>
-          <li><a href="lyrics.html">Lyrics</a></li>
+			<li class="selected"><a href="index.html">Home</a></li>
+          <li><a href="lyrics.html">Add Lyrics</a></li>
           <li><a href="users.html">Users</a></li>
           <li><a href="songs.html">Songs</a></li>
           <li><a href="contact.html">Contact Us</a></li>
         </ul>
       </div>
     </div>
+    <div id="content_header"></div>
     <div id="site_content">
-      <div class="sidebar">
-        <!-- insert your sidebar items here -->
-        
-        
-      </div>
+      
       <div id="content">
         <!-- insert the page content here -->
-        <h1>Welcome to the Live Lyrics</h1>
-        <p>Connect your Spotify account and experience live lyrics while listening to a song. <p>
-		<p>View lyrics from users around the world and add your own. <p>
-		<h3>Search Songs, Users, or Lyrics:</h3>
-        <form method="post" action="#" id="search_form">
-          <p>
-            		 <p><span></span><textarea rows="3" cols="100" name="name"></textarea></p>
-            <button type="button">Search</button>
-	
-          </p>
+ 
+
+
+        <h2>Add Lyrics</h2>
+        <form action="#" method="post">
+          <div class="form_settings">
+            <p><span>Song</span><input type="text" name="name" value="" /></p>
+			<p><span>Start Time Stamp</span><input type="text" name="name" value="" /></p>
+			<p><span>End Time Stamp</span><input type="text" name="name" value="" /></p>
+            <p><span>Lyrics</span><textarea rows="8" cols="50" name="name"></textarea></p>
+            
+            
+            <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="name" value="Add" /></p>
+          </div>
         </form>
       </div>
     </div>
-
+ 
   </div>
 </body>
 </html>
