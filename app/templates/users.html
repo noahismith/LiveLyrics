@@ -15,18 +15,18 @@
       <div id="logo">
         <div id="logo_text">
 
-          <h1><a href="index.html">LiveLyrics</a></h1>
+          <h1><a href="{{ url_for('views.index') }}">LiveLyrics</a></h1>
           <h2>Lyrics in Real Time.</h2>
         </div>
       </div>
       <div id="menubar">
         <ul id="menu">
  
-		  <li class="selected"><a href="index.html">Home</a></li>
-          <li><a href="lyrics.html">Add Lyrics</a></li>
-          <li><a href="users.html">Users</a></li>
-          <li><a href="songs.html">Songs</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
+		  <li class="selected"><a href="{{ url_for('views.index') }}">Home</a></li>
+          <li><a href="{{ url_for('views.lyrics') }}">Add Lyrics</a></li>
+          <li><a href="{{ url_for('views.users') }}">Users</a></li>
+          <li><a href="{{ url_for('views.songs') }}">Songs</a></li>
+          <li><a href="{{ url_for('views.contact') }}">Contact Us</a></li>
         </ul>
       </div>
     </div>
