@@ -32,6 +32,7 @@ class Lyrics(db.Model):
 	songtitle = db.Column(db.String(255), unique=True, nullable=False)
 	songlyrics = db.Column(db.ARRAY(db.String(255)))
 	lyrictimestamps = db.Column(db.ARRAY(db.Integer))
+	contributions = db.Column(db.Integer)
 	
 	def __init__(self, songtitle, songlyrics, lyrictimestamps):
 		self.songtitle = songtitle
