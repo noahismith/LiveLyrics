@@ -28,7 +28,7 @@ def search():
 
     lyric_sheets_list = []
     for lyric_sheet in lyric_sheets:
-        lyric_sheets_list.append(lyric_sheet.toJSON)
+        lyric_sheets_list.append(lyric_sheet.toJSON())
 
     # TODO: search spotify and return all results and add them to the database
 
