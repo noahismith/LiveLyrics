@@ -15,7 +15,14 @@ lyrics_blueprint = Blueprint('lyrics', __name__)
 @lyrics_blueprint.route("/search", methods=['POST'])
 def search():
     payload = json.loads(request.data.decode())
+    access_token = payload['access_token']
     search_string = payload['search_string']
+
+    resp = search_track(access_token, search_string)
+
+    print(resp)
+
+    # Parse JSON string and add
 
     lyric_sheets = db.session.query(Lyrics).filter(Lyrics.songtitle.like("%{}%".format(search_string))).all()
 
@@ -23,6 +30,7 @@ def search():
     for lyric_sheet in lyric_sheets:
         lyric_sheets_list.append(lyric_sheet.toJSON)
 
+    # TODO: search spotify and return all results and add them to the database
 
-    # TODO: look up string in our database return. If not there look in spotify, create new datbase entry else display error
-    return
+
+    return jsonify({'result': True, 'error': "", 'lyric_sheets': lyric_sheets_list})
