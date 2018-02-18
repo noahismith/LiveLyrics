@@ -54,3 +54,11 @@ def get_profile_me(access_token):
     return json.loads(resp.text)
 
 
+def search_track(access_token, search_string):
+    authorization_header = {"Authorization": "Bearer {}".format(access_token)}
+    api_endpoint = "{}/search?q={}&type=track&limit=10".format(SPOTIFY_API_URL, search_string.replace(" ", "+"))
+    try:
+        resp = requests.get(api_endpoint, headers=authorization_header)
+    except requests.exeptions.RequestException as e:
+        return {"error": e}
+    return json.loads(resp.text)

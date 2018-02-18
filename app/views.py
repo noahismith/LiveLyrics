@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, request, make_response, url_for
+from flask import Blueprint, render_template, redirect, request, make_response, url_for, jsonify
 import urllib
 from app.spotifyapi import *
 import app
@@ -51,4 +51,7 @@ def callback():
 
     app.usersBp.login(access_token, refresh_token)
 
+    print("token: " + access_token)
+
+    #return jsonify({'access_token': access_token})
     return redirect(url_for("views.index"))
