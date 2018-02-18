@@ -89,7 +89,7 @@ class Lyrics(db.Model):
 
 
 class LyricRating(db.Model):
-    __tablename__ = 'Lyrics'
+    __tablename__ = 'LyricRating'
 
     id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.Integer, nullable=False)
@@ -97,7 +97,7 @@ class LyricRating(db.Model):
     lyrics_id = db.Column(db.Integer, db.ForeignKey('Lyrics.id', ondelete='CASCADE'), nullable=False)
     lyrics_id_rel = db.relationship('Lyrics', backref=db.backref('lyrics_id', passive_delete=True), foreign_keys=lyrics_id)
 
-    rater_id = db.Column(db.Integer, db.ForeginKey('User.id', ondelte='CASCADE'), nullable=False)
+    rater_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE'), nullable=False)
     rater_id_rel = db.relationship('User', backref=db.backref('rater_id', passive_delete=True), foreign_keys=rater_id)
 
     def __init__(self, rating, lyrics_id, rater_id):
