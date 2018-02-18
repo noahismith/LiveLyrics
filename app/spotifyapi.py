@@ -17,7 +17,7 @@ SPOTIFY_API_URL = "{}/{}".format(SPOTIFY_API_BASE_URL, API_VERSION)
 # Authorization parameters
 # TODO: assign CLIENT_SIDE_URL based on config file
 CLIENT_SIDE_URL = "http://127.0.0.1:5000"
-REDIRECT_URI = CLIENT_SIDE_URL + "/callback"
+REDIRECT_URI = CLIENT_SIDE_URL + "/"
 SCOPE = "streaming user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-email user-read-birthdate"
 STATE = ""
 SHOW_DIALOG = "false"
