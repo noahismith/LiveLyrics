@@ -71,12 +71,10 @@ def info():
 
 @users_blueprint.route("/all", methods=['GET'])
 def getall():
-    payload = json.load(request.data.decode())
-    username = payload['username']
 
     all_users = User.get_all()
     all_users_list = []
     for user in all_users:
-        all_users_list.append(user.toJSON)
+        all_users_list.append(user.toJSON())
 
     return jsonify({'result': True, 'error': "", 'users': all_users_list})
