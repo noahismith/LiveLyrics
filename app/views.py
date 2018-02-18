@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, request, make_response, url_for
+import urllib
+from app.spotifyapi import *
+import app
 
 views_blueprint = Blueprint('views', __name__)
 
@@ -25,3 +28,27 @@ def songs():
 @views_blueprint.route("/contact")
 def contact():
     return render_template("contact.html")
+
+
+@views_blueprint.route("/login")
+def login():
+    url_args = "&".join(["{}={}".format(key, urllib.quote(val)) for key, val in auth_query_parameters.iteritems()])
+    auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
+    return redirect(auth_url)
+
+@views_blueprint.route("/callback")
+def callback():
+    if "error" in request.query_string:
+        return make_response(redirect(url_for("index")))
+
+    code = request.args.get('code')
+    tokens = get_tokens(code)
+
+    access_token = tokens["access_token"]
+    refresh_token = tokens["refresh_token"]
+    token_type = tokens["token_type"]
+    expires_in = tokens["expires_in"]
+
+    app.usersBp.login(access_token, refresh_token)
+
+    return redirect(url_for("views.index"))
