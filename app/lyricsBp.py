@@ -19,8 +19,14 @@ def search():
     search_string = payload['search_string']
 
     resp = search_track(access_token, search_string)
-
     print(resp)
+    #tracks = resp['item']
+
+
+    #for track in tracks:
+    #    print(track)
+
+
 
     # Parse JSON string and add
 
