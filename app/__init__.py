@@ -22,4 +22,13 @@ def create_app(config_name):
     from .views import views_blueprint
     app.register_blueprint(views_blueprint)
 
+    from .usersBp import users_blueprint
+    app.register_blueprint(users_blueprint, url_prefix="/users")
+
+    from .lyricsBp import lyrics_blueprint
+    app.register_blueprint(lyrics_blueprint, url_prefix="/lyrics")
+
+    from .lyricratingBp import lyricrating_blueprint
+    app.register_blueprint(lyricrating_blueprint, url_prefix="/lyricrating")
+
     return app

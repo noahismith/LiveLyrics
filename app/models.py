@@ -1,54 +1,131 @@
 from app import db
 from datetime import datetime
 
+
 class User(db.Model):
-	__tablename__ = 'Users'
-	
-	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(255), unique=True, nullable=False)
-	
-	def __init__(self, username):
-		self.username = username
+    __tablename__ = 'Users'
 
-	def __repr__(self):
-		return 'id: {}, username: {}'.format(self.id, self.username)
-	
-	def save(self):
-		db.session.add(self)
-		db.session.ommit()
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(255), unique=True, nullable=False)
+    spotify_id = db.Column(db.String(255), unique=True, nullable=False)
+    birthdate = db.Column(db.DateTime, nullable=True)
+    email = db.Column(db.String(255), unique=True)
+    spotify_refresh_token = db.Column(db.String(255))
 
-	def delete(self):
-        	db.session.delete(self)
-        	db.session.commit()
-	
-	@staticmethod
-    	def get_all():
-        	return User.query.all()	
+    def __init__(self, username, spotify_id, birthdate, email, spotify_refresh_token):
+        self.username = username
+        self.spotify_id = spotify_id
+        self.birthdate = birthdate
+        self.email = email
+        self.spotify_refresh_token = spotify_refresh_token
+
+    def __repr__(self):
+        return 'id: {}, username: {}, spotify_id: {}, birthdate: {}, email: {}'\
+            .format(self.id, self.username, self.spotify_id, self.birthdate, self.email)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+
+    def toJSON(self):
+         user = {
+             "username": self.username,
+             "spotify_id": self.spotify_id,
+             "birthdate": self.birthdate,
+             "email": self.email
+         }
+         return user
+
+
+    @staticmethod
+    def get_all():
+        return User.query.all()
+
 
 class Lyrics(db.Model):
-	__tablename__ = 'Lyrics'
-	
-	id = db.Column(db.Integer, primary_key=True)
-	songtitle = db.Column(db.String(255), unique=True, nullable=False)
-	songlyrics = db.Column(db.ARRAY(db.String(255)))
-	lyrictimestamps = db.Column(db.ARRAY(db.Integer))
-	
-	def __init__(self, songtitle, songlyrics, lyrictimestamps):
-		self.songtitle = songtitle
-		self.songlyrics = songlyrics
-		self.lyrictimestamps = lyrictimestamps
-		
-	def __repr__(self):
-		return 'id: {}, songtitle: {}'.format(self.id, self.songtitle)
-		
-	def save(self):
-		db.session.add(self)
-		db.session.commit()
-		
-	def delete(self):
-		db.session.delete(self)
-		db.session.commit()
-		
-	@staticmethod
-	def get_all():
-		return Lyrics.query.all()
+    __tablename__ = 'Lyrics'
+
+    id = db.Column(db.Integer, primary_key=True)
+    songtitle = db.Column(db.String(255), unique=False, nullable=False)
+    spotify_track_id = db.Column(db.String(255), unique=True, nullable=True)
+    lyrics = db.Column(db.Text)
+    timestamps = db.Column(db.Text)
+
+    def __init__(self, songtitle, spotify_track_id, lyrics, timestamps):
+        self.songtitle = songtitle
+        self.spotify_track_id = spotify_track_id
+        self.lyrics = lyrics
+        self.timestamps = timestamps
+
+    def __repr__(self):
+        return 'id: {}, songtitle: {}, spotify_track_id: {}, lyrics: {}, timestamps: {}'\
+            .format(self.id, self.songtitle, self.spotify_track_id, self.lyrics, self.timestamps)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def toJSON(self):
+        lyric_sheet = {
+            "songtilte": self.songtitle,
+            "spotify_track_id": self.spotify_track_id,
+            "lyrics": self.lyrics,
+            "timestamps": self.timestamps
+        }
+        return lyric_sheet
+
+    @staticmethod
+    def get_all():
+        return Lyrics.query.all()
+
+
+class LyricRating(db.Model):
+    __tablename__ = 'Lyrics'
+
+    id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.Integer, nullable=False)
+
+    lyrics_id = db.Column(db.Integer, db.ForeignKey('Lyrics.id', ondelete='CASCADE'), nullable=False)
+    lyrics_id_rel = db.relationship('Lyrics', backref=db.backref('lyrics_id', passive_delete=True), foreign_keys=lyrics_id)
+
+    rater_id = db.Column(db.Integer, db.ForeginKey('User.id', ondelte='CASCADE'), nullable=False)
+    rater_id_rel = db.relationship('User', backref=db.backref('rater_id', passive_delete=True), foreign_keys=rater_id)
+
+    def __init__(self, rating, lyrics_id, rater_id):
+        self.rating = rating
+        self.lyrics_id = lyrics_id
+        self.rater_id = rater_id
+
+
+    def __repr__(self):
+        return 'id: {}, rating: {}, lyrics_id: {}, rater_id: {}'\
+            .format(self.id, self.rating, self.lyrics_id, self.rater_id)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def toJSON(self):
+        rating = {
+            "rating": self.rating,
+            "lyrics_id": self.lyrics_id,
+            "rater_id": self.rater_id
+        }
+        return rating
+
+    @staticmethod
+    def get_all():
+        return LyricRating.query.all()

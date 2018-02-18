@@ -6,11 +6,13 @@ class Config(object):
 class Development(Config):
     DEBUG = True
     SQLALCHEMY_ECHO = True
+    CLIENT_URL = "http://127.0.0.1:5000"
 
 
 class Production(Config):
     DEBUG = False
     SQLALCHEMY_ECHO = False
+    CLIENT_URL = "http://18.219.32.232"
 
 
 app_config = {
