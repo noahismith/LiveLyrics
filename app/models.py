@@ -11,6 +11,7 @@ class User(db.Model):
     birthdate = db.Column(db.DateTime, nullable=True)
     email = db.Column(db.String(255), unique=True)
     spotify_refresh_token = db.Column(db.String(255))
+    num_of_contributions = db.Column(db.Integer, default=0);
 
     def __init__(self, username, spotify_id, birthdate, email, spotify_refresh_token):
         self.username = username
@@ -95,10 +96,10 @@ class LyricRating(db.Model):
     rating = db.Column(db.Integer, nullable=False)
 
     lyrics_id = db.Column(db.Integer, db.ForeignKey('Lyrics.id', ondelete='CASCADE'), nullable=False)
-    lyrics_id_rel = db.relationship('Lyrics', backref=db.backref('lyrics_id', passive_delete=True), foreign_keys=lyrics_id)
+    lyrics_id_rel = db.relationship('Lyrics', backref=db.backref('lyrics_id', passive_deletes=True), foreign_keys=lyrics_id)
 
     rater_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE'), nullable=False)
-    rater_id_rel = db.relationship('User', backref=db.backref('rater_id', passive_delete=True), foreign_keys=rater_id)
+    rater_id_rel = db.relationship('User', backref=db.backref('rater_id', passive_deletes=True), foreign_keys=rater_id)
 
     def __init__(self, rating, lyrics_id, rater_id):
         self.rating = rating
