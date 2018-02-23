@@ -18,6 +18,7 @@
 
           <h1><a href="{{ url_for('views.index') }}">LiveLyrics</a></h1>
           <h2>Lyrics in Real Time.</h2>
+
         </div>
       </div>
       <div id="menubar">
@@ -40,10 +41,24 @@
           Search for users: <input type="text" name="username"><br>
           <input type="submit" value="Submit">
           </form>
+
+          <div id="searchResults"></div>
         <h1>Top Users</h1>
         <p> .</p>
       </div>
     </div>
+
+  </div>
+
+  <div id="editFormID">
+
+    <form action="http://127.0.0.1:5000/users/edit" id="editForm">
+          <p> Edit your username! Inputs in the following fields will become your new parameters when you submit</p><br>
+          New Username: <input type="text" name="username"><br>
+          New Birthdate: <input type="text" name="birthdate"><br>
+          New E-mail: <input type="text" name="email"><br>
+          <input type="submit" value="Submit">
+          </form>
 
   </div>
 
