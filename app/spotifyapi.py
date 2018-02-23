@@ -62,3 +62,10 @@ def search_track(access_token, search_string):
     except requests.exeptions.RequestException as e:
         return {"error": e}
     return json.loads(resp.text)
+
+
+def get_track(access_token, track_id):
+    authorization_header = {"Authorization": "Bearer {}".format(access_token)}
+    api_endpoint = "{}/tracks/{}".format(SPOTIFY_API_URL, track_id)
+    track_object = requests.get(api_endpoint, headers=authorization_header)
+    return json.loads(track_object.text)
