@@ -37,10 +37,10 @@ def oauth():
     return redirect(auth_url)
 
 
-@views_blueprint.route("/login")
+@views_blueprint.route("/login", methods=['POST'])
 def login():
-    #payload = json.loads(request.data.decode())
-    #code = payload['code']
+    payload = json.loads(request.data.decode())
+    code = payload['code']
 
     code = request.args.get('code')
     tokens = get_tokens(code)
@@ -52,7 +52,7 @@ def login():
 
     app.usersBp.login(access_token, refresh_token)
 
-    return jsonify({'result': True, 'error': "", 'access_token': access_token})
+    return jsonify({"result": True, "error": "", "access_token": access_token})
 
 
 
