@@ -58,6 +58,7 @@ def edit():
 
 @users_blueprint.route("/info", methods=['POST'])
 def info():
+    print(request)
     payload = json.loads(request.data.decode())
     username = payload['username']
 

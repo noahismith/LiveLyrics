@@ -39,21 +39,20 @@ def oauth():
 
 @views_blueprint.route("/login", methods=['POST'])
 def login():
-    payload = json.loads(request.data.decode())
-    code = payload['code']
+   payload = json.loads(request.data.decode())
+   code = payload['code']
 
-    code = request.args.get('code')
-    tokens = get_tokens(code)
+   #code = request.args.get('code')
+   tokens = get_tokens(code)
 
-    access_token = tokens["access_token"]
-    refresh_token = tokens["refresh_token"]
-    token_type = tokens["token_type"]
-    expires_in = tokens["expires_in"]
+   access_token = tokens["access_token"]
+   refresh_token = tokens["refresh_token"]
+   token_type = tokens["token_type"]
+   expires_in = tokens["expires_in"]
 
-    app.usersBp.login(access_token, refresh_token)
+   app.usersBp.login(access_token, refresh_token)
 
-    return jsonify({"result": True, "error": "", "access_token": access_token})
-
+   return jsonify({"result": True, "error": "", "access_token": access_token})
 
 
 @views_blueprint.route("/callback")
