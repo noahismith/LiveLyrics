@@ -22,7 +22,7 @@ class User(db.Model):
 
     def __repr__(self):
         return 'id: {}, username: {}, spotify_id: {}, birthdate: {}, email: {}'\
-            .format(self.id, self.username, self.spotify_id, self.birthdate, self.email)
+            .format(self.id, self.username, self.spotify_id, self.birthdate, self.email, self.num_of_contributions)
 
     def save(self):
         db.session.add(self)
@@ -39,6 +39,7 @@ class User(db.Model):
              "spotify_id": self.spotify_id,
              "birthdate": self.birthdate,
              "email": self.email
+			 "num_of_contributions": self.num_of_contributions
          }
          return user
 
