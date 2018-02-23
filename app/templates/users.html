@@ -7,6 +7,7 @@
   <meta name="keywords" content="website keywords, website keywords" />
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <link rel="stylesheet" type="text/css" href="../static/style.css" title="style" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -17,6 +18,7 @@
 
           <h1><a href="{{ url_for('views.index') }}">LiveLyrics</a></h1>
           <h2>Lyrics in Real Time.</h2>
+
         </div>
       </div>
       <div id="menubar">
@@ -35,11 +37,31 @@
       
       <div id="content">
   
+          <form action="http://127.0.0.1:5000/users/info" id="userForm">
+          Search for users: <input type="text" name="username"><br>
+          <input type="submit" value="Submit">
+          </form>
+
+          <div id="searchResults"></div>
         <h1>Top Users</h1>
         <p> .</p>
       </div>
     </div>
 
   </div>
+
+  <div id="editFormID">
+
+    <form action="http://127.0.0.1:5000/users/edit" id="editForm">
+          <p> Edit your username! Inputs in the following fields will become your new parameters when you submit</p><br>
+          New Username: <input type="text" name="username"><br>
+          New Birthdate: <input type="text" name="birthdate"><br>
+          New E-mail: <input type="text" name="email"><br>
+          <input type="submit" value="Submit">
+          </form>
+
+  </div>
+
+  <script type="text/javascript" src="../static/users.js"></script>
 </body>
 </html>

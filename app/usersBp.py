@@ -29,7 +29,7 @@ def login(access_token, refresh_token):
 # Requires login
 @users_blueprint.route("/edit", methods=['POST'])
 def edit():
-    payload = json.load(request.data.decode())
+    payload = json.loads(request.data.decode())
     access_token = payload['access_token']
     username = payload['username']
     birthdate = payload['birthdate']
@@ -56,9 +56,10 @@ def edit():
     return jsonify({ 'result': True, 'error': ""})
 
 
-@users_blueprint.route("/info", methods=['GET'])
+@users_blueprint.route("/info", methods=['POST'])
 def info():
-    payload = json.load(request.data.decode())
+    print(request)
+    payload = json.loads(request.data.decode())
     username = payload['username']
 
     user = db.session.query(User).filter_by(username=username).first()
@@ -66,17 +67,15 @@ def info():
     if user is None:
         return jsonify({'result': False, 'error': "User does not exist"})
 
-    return jsonify({'result': True, 'error': "", 'user': user.toJSON})
+    return jsonify({'result': True, 'error': "", 'user': user.toJSON()})
 
 
 @users_blueprint.route("/all", methods=['GET'])
 def getall():
-    payload = json.load(request.data.decode())
-    username = payload['username']
 
     all_users = User.get_all()
     all_users_list = []
     for user in all_users:
-        all_users_list.append(user.toJSON)
+        all_users_list.append(user.toJSON())
 
     return jsonify({'result': True, 'error': "", 'users': all_users_list})
