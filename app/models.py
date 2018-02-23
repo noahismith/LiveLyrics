@@ -11,7 +11,7 @@ class User(db.Model):
     birthdate = db.Column(db.DateTime, nullable=True)
     email = db.Column(db.String(255), unique=True)
     spotify_refresh_token = db.Column(db.String(255))
-    num_of_contributions = db.Column(db.Integer, default=0);
+    num_of_contributions = db.Column(db.Integer, default=0)
 
     def __init__(self, username, spotify_id, birthdate, email, spotify_refresh_token):
         self.username = username
@@ -38,7 +38,7 @@ class User(db.Model):
              "username": self.username,
              "spotify_id": self.spotify_id,
              "birthdate": self.birthdate,
-             "email": self.email
+             "email": self.email,
 			 "num_of_contributions": self.num_of_contributions
          }
          return user
