@@ -99,7 +99,7 @@ def edit():
     lyrics_page.spotify_track_id = spotify_track_id
     lyrics_page.lyrics = lyrics
     lyrics_page.timestamps = timestamps
-    user.num_of_contributions = user.num_of_contributions + 1
+    #user.num_of_contributions = user.num_of_contributions + 1
     db.session.commit()
 
     return jsonify({'result': True, 'error': ""})
