@@ -39,8 +39,8 @@ def oauth():
 
 @views_blueprint.route("/login")
 def login():
-    payload = json.loads(request.data.decode())
-    code = payload['code']
+    #payload = json.loads(request.data.decode())
+    #code = payload['code']
 
     code = request.args.get('code')
     tokens = get_tokens(code)
