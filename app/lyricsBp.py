@@ -13,6 +13,8 @@ def edit():
     payload = json.loads(request.data.decode())
     songtitle = payload["songtitle"]
     spotify_track_id = payload["spotify_track_id"]
+	artist = payload["artist"]
+	artist_id = payload["artist_id"]
     lyrics = payload["lyrics"]
     timestamps = payload["timestamps"]
     access_token = payload['access_token']
@@ -32,6 +34,8 @@ def edit():
 
     lyrics_page.songtitle = songtitle
     lyrics_page.spotify_track_id = spotify_track_id
+	lyric_page.artist = artist
+	lyrics.artist_id = artist_id
     lyrics_page.lyrics = lyrics
     lyrics_page.timestamps = timestamps
     user.num_of_contributions = user.num_of_contributions + 1
@@ -58,7 +62,9 @@ def get_lyrics():
         spotify_track = get_tokens(access_token, spotify_track_id)
         # TODO: return an error
         track_name = spotify_track['name']
-        lyrics_page = Lyrics(track_name, spotify_track_id, "", "")
+		artist = spotify_track['artists'][0]['name']
+		artist_id = spotify_track['artists'][0]['id']
+        lyrics_page = Lyrics(track_name, spotify_track_id, artist, artist_id, "", "")
         lyrics_page.save()
         return jsonify({'result': True, 'error': 'Page added', 'lyric_page': lyrics_page.toJSON()})
 
@@ -77,7 +83,9 @@ def search():
     for track in tracks:
         track_name = track['name']
         spotfiy_track_id = track['id']
-        lyrics_page = Lyrics(track_name, spotfiy_track_id, "", "")
+		artist = track['artists'][0]['name']
+		artist_id = track['artists'[0]['id']
+        lyrics_page = Lyrics(track_name, spotfiy_track_id, artist, artist_id, "", "")
         lyrics_page.save()
 
     lyric_sheets = db.session.query(Lyrics).filter(Lyrics.songtitle.like("%{}%".format(search_string))).all()

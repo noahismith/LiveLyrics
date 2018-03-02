@@ -55,18 +55,22 @@ class Lyrics(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     songtitle = db.Column(db.String(255), unique=False, nullable=False)
     spotify_track_id = db.Column(db.String(255), unique=True, nullable=True)
+	artist = db.Column(db.String(255), unique=False, nullable=False)
+	artist_id= db.Column(db.String(255), unique=True, nullable=False)
     lyrics = db.Column(db.Text)
     timestamps = db.Column(db.Text)
 
-    def __init__(self, songtitle, spotify_track_id, lyrics, timestamps):
+    def __init__(self, songtitle, spotify_track_id, artist, artist_id, lyrics, timestamps):
         self.songtitle = songtitle
         self.spotify_track_id = spotify_track_id
+		self.artist = artist
+		self.artist_id = artist_id
         self.lyrics = lyrics
         self.timestamps = timestamps
 
     def __repr__(self):
-        return 'id: {}, songtitle: {}, spotify_track_id: {}, lyrics: {}, timestamps: {}'\
-            .format(self.id, self.songtitle, self.spotify_track_id, self.lyrics, self.timestamps)
+        return 'id: {}, songtitle: {}, spotify_track_id: {}, artist: {}, artist_id: {}, lyrics: {}, timestamps: {}'\
+            .format(self.id, self.songtitle, self.spotify_track_id, self.artist, self.artist_id, self.lyrics, self.timestamps)
 
     def save(self):
         db.session.add(self)
@@ -80,6 +84,8 @@ class Lyrics(db.Model):
         lyric_sheet = {
             "songtilte": self.songtitle,
             "spotify_track_id": self.spotify_track_id,
+			"artist": self.artist,
+			"artist_id": self.artist_id,
             "lyrics": self.lyrics,
             "timestamps": self.timestamps
         }
