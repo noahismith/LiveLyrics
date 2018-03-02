@@ -78,7 +78,7 @@ class Lyrics(db.Model):
 
     def toJSON(self):
         lyric_sheet = {
-            "songtilte": self.songtitle,
+            "songtitle": self.songtitle,
             "spotify_track_id": self.spotify_track_id,
             "lyrics": self.lyrics,
             "timestamps": self.timestamps

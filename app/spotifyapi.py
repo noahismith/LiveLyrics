@@ -62,6 +62,15 @@ def search_track(access_token, search_string):
     except requests.exeptions.RequestException as e:
         return {"error": e}
     return json.loads(resp.text)
+	
+def search_artist(access_token, search_string):
+	authorization_header = {"Authorization": "Bearer {}".format(access_token)}
+	api_endpoint = "{}/search?q={}&type=artist&limit=10".format(SPOTIFY_API_URL, search_string.replace(" ", "+"))
+    try:
+        resp = requests.get(api_endpoint, headers=authorization_header)
+    except requests.exeptions.RequestException as e:
+        return {"error": e}
+    return json.loads(resp.text)
 
 
 def get_track(access_token, track_id):

@@ -73,6 +73,8 @@ def search():
 
     resp = search_track(access_token, search_string)
     tracks = resp['tracks']['items']
+	
+	artists = (search_artist(access_token, search_string))['artists']['items']
 
     for track in tracks:
         track_name = track['name']
@@ -85,5 +87,12 @@ def search():
     lyric_sheets_list = []
     for lyric_sheet in lyric_sheets:
         lyric_sheets_list.append(lyric_sheet.toJSON())
+	
+	artists_list = []
+	for artist in artists:
+		artists_list.append({
+			'name': artist['name']
+			'id': artist['id']
+			})
 
-    return jsonify({'result': True, 'error': "", 'lyric_sheets': lyric_sheets_list})
+    return jsonify({'result': True, 'error': "", 'lyric_sheets': lyric_sheets_list, 'artists': artists_list})
