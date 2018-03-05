@@ -80,6 +80,26 @@ def getRatings():
 	    allRatingsList.append(rating.toJSON())
 		
     return jsonify({'result': True, 'error': "", 'ratings': allRatingsList})
+	
+@lyricrating_blueprint.route("/getUserRatings", methods=['POST'])
+def getUserRatings():
+    payload = json.loads(request.data.decode())
+    rater_id = payload['rater_id']
+    rater = db.session.query(User).filter_by(spotify_id=rater_id).first()
+
+    if rater is None:
+	    return jsonify({'result': False, 'error': "User not found in the database."})
+
+    lyricRatings = db.session.query(LyricRating).filter(LyricRating.rater_id == rater.id)
+	
+    if lyricRatings is None:
+	    return jsonify({'result': False, 'error': "The requested lyrics page has no ratings."})
+		
+    allRatingsList = []
+    for rating in lyricRatings:
+	    allRatingsList.append(rating.toJSON())
+		
+    return jsonify({'result': True, 'error': "", 'ratings': allRatingsList})
 
 @lyricrating_blueprint.route("/getAllRatings", methods=['GET'])	
 def getAllRatings():
