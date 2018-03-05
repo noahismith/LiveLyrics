@@ -67,32 +67,32 @@ def get_lyrics():
 
 @lyrics_blueprint.route("/search", methods=['POST'])
 def search():
-    payload = json.loads(request.data.decode())
-    access_token = payload['access_token']
-    search_string = payload['search_string']
+	payload = json.loads(request.data.decode())
+	access_token = payload['access_token']
+	search_string = payload['search_string']
 
-    resp = search_track(access_token, search_string)
-    tracks = resp['tracks']['items']
+	resp = search_track(access_token, search_string)
+	tracks = resp['tracks']['items']
 	
 	artists = (search_artist(access_token, search_string))['artists']['items']
 
-    for track in tracks:
-        track_name = track['name']
-        spotfiy_track_id = track['id']
-        lyrics_page = Lyrics(track_name, spotfiy_track_id, "", "")
-        lyrics_page.save()
+	for track in tracks:
+		track_name = track['name']
+		spotfiy_track_id = track['id']
+		lyrics_page = Lyrics(track_name, spotfiy_track_id, "", "")
+		lyrics_page.save()
 
-    lyric_sheets = db.session.query(Lyrics).filter(Lyrics.songtitle.like("%{}%".format(search_string))).all()
+	lyric_sheets = db.session.query(Lyrics).filter(Lyrics.songtitle.like("%{}%".format(search_string))).all()
 
-    lyric_sheets_list = []
-    for lyric_sheet in lyric_sheets:
-        lyric_sheets_list.append(lyric_sheet.toJSON())
+	lyric_sheets_list = []
+	for lyric_sheet in lyric_sheets:
+		lyric_sheets_list.append(lyric_sheet.toJSON())
 	
 	artists_list = []
 	for artist in artists:
 		artists_list.append({
-			'name': artist['name']
+			'name': artist['name'],
 			'id': artist['id']
 			})
 
-    return jsonify({'result': True, 'error': "", 'lyric_sheets': lyric_sheets_list, 'artists': artists_list})
+	return jsonify({'result': True, 'error': "", 'lyric_sheets': lyric_sheets_list, 'artists': artists_list})
