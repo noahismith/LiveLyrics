@@ -108,4 +108,3 @@ def getAllRatings():
     for rating in lyricRatings:
         ratings_list.append(rating.toJSON())
     return jsonify({'result': True, 'error': "", 'ratings': ratings_list})
-        

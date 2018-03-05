@@ -69,3 +69,13 @@ def get_track(access_token, track_id):
     api_endpoint = "{}/tracks/{}".format(SPOTIFY_API_URL, track_id)
     track_object = requests.get(api_endpoint, headers=authorization_header)
     return json.loads(track_object.text)
+
+def get_artits_by_track(track):
+    artists = track['artists']
+    artists_list = []
+
+    for artist in artists:
+        artists_list.append(artist['name'])
+
+    return ". ".join(artists_list)
+
