@@ -29,31 +29,30 @@ def login(access_token, refresh_token):
 # Requires login
 @users_blueprint.route("/edit", methods=['POST'])
 def edit():
-    payload = json.loads(request.data.decode())
-    access_token = payload['access_token']
-    username = payload['username']
-    birthdate = payload['birthdate']
-    email = payload['email']
+	payload = json.loads(request.data.decode())
+	access_token = payload['access_token']
+	username = payload['username']
+	birthdate = payload['birthdate']
+	email = payload['email']
 
-    spotify_info = get_profile_me(access_token)
-    spotify_id = spotify_info['id']
+	spotify_info = get_profile_me(access_token)
+	if "error" in spotify_info:
+		return jsonify({'result': False, 'error': spotify_info['error']})
+	spotify_id = spotify_info['id']
 
-    if "error" in spotify_info:
-        return jsonify({'result': False, 'error': spotify_info['error']})
+	user = db.session.query(User).filter_by(spotify_id=spotify_id).first()
 
-    user = db.session.query(User).filter_by(spotify_id=spotify_id).first()
-
-    if user is None:
-        return jsonify({'result': False, 'error': "User does not exist"})
+	if user is None:
+		return jsonify({'result': False, 'error': "User does not exist"})
 
     # TODO: check error where username or email are not unique
     # TODO: POSSIBLY provide ability to change spotify id
-    user.username = username
-    user.birthdate = birthdate
-    user.email = email
-    user.save()
+	user.username = username
+	user.birthdate = birthdate
+	user.email = email
+	user.save()
 
-    return jsonify({ 'result': True, 'error': ""})
+	return jsonify({ 'result': True, 'error': ""})
 
 
 @users_blueprint.route("/info", methods=['POST'])
