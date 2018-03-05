@@ -19,9 +19,10 @@ class User(db.Model):
         self.birthdate = birthdate
         self.email = email
         self.spotify_refresh_token = spotify_refresh_token
+        self.num_of_contributions = 0
 
     def __repr__(self):
-        return 'id: {}, username: {}, spotify_id: {}, birthdate: {}, email: {}'\
+        return 'id: {}, username: {}, spotify_id: {}, birthdate: {}, email: {}' \
             .format(self.id, self.username, self.spotify_id, self.birthdate, self.email, self.num_of_contributions)
 
     def save(self):
@@ -32,17 +33,15 @@ class User(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-
     def toJSON(self):
-         user = {
-             "username": self.username,
-             "spotify_id": self.spotify_id,
-             "birthdate": self.birthdate,
-             "email": self.email,
-			 "num_of_contributions": self.num_of_contributions
-         }
-         return user
-
+        user = {
+            "username": self.username,
+            "spotify_id": self.spotify_id,
+            "birthdate": self.birthdate,
+            "email": self.email,
+            "num_of_contributions": self.num_of_contributions
+        }
+        return user
 
     @staticmethod
     def get_all():
@@ -54,18 +53,20 @@ class Lyrics(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     songtitle = db.Column(db.String(255), unique=False, nullable=False)
+    artist = db.Column(db.String(255), unique=False, nullable=False)
     spotify_track_id = db.Column(db.String(255), unique=True, nullable=True)
     lyrics = db.Column(db.Text)
     timestamps = db.Column(db.Text)
 
-    def __init__(self, songtitle, spotify_track_id, lyrics, timestamps):
+    def __init__(self, songtitle, artist, spotify_track_id, lyrics, timestamps):
         self.songtitle = songtitle
+        self.artist = artist
         self.spotify_track_id = spotify_track_id
         self.lyrics = lyrics
         self.timestamps = timestamps
 
     def __repr__(self):
-        return 'id: {}, songtitle: {}, spotify_track_id: {}, lyrics: {}, timestamps: {}'\
+        return 'id: {}, songtitle: {}, spotify_track_id: {}, lyrics: {}, timestamps: {}' \
             .format(self.id, self.songtitle, self.spotify_track_id, self.lyrics, self.timestamps)
 
     def save(self):
@@ -79,6 +80,7 @@ class Lyrics(db.Model):
     def toJSON(self):
         lyric_sheet = {
             "songtilte": self.songtitle,
+            "artist": self.artist,
             "spotify_track_id": self.spotify_track_id,
             "lyrics": self.lyrics,
             "timestamps": self.timestamps
@@ -97,7 +99,8 @@ class LyricRating(db.Model):
     rating = db.Column(db.Integer, nullable=False)
 
     lyrics_id = db.Column(db.Integer, db.ForeignKey('Lyrics.id', ondelete='CASCADE'), nullable=False)
-    lyrics_id_rel = db.relationship('Lyrics', backref=db.backref('lyrics_id', passive_deletes=True), foreign_keys=lyrics_id)
+    lyrics_id_rel = db.relationship('Lyrics', backref=db.backref('lyrics_id', passive_deletes=True),
+                                    foreign_keys=lyrics_id)
 
     rater_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE'), nullable=False)
     rater_id_rel = db.relationship('User', backref=db.backref('rater_id', passive_deletes=True), foreign_keys=rater_id)
@@ -107,9 +110,8 @@ class LyricRating(db.Model):
         self.lyrics_id = lyrics_id
         self.rater_id = rater_id
 
-
     def __repr__(self):
-        return 'id: {}, rating: {}, lyrics_id: {}, rater_id: {}'\
+        return 'id: {}, rating: {}, lyrics_id: {}, rater_id: {}' \
             .format(self.id, self.rating, self.lyrics_id, self.rater_id)
 
     def save(self):

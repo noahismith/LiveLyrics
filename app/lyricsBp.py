@@ -1,8 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.spotifyapi import *
-from app import db
 from .models import *
-import requests
 from .spotifyapi import *
 
 lyrics_blueprint = Blueprint('lyrics', __name__)
@@ -11,7 +8,6 @@ lyrics_blueprint = Blueprint('lyrics', __name__)
 @lyrics_blueprint.route("/edit", methods=['POST'])
 def edit():
     payload = json.loads(request.data.decode())
-    songtitle = payload["songtitle"]
     spotify_track_id = payload["spotify_track_id"]
     lyrics = payload["lyrics"]
     timestamps = payload["timestamps"]
@@ -25,12 +21,14 @@ def edit():
 
     user = db.session.query(User).filter_by(spotify_id=spotify_id).first()
 
+    if user is None:
+        return jsonify({'result': False, 'error': "User not found"})
+
     lyrics_page = db.session.query(Lyrics).filter_by(spotify_track_id=spotify_track_id).first()
 
     if lyrics_page is None:
         return jsonify({'result': False, 'error': 'No Knone Lyrics Page'})
 
-    lyrics_page.songtitle = songtitle
     lyrics_page.spotify_track_id = spotify_track_id
     lyrics_page.lyrics = lyrics
     lyrics_page.timestamps = timestamps
@@ -55,8 +53,9 @@ def get_lyrics():
     lyrics_page = db.session.query(Lyrics).filter_by(spotify_track_id=spotify_track_id).first()
 
     if lyrics_page is None:
-        spotify_track = get_tokens(access_token, spotify_track_id)
-        # TODO: return an error
+        spotify_track = get_track(access_token, spotify_track_id)
+        if "error" in spotify_track:
+            return jsonify({'result': False, 'error': spotify_track['error']})
         track_name = spotify_track['name']
         lyrics_page = Lyrics(track_name, spotify_track_id, "", "")
         lyrics_page.save()
@@ -71,13 +70,20 @@ def search():
     access_token = payload['access_token']
     search_string = payload['search_string']
 
-    resp = search_track(access_token, search_string)
-    tracks = resp['tracks']['items']
+    tracks = search_track(access_token, search_string)
+
+    if "error" in tracks:
+        return jsonify({'result': True, 'error': tracks['error']})
+
+    tracks = tracks['tracks']['items']
 
     for track in tracks:
+        spotify_track_id = track['id']
+        if db.session.query(Lyrics).filter_by(spotify_track_id=spotify_track_id) is not None:
+            continue
         track_name = track['name']
-        spotfiy_track_id = track['id']
-        lyrics_page = Lyrics(track_name, spotfiy_track_id, "", "")
+        artist = get_artits_by_track(track)
+        lyrics_page = Lyrics(track_name, artist, spotify_track_id, "", "")
         lyrics_page.save()
 
     lyric_sheets = db.session.query(Lyrics).filter(Lyrics.songtitle.like("%{}%".format(search_string))).all()
