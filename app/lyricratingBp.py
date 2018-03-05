@@ -19,7 +19,6 @@ def rate():
     lyric_sheet = db.session.query(Lyrics).filter_by(id=lyrics_id).first()
     rater = db.session.query(User).filteR_by(id=rater_id).frist()
 
-
     if lyric_sheet is None:
         return jsonify({'result': False, 'error': "Lyric sheet not found in the database."})
 
