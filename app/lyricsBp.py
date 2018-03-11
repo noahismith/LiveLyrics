@@ -63,6 +63,13 @@ def get_lyrics():
 
     return jsonify({'result': True, 'error': "", 'lyric_page': lyrics_page.toJSON()})
 
+@lyrics_blueprint.route("/getAll", methods=['GET'])
+def getAllLyricPages():
+    lyric_pages = Lyrics.get_all()
+    lyric_pages_list = []
+    for lyric_page in lyric_pages:
+        lyric_pages_list.append(lyric_page.toJSON())
+    return jsonify({'result': True, 'error': "", 'lyric_pages': lyric_pages_list})
 
 @lyrics_blueprint.route("/search", methods=['POST'])
 def search():
