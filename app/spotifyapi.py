@@ -17,7 +17,7 @@ SPOTIFY_API_URL = "{}/{}".format(SPOTIFY_API_BASE_URL, API_VERSION)
 # Authorization parameters
 # TODO: assign CLIENT_SIDE_URL based on config file
 CLIENT_SIDE_URL = "http://127.0.0.1:5000"
-REDIRECT_URI = CLIENT_SIDE_URL + "/"
+REDIRECT_URI = CLIENT_SIDE_URL + "/login"
 SCOPE = "streaming user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-email user-read-birthdate"
 STATE = ""
 SHOW_DIALOG = "false"
@@ -89,3 +89,9 @@ def get_artists_by_track(track):
         artists_list.append(artist['name'])
 
     return ". ".join(artists_list)
+
+
+def get_auth_url():
+    url_args = "&".join(["{}={}".format(key, urllib.quote(val)) for key, val in auth_query_parameters.iteritems()])
+    auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
+    return auth_url
