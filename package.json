@@ -1,0 +1,23 @@
+{
+  "name": "livelyrics",
+  "version": "1.0.0",
+  "description": "testing",
+  "main": "index.js",
+  "dependencies": {
+    "cypress": "^2.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noahismith/LiveLyrics.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/noahismith/LiveLyrics/issues"
+  },
+  "homepage": "https://github.com/noahismith/LiveLyrics#readme"
+}
