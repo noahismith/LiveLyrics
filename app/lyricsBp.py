@@ -26,6 +26,7 @@ def edit():
     if user is None:
         return jsonify({'result': False, 'error': "User not found"})
 
+
     if lyrics_page is None:
         return jsonify({'result': False, 'error': 'No Knone Lyrics Page'})
 
@@ -63,6 +64,13 @@ def get_lyrics():
 
     return jsonify({'result': True, 'error': "", 'lyric_page': lyrics_page.toJSON()})
 
+@lyrics_blueprint.route("/getAll", methods=['GET'])
+def getAllLyricPages():
+    lyric_pages = Lyrics.get_all()
+    lyric_pages_list = []
+    for lyric_page in lyric_pages:
+        lyric_pages_list.append(lyric_page.toJSON())
+    return jsonify({'result': True, 'error': "", 'lyric_pages': lyric_pages_list})
 
 @lyrics_blueprint.route("/search", methods=['POST'])
 def search():
@@ -71,15 +79,15 @@ def search():
     search_string = payload['search_string']
     
     resp = search_track(access_token, search_string)
-    if "error" in tracks:
-        return jsonify({'result': True, 'error': tracks['error']})
+    if "error" in resp:
+        return jsonify({'result': False, 'error': resp['error']})
     tracks = resp['tracks']['items']
 	
     artists = (search_artist(access_token, search_string))['artists']['items']
 
     for track in tracks:
         spotify_track_id = track['id']
-        if db.session.query(Lyrics).filter_by(spotify_track_id=spotify_track_id) is not None:
+        if db.session.query(Lyrics).filter_by(spotify_track_id=spotify_track_id).first() is not None:
             continue
         track_name = track['name']
         spotify_track_id = track['id']

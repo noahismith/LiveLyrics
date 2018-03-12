@@ -79,7 +79,7 @@ def get_track(access_token, track_id):
     track_object = requests.get(api_endpoint, headers=authorization_header)
     return json.loads(track_object.text)
 
-def get_artits_by_track(track):
+def get_artist_by_track(track):
     artists = track['artists']
     artists_list = []
 
