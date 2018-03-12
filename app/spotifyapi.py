@@ -45,7 +45,7 @@ def get_tokens(auth_token):
 
 
 def get_profile_me(access_token):
-    authorization_header = {"Authorization":"Bearer {}".format(access_token)}
+    authorization_header = {"Authorization": "Bearer {}".format(access_token)}
     api_endpoint = "{}/me".format(SPOTIFY_API_URL)
     try:
         resp = requests.get(api_endpoint, headers=authorization_header)
@@ -62,15 +62,16 @@ def search_track(access_token, search_string):
     except requests.exeptions.RequestException as e:
         return {"error": e}
     return json.loads(resp.text)
-	
+
+
 def search_artist(access_token, search_string):
-	authorization_header = {"Authorization": "Bearer {}".format(access_token)}
-	api_endpoint = "{}/search?q={}&type=artist&limit=10".format(SPOTIFY_API_URL, search_string.replace(" ", "+"))
-	try:
-		resp = requests.get(api_endpoint, headers=authorization_header)
-	except requests.exeptions.RequestException as e:
-		return {"error": e}
-	return json.loads(resp.text)
+    authorization_header = {"Authorization": "Bearer {}".format(access_token)}
+    api_endpoint = "{}/search?q={}&type=artist&limit=10".format(SPOTIFY_API_URL, search_string.replace(" ", "+"))
+    try:
+        resp = requests.get(api_endpoint, headers=authorization_header)
+    except requests.exeptions.RequestException as e:
+        return {"error": e}
+    return json.loads(resp.text)
 
 
 def get_track(access_token, track_id):
@@ -79,7 +80,8 @@ def get_track(access_token, track_id):
     track_object = requests.get(api_endpoint, headers=authorization_header)
     return json.loads(track_object.text)
 
-def get_artits_by_track(track):
+
+def get_artists_by_track(track):
     artists = track['artists']
     artists_list = []
 
@@ -87,4 +89,3 @@ def get_artits_by_track(track):
         artists_list.append(artist['name'])
 
     return ". ".join(artists_list)
-
