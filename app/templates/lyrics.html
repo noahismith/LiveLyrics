@@ -38,10 +38,12 @@
   
         <form action="http://127.0.0.1:5000/lyrics/edit" id="songEditForm">
           <div class="form_settings">
-            <p style="padding-bottom: 4px"><span>New song name:</span><input type="text" name="songtitle"><br></p>
-            <p style="padding-bottom: 4px"><span>Lyrics:</span><input type="text" name="lyrics" class="lyricsInputTest"><br></p>
-            <p style="padding-bottom: 4px"><span>Track id:</span><input type="text" name="spotify_track_id" class="lyricsTrackIDTest"><br></p>
-            <p style="padding-bottom: 4px"><span>Timestamps:</span><input type="text" name="timestamps" class="lyricsTimestampsTest"><br></p>
+
+            <p style="padding-bottom: 4px"><span>New song name:</span><input id="song-title-input" type="text" name="songtitle"><br></p>
+            <p style="padding-bottom: 4px"><span>Lyrics:</span><input id="lyrics-input" type="text" name="lyrics" class="lyricsInputTest"><br></p>
+            <p style="padding-bottom: 4px"><span>Track id:</span><input id="spotify-track-id-input" type="text" name="spotify_track_id" class="lyricsTrackIDTest"><br></p>
+            <p style="padding-bottom: 4px"><span>Timestamps:</span><input id="timestamps-input" type="text" name="timestamps" class="lyricsTimestampsTest"><br></p>
+
             <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="lyrics_submitted" value="submit"/></p>
           </div>
         </form>
