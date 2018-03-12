@@ -30,7 +30,15 @@ $( '#songsForm').submit(function(event) {
 
         //creating individual elements
         var artistSpan = $('<span/>').text("Artist: " + element.artist)
-        var songTitleSpan = $('<span/>').text("Song Title: " + element.songtitle)
+        var songTitleSpan = $('<span/>')
+        var songTitleLink = $('<a/>').text("Song Title: " + element.songtitle).click(function() {
+
+          localStorage.setItem("spotify_track_id", element.spotify_track_id)
+          console.log(localStorage)
+        })
+
+        songTitleLink.attr('href', "/lyrics")
+        songTitleSpan.append(songTitleLink)
         var spotifyTrackIdSpan = $('<span/>').text("Spotify Track ID: " + element.spotify_track_id)
 
         //appending all to the final element
