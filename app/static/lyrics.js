@@ -58,7 +58,6 @@ $( '#songEditForm').submit(function(event) {
     })
     .done(function( msg ) {
       console.log(JSON.stringify(msg));
-
       
     })
     .fail(function( jqXHR, textStatus ) {

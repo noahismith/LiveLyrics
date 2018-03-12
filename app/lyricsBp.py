@@ -86,7 +86,7 @@ def search():
 
     for track in tracks:
         spotify_track_id = track['id']
-        if db.session.query(Lyrics).filter_by(spotify_track_id=spotify_track_id) is not None:
+        if db.session.query(Lyrics).filter_by(spotify_track_id=spotify_track_id).first() is not None:
             continue
         track_name = track['name']
         spotify_track_id = track['id']
