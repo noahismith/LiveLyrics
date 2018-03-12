@@ -7,36 +7,37 @@ lyrics_blueprint = Blueprint('lyrics', __name__)
 
 @lyrics_blueprint.route("/edit", methods=['POST'])
 def edit():
-	payload = json.loads(request.data.decode())
-	songtitle = payload["songtitle"]
-	spotify_track_id = payload["spotify_track_id"]
-	lyrics = payload["lyrics"]
-	timestamps = payload["timestamps"]
-	access_token = payload['access_token']
+    payload = json.loads(request.data.decode())
+    songtitle = payload["songtitle"]
+    spotify_track_id = payload["spotify_track_id"]
+    lyrics = payload["lyrics"]
+    timestamps = payload["timestamps"]
+    access_token = payload['access_token']
 
-	spotify_info = get_profile_me(access_token)
-	if "error" in spotify_info:
-		return jsonify({'result': False, 'error': spotify_info['error']})
-	spotify_id = spotify_info['id']
+    spotify_info = get_profile_me(access_token)
+    if "error" in spotify_info:
+        return jsonify({'result': False, 'error': spotify_info['error']})
+    spotify_id = spotify_info['id']
 
-	user = db.session.query(User).filter_by(spotify_id=spotify_id).first()
+    user = db.session.query(User).filter_by(spotify_id=spotify_id).first()
 
-	lyrics_page = db.session.query(Lyrics).filter_by(spotify_track_id=spotify_track_id).first()
+    lyrics_page = db.session.query(Lyrics).filter_by(spotify_track_id=spotify_track_id).first()
 
-	if user is None:
-		return jsonify({'result': False, 'error': "User not found"})
+    if user is None:
+        return jsonify({'result': False, 'error': "User not found"})
 
-	if lyrics_page is None:
-		return jsonify({'result': False, 'error': 'No Knone Lyrics Page'})
 
-	lyrics_page.songtitle = songtitle
-	lyrics_page.spotify_track_id = spotify_track_id
-	lyrics_page.lyrics = lyrics
-	lyrics_page.timestamps = timestamps
-	user.num_of_contributions = user.num_of_contributions + 1
-	db.session.commit()
+    if lyrics_page is None:
+        return jsonify({'result': False, 'error': 'No Knone Lyrics Page'})
+
+    lyrics_page.songtitle = songtitle
+    lyrics_page.spotify_track_id = spotify_track_id
+    lyrics_page.lyrics = lyrics
+    lyrics_page.timestamps = timestamps
+    user.num_of_contributions = user.num_of_contributions + 1
+    db.session.commit()
   
-	return jsonify({'result': True, 'error': ""})
+    return jsonify({'result': True, 'error': ""})
 
 
 @lyrics_blueprint.route("/lyrics_page", methods=['POST'])
