@@ -56,4 +56,8 @@ describe('While on the Users page, checks to make sure all inputs and buttons wo
 
     })
 
+    it('Update user information', function () {
+        
+    })
+
 })
