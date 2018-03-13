@@ -4,18 +4,18 @@ describe('checks for proper web address for each page', function () {
     })
 
     it ('Visit home/login page', function () {
-        cy.visit('localhost:5000')
+        cy.visit('127.0.0.1:5000')
     })
 
     it ('Visit lyrics page', function () {
-        cy.visit('localhost:5000/lyrics')
+        cy.visit('127.0.0.1:5000/lyrics')
     })
 
     it ('Visit songs page', function () {
-        cy.visit('localhost:5000/songs')
+        cy.visit('127.0.0.1:5000/songs')
     })
 
     it ('Visit users page', function () {
-        cy.visit('localhost:5000/users')
+        cy.visit('127.0.0.1:5000/users')
     })
 })
