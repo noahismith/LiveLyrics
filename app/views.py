@@ -7,7 +7,8 @@ views_blueprint = Blueprint('views', __name__)
 
 @views_blueprint.route("/")
 def index():
-    return render_template('index.html')
+    auth_url = get_auth_url()
+    return render_template('index.html', auth_url=auth_url)
 
 
 @views_blueprint.route("/lyrics")
@@ -30,37 +31,26 @@ def contact():
     return render_template("contact.html")
 
 
-@views_blueprint.route("/oauth")
-def oauth():
-    url_args = "&".join(["{}={}".format(key, urllib.quote(val)) for key, val in auth_query_parameters.iteritems()])
-    auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
-    return redirect(auth_url)
-
-
-@views_blueprint.route("/login", methods=['POST'])
+@views_blueprint.route("/login")
 def login():
-   payload = json.loads(request.data.decode())
-   code = payload['code']
+    code = request.args['code']
 
-   #code = request.args.get('code')
-   tokens = get_tokens(code)
+    tokens = get_tokens(code)
 
-   access_token = tokens["access_token"]
-   refresh_token = tokens["refresh_token"]
-   token_type = tokens["token_type"]
-   expires_in = tokens["expires_in"]
+    if "error" in tokens:
+        return redirect(url_for("views.index"))
 
-   app.usersBp.login(access_token, refresh_token)
+    access_token = tokens["access_token"]
+    refresh_token = tokens["refresh_token"]
+    token_type = tokens["token_type"]
+    ##expires_in = tokens["expires_in"]
 
-   return jsonify({"result": True, "error": "", "access_token": access_token})
+    app.usersBp.login(access_token, refresh_token)
 
+    resp = make_response(redirect(url_for("views.index")))
+    resp.set_cookie('access_token', access_token)
 
-@views_blueprint.route("/callback")
-def callback():
-    if "error" in request.query_string:
-        return make_response(redirect(url_for("index")))
-
-    return redirect(url_for("views.index"))
+    return resp
 
 
 
