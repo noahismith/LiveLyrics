@@ -3,7 +3,7 @@ import urllib
 from app.spotifyapi import *
 import app
 from app import db
-from models import *
+from app.models import *
 
 views_blueprint = Blueprint('views', __name__)
 
@@ -57,10 +57,11 @@ def login():
 @views_blueprint.route("/currSong", methods=['POST'])
 def get_current_track_id():
    access_token = request.cookies.get('access_token')
-
    authorization_header = {"Authorization": "Bearer {}".format(access_token)}
    current_playing_api_endpoint = "{}/me/player/currently-playing".format(SPOTIFY_API_URL)
    current_playing_object = requests.get(current_playing_api_endpoint, headers=authorization_header)
+   if current_playing_object.text is "":
+       return jsonify({'result': False, 'error': "No Song Currently Playing"})
    if "error" in json.loads(current_playing_object.text):
        return jsonify({'result': False, 'error': json.loads(current_playing_object.text)["error"]})
    spotify_track_id = json.loads(current_playing_object.text)['item']['id']

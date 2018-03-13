@@ -133,3 +133,37 @@ class LyricRating(db.Model):
     @staticmethod
     def get_all():
         return LyricRating.query.all()
+		
+class RecentActivity(db.Model):
+    __tablename__ = 'RecentActivity'
+	
+    id = db.Column(db.Integer, primary_key=True)
+    spotify_track_id = db.Column(db.String(255), unique=False, nullable=False)
+    spotify_id = db.Column(db.String(255), unique=False, nullable=False)
+	
+    def __init__(self, spotify_track_id, spotify_id):
+        self.spotify_track_id = spotify_track_id
+        self.spotify_id = spotify_id
+	
+    def __repr__(self):
+        return 'id: {}, spotify_track_id: {}, spotify_id: {}' \
+            .format(self.id, self.spotify_track_id, self.spotify_id)
+			
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def toJSON(self):
+        rating = {
+            "spotify_track_id": self.spotify_track_id,
+            "spotify_id": self.spotify_id
+        }
+        return rating
+
+    @staticmethod
+    def get_all():
+        return RecentActivity.query.all()
