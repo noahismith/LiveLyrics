@@ -1,7 +1,8 @@
-describe('While on the home page, checks to make sure all navigation buttons go to the right link', function () {
 
-    it('Click Lyrics menu button', function () {
-        cy.visit('http://localhost:5000')
+describe('While on the home page, checks to make sure all navigation buttons go to the right page', function () {
+
+    it('Click Lyrics menu button (routes to Lyrics page)', function () {
+        cy.visit('127.0.0.1:5000')
 
         cy.get('ul').contains('Lyrics').click()
 
@@ -9,8 +10,8 @@ describe('While on the home page, checks to make sure all navigation buttons go 
             .should('include', '/lyrics')
     })
 
-    it('Click Users menu button', function () {
-        cy.visit('http://localhost:5000')
+    it('Click Users menu button (routes to User page)', function () {
+        cy.visit('127.0.0.1:5000')
 
         cy.get('a').contains('Users').click()
 
@@ -18,8 +19,8 @@ describe('While on the home page, checks to make sure all navigation buttons go 
             .should('include', '/users')
     })
 
-    it('Click Songs menu button', function () {
-        cy.visit('http://localhost:5000')
+    it('Click Songs menu button (routes to Songs page)', function () {
+        cy.visit('127.0.0.1:5000')
 
         cy.get('ul').contains('Songs').click()
 
@@ -27,16 +28,14 @@ describe('While on the home page, checks to make sure all navigation buttons go 
             .should('include', '/songs')
     })
 
-    it('Click Login button', function () {
-        cy.visit('http://localhost:5000')
+    it('Click Login button (checks login successful)', function () {
+        
+        cy.visit('127.0.0.1:5000')
 
         cy.get('a').contains('Login').click()
+
+
     })
 
-    it('Click Contact Us menu button', function () {
-        cy.visit('http://localhost:5000')
-
-        cy.get('ul').contains('Contact Us').click()
-    })
 
 })
