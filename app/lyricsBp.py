@@ -12,7 +12,7 @@ def edit():
     spotify_track_id = payload["spotify_track_id"]
     lyrics = payload["lyrics"]
     timestamps = payload["timestamps"]
-    access_token = payload['access_token']
+    access_token = request.cookies.get('access_token')
 
     spotify_info = get_profile_me(access_token)
     if "error" in spotify_info:
@@ -42,7 +42,7 @@ def edit():
 @lyrics_blueprint.route("/lyrics_page", methods=['POST'])
 def get_lyrics():
     payload = json.loads(request.data.decode())
-    access_token = payload['access_token']
+    access_token = request.cookies.get('access_token')
     spotify_track_id = payload["spotify_track_id"]
 
     spotify_info = get_profile_me(access_token)
@@ -76,7 +76,7 @@ def getAllLyricPages():
 @lyrics_blueprint.route("/search", methods=['POST'])
 def search():
     payload = json.loads(request.data.decode())
-    access_token = payload['access_token']
+    access_token = request.cookies.get('access_token')
     search_string = payload['search_string']
 
     resp = search_track(access_token, search_string)
