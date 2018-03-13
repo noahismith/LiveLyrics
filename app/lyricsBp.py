@@ -35,6 +35,9 @@ def edit():
     lyrics_page.timestamps = timestamps
     user.num_of_contributions = user.num_of_contributions + 1
     db.session.commit()
+	
+    new_recent_activity = RecentActivity(spotify_track_id, spotify_id)
+    new_recent_activity.save()
 
     return jsonify({'result': True, 'error': ""})
 
@@ -112,3 +115,19 @@ def search():
         })
 
     return jsonify({'result': True, 'error': "", 'lyric_sheets': lyric_sheets_list, 'artists': artists_list})
+
+@lyrics_blueprint.route("/getRecentActivity", methods=['GET'])
+def getRecentActivity():
+    recent_activity_list = db.session.query(RecentActivity).order_by(RecentActivity.id.desc())
+    print(recent_activity_list)
+    if recent_activity_list.first() is None:
+        return jsonify({'result': False, 'error': 'No Recent Activity'})
+    list = []
+    count = 0
+    for recent_activity in recent_activity_list:
+        if count < 10:
+            list.append(recent_activity.toJSON())
+            count = count + 1
+    return jsonify({'result': True, 'error': '', 'recent_activity': list})
+	
+
