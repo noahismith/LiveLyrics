@@ -1,7 +1,11 @@
+from pymysql import IntegrityError
+
 from flask import Blueprint, request, jsonify
 from app.spotifyapi import *
 from app import db
+from flask import make_response, redirect, url_for
 from .models import *
+import re
 
 users_blueprint = Blueprint('users', __name__)
 
@@ -46,12 +50,19 @@ def edit():
     if user is None:
         return jsonify({'result': False, 'error': "User does not exist"})
 
-        # TODO: check error where username or email are not unique
-        # TODO: POSSIBLY provide ability to change spotify id
-    user.username = username
-    user.birthdate = birthdate
-    user.email = email
-    user.save()
+    if user.valid_username(username) is False and username != "":
+        return jsonify({'result': False, 'error': "Invalid username"})
+
+    if user.valid_email(email) is False and email != "":
+        return jsonify({'result': False, 'error': "Invalid email"})
+
+    user.username = username if username != "" else user.username
+    user.birthdate = birthdate if birthdate != "" else user.birthdate
+    user.email = email if email != "" else user.email
+    try:
+        user.save()
+    except:
+        return jsonify({'result': False, 'error': "Invalid username"})
 
     return jsonify({'result': True, 'error': ""})
 
@@ -67,22 +78,7 @@ def info():
         return jsonify({'result': False, 'error': "User does not exist"})
 
     return jsonify({'result': True, 'error': "", 'user': user.toJSON()})
-	
-@users_blueprint.route("/search", methods=['POST'])
-def search_users():
-    payload = json.loads(request.data.decode())
-    search_string = payload['search_string']
-	
-    users = db.session.query(User).filter(User.username.like("%{}%".format(search_string))).all()
-	
-    if users is None:
-        return jsonify({'result': False, 'error': "No username found."})
 
-    users_list = []
-    for user in users:
-        users_list.append(user.toJSON())
-		
-    return jsonify({'result': True, 'error': "", 'users': users_list})
 
 @users_blueprint.route("/all", methods=['GET'])
 def getall():
@@ -92,4 +88,5 @@ def getall():
         all_users_list.append(user.toJSON())
 
     return jsonify({'result': True, 'error': "", 'users': all_users_list})
+
 

@@ -1,5 +1,5 @@
 from app import db
-from datetime import datetime
+import re
 
 
 class User(db.Model):
@@ -46,6 +46,21 @@ class User(db.Model):
     @staticmethod
     def get_all():
         return User.query.all()
+
+    @staticmethod
+    def valid_email(email):
+        emailPattern = re.compile("[^@]+@[^@]+\.[^@]+")
+        if emailPattern.match(email) is None:
+            return False
+        return True
+
+    @staticmethod
+    def valid_username(username):
+        usernamePattern = re.compile("^\w{1,255}$")
+        if usernamePattern.match(username) is None:
+            return False
+        return True
+
 
 
 class Lyrics(db.Model):
