@@ -63,3 +63,30 @@ $( '#songsForm').submit(function(event) {
     
   })
 });
+
+$('#sync-link').on('click', function (event) {
+  var jsonob = {"data": 1}
+
+  $.ajax({
+        method: "POST",
+        url: "http://127.0.0.1:5000/currSong",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(jsonob, null, '\t')
+    })
+    .done(function( msg ) {
+      console.log(JSON.stringify(msg));
+
+      localStorage.setItem("spotify_track_id", msg.lyric_page.spotify_track_id)
+      console.log(localStorage)
+
+
+    })
+    .fail(function( jqXHR, textStatus ) {
+      alert( "Request failed: " + textStatus );
+    //});
+
+    
+  });
+
+})
