@@ -11,18 +11,6 @@ $( "#userForm" ).submit(function( event ) {
  
     var jsonob = { "username": user }
     console.log(JSON.stringify(jsonob))
-    /*
-  // Send the data using post
-  var posting = $.post( url, { "username": user } );
- console.log(posting)
-  // Put the results in a div
-  posting.done(function( data ) {
-
-      console.log(data)
-
-    var content = $( data ).find( "#content" );
-    $( "#result" ).empty().append( content );
-    */
 
     console.log(user)
     console.log(urltar)
@@ -39,8 +27,37 @@ $( "#userForm" ).submit(function( event ) {
       //POPULATE PRETTY HTML
       //make it elegant
 
-      var result = $('<div/>', {text: msg.user.username})
+      $('#searchResults').empty()
+      
+      var result = $('<div/>')
+      var resultLink = $('<a/>').attr('href', "/")
+      resultLink.text(msg.user.username)
+      resultLink.click(function (event) {
+        event.preventDefault()
+
+        var usernameSpan = $('<span/>').text("Username: " + msg.user.username)
+        var emailSpan = $('<span/>').text(" E-mail: " + msg.user.email)
+        var birthdateSpan = $('<span/>').text("Birthdate: " + msg.user.birthdate)
+        var contributionsSpan = $('<span/>').text("Number of Contributions: " + msg.user.num_of_contributions)
+
+        $('.user-box').empty()
+        $('.user-box').show()
+
+        $('.user-box')
+        .append(usernameSpan)
+        .append("<br>")
+        .append(emailSpan)
+        .append("<br>")
+        .append(birthdateSpan)
+        .append("<br>")
+        .append(contributionsSpan)
+      })
+
+      result.append(resultLink)
       $('#searchResults').append(result)
+
+      $('#searchResults').append('<br>')
+  
     })
     .fail(function( jqXHR, textStatus ) {
       alert( "Request failed: " + textStatus );

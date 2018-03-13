@@ -28,7 +28,7 @@
           <li><a href="{{ url_for('views.lyrics') }}">Add Lyrics</a></li>
           <li><a href="{{ url_for('views.users') }}">Users</a></li>
           <li><a href="{{ url_for('views.songs') }}">Songs</a></li>
-          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link">Contact Us</a></li>
+          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link" target="_blank">Contact Us</a></li>
         </ul>
       </div>
     </div>
@@ -44,18 +44,20 @@
             </div>
           </form>
 
-          <div id="searchResults"></div>
-        <h1>Top Users</h1>
-        <p> .</p>
+      <div id="searchResults"></div>
       </div>
+
+      <div class="user-box" style="display:none">
+      </div>
+
 
       <div id="editFormID">
         <form action="http://127.0.0.1:5000/users/edit" id="editForm">
           <div class="form_settings">
             <p> Edit your username! Inputs in the following fields will become your new parameters when you submit</p><br>
-            <p style="padding-bottom: 4px"><span>New Username:</span><input type="text" name="username"><br></p>
-            <p style="padding-bottom: 4px"><span>New Birthdate:</span><input type="text" name="birthdate"><br></p>
-            <p style="padding-bottom: 4px"><span>New E-mail:</span><input type="text" name="email"><br></p>
+            <p style="padding-bottom: 4px"><span>New Username:</span><input type="text" name="username" class="newUserTest"><br></p>
+            <p style="padding-bottom: 4px"><span>New Birthdate:</span><input type="date" name="birthdate" class="newBirthdateTest"><br></p>
+            <p style="padding-bottom: 4px"><span>New E-mail:</span><input type="text" name="email" class="emailTest"><br></p>
             <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="userInfo_submitted" value="submit" size="20"/></p>
           </div>
         </form>
