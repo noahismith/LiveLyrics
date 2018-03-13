@@ -49,8 +49,10 @@ def login():
 
     resp = make_response(redirect(url_for("views.index")))
     resp.set_cookie('access_token', access_token)
+    resp.set_cookie('refresh_token', refresh_token)
 
     return resp
+
 
 
 

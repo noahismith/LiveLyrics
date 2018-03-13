@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify
 from app.spotifyapi import *
 from app import db
+from flask import make_response, redirect, url_for
 from .models import *
+import re
 
 users_blueprint = Blueprint('users', __name__)
 
@@ -46,8 +48,12 @@ def edit():
     if user is None:
         return jsonify({'result': False, 'error': "User does not exist"})
 
-        # TODO: check error where username or email are not unique
-        # TODO: POSSIBLY provide ability to change spotify id
+
+    emailPattern = re.compile("[^@]+@[^@]+\.[^@]+")
+    if emailPattern.match(email) is None:
+        return jsonify({'result': False, 'error': "Invalid email"})
+
+
     user.username = username
     user.birthdate = birthdate
     user.email = email
