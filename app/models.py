@@ -135,7 +135,7 @@ class RecentActivity(db.Model):
         rating = {
             "spotify_track_id": self.spotify_track_id,
             "spotify_id": self.spotify_id,
-            "username": db.session.query(Lyrics).filter_by(spotify_track_id=self.spotify_track_id).first().username
+            "username": db.session.query(User).filter_by(spotify_id=self.spotify_id).first().username
         }
         return rating
 
