@@ -8,9 +8,48 @@
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <link rel="stylesheet" type="text/css" href="../static/style.css" title="style" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+ 
+<style>
+div.stars {
+  width: 270px;
+  display: inline-block;
+    right: 100px;
+}
+
+input.star {
+	display: none;
+	right: 100px;
+ }
+
+label.star {
+  float: right;
+  padding: 10px;
+  font-size: 36px;
+  color: #444;
+  transition: all .2s;
+
+}
+
+input.star:checked ~ label.star:before {
+  content: '\2605';
+  color: #FD4;
+  transition: all .25s;
+}
+
+
+input.star-1:checked ~ label.star:before { color: #F62; }
+
+label.star:hover { transform:  scale(1.3); }
+
+label.star:before {
+  content: '\2605';
+}
+</style>
+ 
 </head>
 
-<body>
+<body >
   <div id="main">
     <div id="header">
       <div id="logo">
@@ -43,8 +82,9 @@
             <p style="padding-bottom: 4px"><span>Lyrics:</span><input id="lyrics-input" type="text" name="lyrics" class="lyricsInputTest"><br></p>
             <p style="padding-bottom: 4px"><span>Track id:</span><input id="spotify-track-id-input" type="text" name="spotify_track_id" class="lyricsTrackIDTest"><br></p>
             <p style="padding-bottom: 4px"><span>Timestamps:</span><input id="timestamps-input" type="text" name="timestamps" class="lyricsTimestampsTest"><br></p>
-
+			<p style="padding-bottom: 4px"><span></span><input id="access_token-input" type="hidden" name="access_token" class="lyricsTimestampsTest"><br></p>
             <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="lyrics_submitted" value="submit"/></p>
+		
           </div>
         </form>
 
@@ -56,5 +96,142 @@
  
   </div>
     <script type="text/javascript" src="../static/lyrics.js"></script>
+	
+	<div class="stars" style="margin-left: 450px;>
+	<form class = "rating" method = "POST" >
+    <input class="star " id="star-5" type="radio" name="rating" value="5"/>
+    <label class="star " for="star-5"></label>
+    <input class="star " id="star-4" type="radio" name="rating" value="4"/>
+    <label class="star " for="star-4" ></label>
+    <input class="star " id="star-3" type="radio" name="rating" value="3"/>
+    <label class="star " for="star-3"></label>
+    <input class="star " id="star-2" type="radio" name="rating" value="2"/>
+    <label class="star " for="star-2""></label>
+    <input class="star " id="star-1" type="radio" name="rating" value="1"/>
+    <label class="star " for="star-1" ></label>
+	
+	
+  </form>
+  
+	<button type="button" style="margin-left: 100px" onclick="sendRating()">Submit Rating</button>
+ 
+</div>
+<script>
+ 
+        function loadRatings() {
+			var trackid = document.getElementsByName('spotify_track_id')[0].value;
+			var http = new XMLHttpRequest();
+			console.log(trackid);
+			var data = {
+				"lyric_id": trackid
+			}
+			console.log(data);
+			http.onreadystatechange = function() {
+				if (http.readyState == XMLHttpRequest.DONE) {
+					var result = JSON.parse(http.responseText);
+					console.log(result);
+					if (result.result == false) {
+						console.log("No ratings found");
+					}
+					else {
+						var rating = result.avgRating;
+						console.log("Average rating of " + rating + " found");
+						if (rating > 0) {
+							document.getElementsByName('rating')[4].checked = true;
+						}
+						if (rating > 1) {
+							document.getElementsByName('rating')[3].checked = true;
+						}
+						if (rating> 2) {
+							document.getElementsByName('rating')[2].checked = true;
+						}
+						if (rating> 3) {
+							document.getElementsByName('rating')[1].checked = true;
+						}
+						if (rating > 4) {
+							document.getElementsByName('rating')[0].checked = true;
+						}						
+					}
+				}
+			}
+			http.open("POST", 'http://127.0.0.1:5000/lyricrating/avgRating', true);
+			http.setRequestHeader("Content-type", "application/json");
+			console.log(http);
+			http.send(JSON.stringify(data, null, '\t') );
+		
+		}
+			
+
+		setTimeout(function() { loadRatings(); }, 6000);	
+	</script>
+
+	<script>
+	
+		function sendRating() {	
+			var http = new XMLHttpRequest();
+			http.onreadystatechange = function() {
+				if (http.readyState == XMLHttpRequest.DONE) {
+					var result = JSON.parse(http.responseText);
+					console.log(result);
+					var userid = result.User.username;
+					console.log(userid);	
+					var trackid = document.getElementsByName('spotify_track_id')[0].value;	
+					console.log(trackid);
+						
+					for (i = 0; i < document.getElementsByName('rating').length; i++) {
+
+						if(document.getElementsByName('rating')[i].checked == true) {
+							
+							var ratingValue = document.getElementsByName('rating')[i].value;
+														
+							var data2 = {
+								"rating": ratingValue,
+								"lyric_id": trackid,
+								"rater_id": userid
+							}
+							console.log(data2);
+							var http2 = new XMLHttpRequest();
+							
+							http2.onreadystatechange = function() {
+								if (http2.readyState == XMLHttpRequest.DONE) {
+									var result = JSON.parse(http2.responseText);
+									console.log(result);
+								}
+							}
+							
+							
+							http2.open("POST", 'http://127.0.0.1:5000/lyricrating/rate', true);
+							http2.setRequestHeader("Content-type", "application/json");
+							console.log(http2);
+							http2.send(JSON.stringify(data2, null, '\t') );	
+							
+								
+						
+						} 
+						
+						
+					}	
+					return;
+				}
+			}
+			http.open("POST", 'http://127.0.0.1:5000/users/getUser', true);
+			http.setRequestHeader("Content-type", "application/json");
+			var token = document.getElementsByName('access_token')[0].value;
+			console.log(token);
+			var data = {
+				"access_token" : token
+			}
+			console.log(data);
+			http.send(JSON.stringify(data, null, '\t') );
+
+	} 
+
+</script>
+
+<script>
+
+</script>
+
+
 </body>
 </html>

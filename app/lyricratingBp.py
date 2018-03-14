@@ -108,3 +108,27 @@ def getAllRatings():
     for rating in lyricRatings:
         ratings_list.append(rating.toJSON())
     return jsonify({'result': True, 'error': "", 'ratings': ratings_list})
+	
+@lyricrating_blueprint.route("/avgRating", methods=['POST'])
+def avgRating():
+    payload = json.loads(request.data.decode())
+    lyrics_id = payload['lyric_id']
+	
+    lyric_sheet = db.session.query(Lyrics).filter_by(spotify_track_id=lyrics_id).first()
+	
+    if lyric_sheet is None:
+        return jsonify({'result': False, 'error': "Lyric sheet not found in the database."})
+	
+    lyricRatings = db.session.query(LyricRating).filter(LyricRating.lyrics_id == lyric_sheet.id)
+	
+    if lyricRatings.first() is None:
+	    return jsonify({'result': False, 'error': "The requested lyrics page has no ratings."})
+		
+    totalRating = 0
+    numRatings = 0
+    for rating in lyricRatings:
+        totalRating += rating.rating
+        numRatings += 1
+
+    avgRating = totalRating / numRatings
+    return jsonify({'result': True, 'error': "", 'avgRating': avgRating})

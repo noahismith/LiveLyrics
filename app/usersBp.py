@@ -89,4 +89,17 @@ def getall():
 
     return jsonify({'result': True, 'error': "", 'users': all_users_list})
 
-
+@users_blueprint.route("/getUser", methods=['POST'])
+def getUser():
+	print("hello")
+	access_token = request.cookies.get('access_token')
+	spotify_info = get_profile_me(access_token)
+	print(access_token)
+	if "error" in spotify_info:
+		return jsonify({'result': False, 'error': spotify_info['error']})
+	spotify_id = spotify_info['id']
+	user = db.session.query(User).filter_by(spotify_id=spotify_id).first()
+	if user is None:
+		return jsonify({'result': False, 'error': "User does not exist"})
+	   
+	return jsonify({'result': True, 'error': "", 'User': user.toJSON()})
