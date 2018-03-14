@@ -21,12 +21,14 @@ describe('While on the Users page, checks to make sure all inputs and buttons wo
 
     })
 
+    /*
     it('Input text check for "New birthdate"', function () {
         cy.visit('127.0.0.1:5000/users')
 
-        cy.get('.newBirthdateTest').type('01/01/1995')
+        cy.get('.newBirthdateTest').type('01011995')
 
     })
+    */
 
     it('Input text check for "New E-mail"', function () {
         cy.visit('127.0.0.1:5000/users')
@@ -64,21 +66,7 @@ describe('While on the Users page, checks to make sure all inputs and buttons wo
   
     })
 
-    it('Search Test 3: Search for multiple users', function () {
-   
-        cy.visit('http://127.0.0.1:5000')
-        cy.get('a').contains('Login').click()
-
-        cy.visit('127.0.0.1:5000/users')
-        cy.get('input').first().type('LiveLyrics')
-        cy.get('form').first().submit()
-
-        cy.get('div').contains('LiveLyrics')
-        cy.get('div').contains('LiveLyricsTest')
- 
-    })
-
-    it('Search Test 4: Search for non-existent user', function () {
+    it('Search Test 3: Search for non-existent user', function () {
  
         cy.visit('http://127.0.0.1:5000')
         cy.get('a').contains('Login').click()
@@ -91,7 +79,7 @@ describe('While on the Users page, checks to make sure all inputs and buttons wo
   
     })
 
-    it('Search Test 5: Search for user and click on their link for user information', function () {
+    it('Search Test 4: Search for user and click on their link for user information', function () {
 
         cy.visit('http://127.0.0.1:5000')
         cy.get('a').contains('Login').click()
@@ -108,6 +96,22 @@ describe('While on the Users page, checks to make sure all inputs and buttons wo
  
     })
     
+    /* // Does not apply anymore (as of: 03/13/2018)
+    it('Search Test 3: Search for multiple users', function () {
+   
+        cy.visit('http://127.0.0.1:5000')
+        cy.get('a').contains('Login').click()
+
+        cy.visit('127.0.0.1:5000/users')
+        cy.get('input').first().type('LiveLyrics')
+        cy.get('form').first().submit()
+
+        cy.get('div').contains('LiveLyrics')
+        cy.get('div').contains('LiveLyricsTest')
+ 
+    })
+    */
+
     it('Updating User Test: Update user\'s birthdate and email', function () {
   
         cy.visit('http://127.0.0.1:5000')
