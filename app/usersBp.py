@@ -95,10 +95,8 @@ def getall():
 
 @users_blueprint.route("/getUser", methods=['POST'])
 def getUser():
-	print("hello")
 	access_token = request.cookies.get('access_token')
 	spotify_info = get_profile_me(access_token)
-	print(access_token)
 	if "error" in spotify_info:
 		return jsonify({'result': False, 'error': spotify_info['error']})
 	spotify_id = spotify_info['id']
