@@ -28,11 +28,18 @@ pip install flask flask-sqlalchemy flask-migrate pymysql flask-script
 
 ## Running the tests
 
-    TODO
+    Backend Testing
+    1. Login using the web application and get the 'access_token' cookie. 
+    2. Place the 'access_token' in the variable spotify_access_token at the top of each test script.
+    3. Run 'python user_tests.py
+    4. Run 'python spotify_tests.py
+    5. Run 'python rating_tests.py
+    6. Run 'python lyrics_tests.py
+    
+    Frontend Testing
 
 ## Deployment
-
-    TODO
+    Follow the same steps in 'Setting up Dev Environment'
 
 
 
