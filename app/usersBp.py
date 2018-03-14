@@ -123,3 +123,22 @@ def getUser():
 	   
 	return jsonify({'result': True, 'error': "", 'User': user.toJSON()})
 
+
+
+
+
+@ users_blueprint.route("/search", methods=['POST'])
+def search_users():
+    payload = json.loads(request.data.decode())
+    search_string = payload['search_string']
+    users = db.session.query(User).filter(User.username.like("%{}%".format(search_string))).all()
+    if users is None:
+        return jsonify({'result': False, 'error': "No username found."})
+
+    users_list = []
+    for user in users:
+          users_list.append(user.toJSON())
+
+    return jsonify({'result': True, 'error': "", 'users': users_list})
+
+
