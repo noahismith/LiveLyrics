@@ -16,7 +16,7 @@ if (position != -1){
 console.log(jsonob)
     $.ajax({
         method: "POST",
-        url: "{{ url_for('login')}}",
+        url: "http://127.0.0.1:5000/login",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')

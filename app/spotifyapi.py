@@ -17,7 +17,7 @@ SPOTIFY_API_URL = "{}/{}".format(SPOTIFY_API_BASE_URL, API_VERSION)
 # Authorization parameters
 # TODO: assign CLIENT_SIDE_URL based on config file
 CLIENT_SIDE_URL = "http://127.0.0.1:5000"
-REDIRECT_URI = CLIENT_SIDE_URL + "/"
+REDIRECT_URI = CLIENT_SIDE_URL + "/login"
 SCOPE = "streaming user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-email user-read-birthdate"
 STATE = ""
 SHOW_DIALOG = "false"
@@ -45,7 +45,7 @@ def get_tokens(auth_token):
 
 
 def get_profile_me(access_token):
-    authorization_header = {"Authorization":"Bearer {}".format(access_token)}
+    authorization_header = {"Authorization": "Bearer {}".format(access_token)}
     api_endpoint = "{}/me".format(SPOTIFY_API_URL)
     try:
         resp = requests.get(api_endpoint, headers=authorization_header)
@@ -62,15 +62,16 @@ def search_track(access_token, search_string):
     except requests.exeptions.RequestException as e:
         return {"error": e}
     return json.loads(resp.text)
-	
+
+
 def search_artist(access_token, search_string):
-	authorization_header = {"Authorization": "Bearer {}".format(access_token)}
-	api_endpoint = "{}/search?q={}&type=artist&limit=10".format(SPOTIFY_API_URL, search_string.replace(" ", "+"))
-	try:
-		resp = requests.get(api_endpoint, headers=authorization_header)
-	except requests.exeptions.RequestException as e:
-		return {"error": e}
-	return json.loads(resp.text)
+    authorization_header = {"Authorization": "Bearer {}".format(access_token)}
+    api_endpoint = "{}/search?q={}&type=artist&limit=10".format(SPOTIFY_API_URL, search_string.replace(" ", "+"))
+    try:
+        resp = requests.get(api_endpoint, headers=authorization_header)
+    except requests.exeptions.RequestException as e:
+        return {"error": e}
+    return json.loads(resp.text)
 
 
 def get_track(access_token, track_id):
@@ -79,12 +80,17 @@ def get_track(access_token, track_id):
     track_object = requests.get(api_endpoint, headers=authorization_header)
     return json.loads(track_object.text)
 
-def get_artits_by_track(track):
+def get_artists_by_track(track):
     artists = track['artists']
     artists_list = []
 
     for artist in artists:
         artists_list.append(artist['name'])
 
-    return ". ".join(artists_list)
+    return ", ".join(artists_list)
 
+
+def get_auth_url():
+    url_args = "&".join(["{}={}".format(key, urllib.quote(val)) for key, val in auth_query_parameters.iteritems()])
+    auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
+    return auth_url

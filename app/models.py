@@ -1,5 +1,5 @@
 from app import db
-from datetime import datetime
+import re
 
 
 class User(db.Model):
@@ -39,13 +39,29 @@ class User(db.Model):
             "spotify_id": self.spotify_id,
             "birthdate": self.birthdate,
             "email": self.email,
-            "num_of_contributions": self.num_of_contributions
+            "num_of_contributions": self.num_of_contributions,
+            "spotify_refresh_token": self.spotify_refresh_token
         }
         return user
 
     @staticmethod
     def get_all():
         return User.query.all()
+
+    @staticmethod
+    def valid_email(email):
+        emailPattern = re.compile("[^@]+@[^@]+\.[^@]+")
+        if emailPattern.match(email) is None:
+            return False
+        return True
+
+    @staticmethod
+    def valid_username(username):
+        usernamePattern = re.compile("^\w{1,255}$")
+        if usernamePattern.match(username) is None:
+            return False
+        return True
+
 
 
 class Lyrics(db.Model):
@@ -133,3 +149,37 @@ class LyricRating(db.Model):
     @staticmethod
     def get_all():
         return LyricRating.query.all()
+		
+class RecentActivity(db.Model):
+    __tablename__ = 'RecentActivity'
+	
+    id = db.Column(db.Integer, primary_key=True)
+    spotify_track_id = db.Column(db.String(255), unique=False, nullable=False)
+    spotify_id = db.Column(db.String(255), unique=False, nullable=False)
+	
+    def __init__(self, spotify_track_id, spotify_id):
+        self.spotify_track_id = spotify_track_id
+        self.spotify_id = spotify_id
+	
+    def __repr__(self):
+        return 'id: {}, spotify_track_id: {}, spotify_id: {}' \
+            .format(self.id, self.spotify_track_id, self.spotify_id)
+			
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def toJSON(self):
+        rating = {
+            "spotify_track_id": self.spotify_track_id,
+            "spotify_id": self.spotify_id
+        }
+        return rating
+
+    @staticmethod
+    def get_all():
+        return RecentActivity.query.all()

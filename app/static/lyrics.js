@@ -1,10 +1,39 @@
 
+var jsonob;
+  if (localStorage.getItem("spotify_track_id")) {
+    jsonob = {
+      "access_token": localStorage.getItem("access_token"),
+      "spotify_track_id": localStorage.getItem("spotify_track_id")
+    }
 
-  
-//hardcoded for now
-  var jsonob = {
-    "access_token": localStorage.getItem("access_token"),
-    "spotify_track_id": "6TwfdLbaxTKzQi3AgsZNzx"
+  $.ajax({
+        type: "POST",
+        url: "http://127.0.0.1:5000/lyrics/lyrics_page",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(jsonob, null, '\t')
+      })
+      .done(function( msg ) {
+        console.log(JSON.stringify(msg));
+        //TODO print into html
+        $('#song-title-input').val(msg.lyric_page.songtitle)
+        $('#lyrics-input').val(msg.lyric_page.lyrics)
+        $('#spotify-track-id-input').val(msg.lyric_page.spotify_track_id)
+        $('#timestamps-input').val(msg.lyric_page.timestamps)
+        
+      })
+      .fail(function( jqXHR, textStatus ) {
+        alert( "Request failed: " + textStatus );
+      //});
+
+      
+    })
+
+  } else {
+    jsonob = {
+      "access_token": localStorage.getItem("access_token"),
+      "spotify_track_id": null
+    }
   }
 
   console.log(jsonob)
@@ -59,6 +88,11 @@ $( '#songEditForm').submit(function(event) {
     .done(function( msg ) {
       console.log(JSON.stringify(msg));
 
+      if (msg.result) {
+        alert("Success!")
+      } else {
+        alert("Error! " + msg.error)
+      }
       
     })
     .fail(function( jqXHR, textStatus ) {
