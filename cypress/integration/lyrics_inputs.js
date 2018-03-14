@@ -1,4 +1,4 @@
-describe('While on the Lyrics page, checks to make sure all inputs and buttons work INDIVIDUALLY', function () {
+describe('While on the Lyrics page, checks to make sure all inputs and buttons work', function () {
 
     it('Input text check for "new song name"', function () {
         cy.visit('http://127.0.0.1:5000/lyrics')
@@ -216,12 +216,12 @@ describe('While on the Lyrics page, checks to make sure all inputs and buttons w
         cy.visit('http://127.0.0.1:5000/songs')
 
         cy.get('input').first().clear()
-        cy.get('input').first().type('Hello')
+        cy.get('input').first().clear().type('Hello')
         cy.get('form').submit()
         cy.get('div.indiv-song').contains('0ENSn4fwAbCGeFGVUbXEU3').get('a').contains('Hello').click()
 
         cy.get('input').first().clear()
-        cy.get('input').first().type('NewHello')
+        cy.get('input').first().clear().type('NewHello')
         cy.get('form').submit()
 
         cy.visit('http://127.0.0.1:5000/songs')
@@ -233,13 +233,13 @@ describe('While on the Lyrics page, checks to make sure all inputs and buttons w
         cy.get('input#song-title-input').should('have.value', 'NewHello')
 
         cy.get('input').first().clear()
-        cy.get('input').first().type('Hello')
+        cy.get('input').first().clear().type('Hello')
         cy.get('form').submit()
 
         cy.visit('http://127.0.0.1:5000/songs')
 
         cy.get('input').first().clear()
-        cy.get('input').first().type('Hello')
+        cy.get('input').first().clear().type('Hello')
         cy.get('form').submit()
         cy.get('div.indiv-song').contains('0ENSn4fwAbCGeFGVUbXEU3').get('a').contains('Hello').click()
 
