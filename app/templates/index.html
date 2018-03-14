@@ -28,7 +28,9 @@
           <li><a href="{{ url_for('views.songs') }}">Songs</a></li>
           <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link" target="_blank">Contact Us</a></li>
             <li><a href="{{ url_for('views.activity')}}">Recent Activity</a></li>
-            <li><a id = "loginMenu" href="{{ auth_url}}" onclick="return removeCookies();">Login</a></li>
+            <li><a id = "loginMenu" href="{{ auth_url}}">Login</a></li>
+             <li><a id = "logoutMenu" href="" onclick="return removeCookies();">Logout</a></li>
+            <li>
         </ul>
       </div>
     </div>
@@ -64,11 +66,6 @@
                 .fail(function( jqXHR, textStatus ) {
                     alert( "Request failed: " + textStatus );
                 })
-
-                document.getElementById('loginMenu').innerHTML = "Logout";
-                document.getElementById('loginMenu').href = ""
-              } else {
-                document.getElementById('loginMenu').innerHTML = "Login";
               }
 
           </script>
