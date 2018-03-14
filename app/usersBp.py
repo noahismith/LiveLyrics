@@ -58,6 +58,8 @@ def edit():
 
     all_users = db.session.query(User).all()
     for user in all_users:
+        if email == user.email:
+            return jsonify({'result': False, 'error': "Invalid email"})
         if username == user.username:
             return jsonify({'result': False, 'error': "Invalid username"})
 

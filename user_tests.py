@@ -7,7 +7,7 @@ import app
 from app.models import User
 from app import db
 
-spotify_access_token = "BQBk_tidG_NuEbRrB2YqF2ayiMeAbQ3xDbz6nZv6I389aOIfoSvd7vW-tyrqj8W8SH3ZBX5gouziJMfo_SxJ1La9a0ZOEMmkuZXCH_7x0zt92b7UVUTPJS08AGVybz4IMi9Tjsgr7cFOIoLvHFiwyvs7fqXq4hphuYySyEqAOWiT7lmFwVk"
+spotify_access_token = "BQAMywKUGbLNkXldeWYydTUcV2Fwb3ZSieDsnvF7ugcf8pfFqit7OEGzRqlid0udSatMmGfHUuIfQxzJsnHF-173v6bkr8O1__P2WWHxFdkoqEP4HJRutnebdSsdh_1VrgsuPIbAle0ylCpsLrc6g3lb44JnFyybxRq4_u_yZ4-WJwk6Khs"
 
 test_user = { "username": "",
               "spotify_id": "",
@@ -211,7 +211,7 @@ class TestUsers(unittest.TestCase):
             temp_user.save()
         return
 
-    def test_user_edit_duplicate(self):
+    def test_user_edit_duplicate_username(self):
         with self.app.app_context():
             temp_user = db.session.query(User).all()
             temp_user = temp_user[0]
@@ -226,6 +226,24 @@ class TestUsers(unittest.TestCase):
             result = resp['result']
 
             assert error == "Invalid username"
+            assert result is False
+        return
+
+    def test_user_edit_duplicate_email(self):
+        with self.app.app_context():
+            temp_user = db.session.query(User).all()
+            temp_user = temp_user[0]
+
+            response = self.client.post('/users/edit', data=json.dumps(dict(username="",
+                                                                            birthdate="",
+                                                                            email=temp_user.email)),
+                                        content_type='application/json')
+
+            resp = json.loads(response.data.decode())
+            error = resp['error']
+            result = resp['result']
+
+            assert error == "Invalid email"
             assert result is False
         return
 
