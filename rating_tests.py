@@ -8,9 +8,9 @@ from app import db
 
 test_rating = { "songtitle": "Test",
               "rater_id": "wojtr",
-              "lyrics_id": "00pLvXMdSXJG8HLliuWTWt",
+              "lyrics_id": "4YwbSZaYeYja8Umyt222Qf",
               "rating": "1",
-              "spotify_access_token": "BQABD8DYF_yV9w7noz53rgMB0K7q8Fd0x5bVHEwPqHttnVujRbRfEXWYbiDFfqbsJdc-3RNOBd5ToujyFRj5WRexe3KagUfjRyDm09U21k2tqO72WKWP9w1uqo-sd0sjWKuR9Sxb4Vk265ff7JrJ2x6KzGQy"
+              "spotify_access_token": "BQDZKDDDV88rwz600LmpHvYXUI1QjOkTUPDOP7Rvn9dOEnkonBqAUTazy2SFPcNbzVcxv7NSPnyRBAcISeiLST1KSOfalaAu8EeI5TELzMwRgsBeg8spohPhj_SPO0YRnjvJ3_ls6MNKeZtIaFi6rLuaLost"
 }
 
 class TestRatings(unittest.TestCase):
@@ -40,6 +40,40 @@ class TestRatings(unittest.TestCase):
             assert result is True
 
         return
+		
+    def test_rate_bad_rater(self):
+        with self.app.app_context():
+		
+            response = self.client.post('/lyricrating/rate', data=json.dumps(dict(rater_id="Bad User ID",
+                                                                             lyric_id=test_rating["lyrics_id"],
+                                                                             rating=test_rating["rating"])),
+                                          content_type='application/json')
+
+            resp = json.loads(response.data.decode())
+            error = resp['error']
+            result = resp['result']
+
+            assert error is not ""
+            assert result is False
+
+        return
+		
+    def test_rate_bad_lyric_page(self):
+        with self.app.app_context():
+		
+            response = self.client.post('/lyricrating/rate', data=json.dumps(dict(rater_id=test_rating["rater_id"],
+                                                                             lyric_id="Bad Lyric Page ID",
+                                                                             rating=test_rating["rating"])),
+                                          content_type='application/json')
+
+            resp = json.loads(response.data.decode())
+            error = resp['error']
+            result = resp['result']
+
+            assert error is not ""
+            assert result is False
+
+        return
 
     def test_rating(self):
         with self.app.app_context():
@@ -56,6 +90,40 @@ class TestRatings(unittest.TestCase):
             assert error == ""
             assert result is True
             assert "rating" in resp
+        return
+		
+    def test_rating_bad_rater(self):
+        with self.app.app_context():
+		
+            response = self.client.post('/lyricrating/getRating', data=json.dumps(dict(rater_id="Bad User ID",
+                                                                             lyric_id=test_rating["lyrics_id"],
+                                                                             rating=test_rating["rating"])),
+                                          content_type='application/json')
+
+            resp = json.loads(response.data.decode())
+            error = resp['error']
+            result = resp['result']
+
+            assert error is not ""
+            assert result is False
+
+        return
+		
+    def test_rating_bad_lyric_page(self):
+        with self.app.app_context():
+		
+            response = self.client.post('/lyricrating/getRating', data=json.dumps(dict(rater_id=test_rating["rater_id"],
+                                                                             lyric_id="Bad Lyric Page ID",
+                                                                             rating=test_rating["rating"])),
+                                          content_type='application/json')
+
+            resp = json.loads(response.data.decode())
+            error = resp['error']
+            result = resp['result']
+
+            assert error is not ""
+            assert result is False
+
         return
 		
     def test_ratings(self):
@@ -76,10 +144,27 @@ class TestRatings(unittest.TestCase):
 
         return
 		
+    def test_ratings_bad_lyric_page(self):
+        with self.app.app_context():
+		
+            response = self.client.post('/lyricrating/getRatings', data=json.dumps(dict(rater_id=test_rating["rater_id"],
+                                                                             lyric_id="Bad Lyric Page ID",
+                                                                             rating=test_rating["rating"])),
+                                          content_type='application/json')
+
+            resp = json.loads(response.data.decode())
+            error = resp['error']
+            result = resp['result']
+
+            assert error is not ""
+            assert result is False
+
+        return
+		
     def test_user_ratings(self):
         with self.app.app_context():
 
-            response = self.client.post('/lyricrating/getRatings', data=json.dumps(dict(rater_id=test_rating["rater_id"],
+            response = self.client.post('/lyricrating/getUserRatings', data=json.dumps(dict(rater_id=test_rating["rater_id"],
                                                                              lyric_id=test_rating["lyrics_id"],
                                                                              rating=test_rating["rating"])),
                                           content_type='application/json')
@@ -91,6 +176,23 @@ class TestRatings(unittest.TestCase):
             assert error == ""
             assert result is True
             assert "ratings" in resp
+
+        return
+		
+    def test_user_ratings_bad_rater(self):
+        with self.app.app_context():
+		
+            response = self.client.post('/lyricrating/getUserRatings', data=json.dumps(dict(rater_id="Bad User ID",
+                                                                             lyric_id=test_rating["lyrics_id"],
+                                                                             rating=test_rating["rating"])),
+                                          content_type='application/json')
+
+            resp = json.loads(response.data.decode())
+            error = resp['error']
+            result = resp['result']
+
+            assert error is not ""
+            assert result is False
 
         return
 		
