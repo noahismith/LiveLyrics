@@ -3,14 +3,14 @@ import json
 from flask import make_response, redirect
 
 import app
-from app.models import User
+from app.models import User, LyricRating
 from app import db
 
 test_rating = { "songtitle": "Test",
-              "rater_id": "lnxd0zmjpsimn9mivdad7o9sh",
-              "lyrics_id": "lnxd0zmjpsimn9mivdad7o9sh",
+              "rater_id": "wojtr",
+              "lyrics_id": "00pLvXMdSXJG8HLliuWTWt",
               "rating": "1",
-              "spotify_access_token": "BQCpoX9BeHL8QS5i73KAhVtCdJGljgcqQ34hJJieDsGoIsv7nPJRrzNe0fHw5DmeZj_I9IIwQcb-GKIcPw5AwiKks7AImHVKTB1ZWJMHiLD37LGsZ3MzKliVjCEh_nPH_qFTScMCgDg1Zi88teglZ5wD63lDPTIJSSiQVND_ekotutQq1fs"
+              "spotify_access_token": "BQABD8DYF_yV9w7noz53rgMB0K7q8Fd0x5bVHEwPqHttnVujRbRfEXWYbiDFfqbsJdc-3RNOBd5ToujyFRj5WRexe3KagUfjRyDm09U21k2tqO72WKWP9w1uqo-sd0sjWKuR9Sxb4Vk265ff7JrJ2x6KzGQy"
 }
 
 class TestRatings(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestRatings(unittest.TestCase):
         self.app = app.create_app("development")
         self.client = self.app.test_client(use_cookies=True)
 
-        self.client.set_cookie("http://127.0.0.1:5000/", "access_token", test_lyric_page["spotify_access_token"])
+        self.client.set_cookie("http://127.0.0.1:5000/", "access_token", test_rating["spotify_access_token"])
 
         with self.app.app_context():
             db.create_all()
@@ -28,8 +28,8 @@ class TestRatings(unittest.TestCase):
         with self.app.app_context():
 		
             response = self.client.post('/lyricrating/rate', data=json.dumps(dict(rater_id=test_rating["rater_id"],
-                                                                             lyrics_id=test_rating["lyrics_id"],
-                                                                             rating=test_rating["rating"]),
+                                                                             lyric_id=test_rating["lyrics_id"],
+                                                                             rating=test_rating["rating"])),
                                           content_type='application/json')
 
             resp = json.loads(response.data.decode())
@@ -45,8 +45,8 @@ class TestRatings(unittest.TestCase):
         with self.app.app_context():
 
             response = self.client.post('/lyricrating/getRating', data=json.dumps(dict(rater_id=test_rating["rater_id"],
-                                                                             lyrics_id=test_rating["lyrics_id"],
-                                                                             rating=test_rating["rating"]),
+                                                                             lyric_id=test_rating["lyrics_id"],
+                                                                             rating=test_rating["rating"])),
                                           content_type='application/json')
 
             resp = json.loads(response.data.decode())
@@ -55,15 +55,15 @@ class TestRatings(unittest.TestCase):
 
             assert error == ""
             assert result is True
-			assert "rating" in resp
+            assert "rating" in resp
         return
 		
-	def test_ratings(self):
-	     with self.app.app_context():
+    def test_ratings(self):
+        with self.app.app_context():
 
             response = self.client.post('/lyricrating/getRatings', data=json.dumps(dict(rater_id=test_rating["rater_id"],
-                                                                             lyrics_id=test_rating["lyrics_id"],
-                                                                             rating=test_rating["rating"]),
+                                                                             lyric_id=test_rating["lyrics_id"],
+                                                                             rating=test_rating["rating"])),
                                           content_type='application/json')
 
             resp = json.loads(response.data.decode())
@@ -72,16 +72,16 @@ class TestRatings(unittest.TestCase):
 
             assert error == ""
             assert result is True
-			assert "ratings" in resp
+            assert "ratings" in resp
 
         return
 		
     def test_user_ratings(self):
-	     with self.app.app_context():
+        with self.app.app_context():
 
             response = self.client.post('/lyricrating/getRatings', data=json.dumps(dict(rater_id=test_rating["rater_id"],
-                                                                             lyrics_id=test_rating["lyrics_id"],
-                                                                             rating=test_rating["rating"]),
+                                                                             lyric_id=test_rating["lyrics_id"],
+                                                                             rating=test_rating["rating"])),
                                           content_type='application/json')
 
             resp = json.loads(response.data.decode())
@@ -90,7 +90,7 @@ class TestRatings(unittest.TestCase):
 
             assert error == ""
             assert result is True
-			assert "ratings" in resp
+            assert "ratings" in resp
 
         return
 		

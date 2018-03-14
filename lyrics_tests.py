@@ -7,10 +7,10 @@ from app.models import User, Lyrics
 from app import db
 
 test_lyric_page = { "songtitle": "Test",
-              "spotify_track_id": "lnxd0zmjpsimn9mivdad7o9sh",
+              "spotify_track_id": "00pLvXMdSXJG8HLliuWTWt",
               "lyrics": "Test",
               "timestamps": "Test",
-              "spotify_access_token": "BQCpoX9BeHL8QS5i73KAhVtCdJGljgcqQ34hJJieDsGoIsv7nPJRrzNe0fHw5DmeZj_I9IIwQcb-GKIcPw5AwiKks7AImHVKTB1ZWJMHiLD37LGsZ3MzKliVjCEh_nPH_qFTScMCgDg1Zi88teglZ5wD63lDPTIJSSiQVND_ekotutQq1fs"
+              "spotify_access_token": "BQABD8DYF_yV9w7noz53rgMB0K7q8Fd0x5bVHEwPqHttnVujRbRfEXWYbiDFfqbsJdc-3RNOBd5ToujyFRj5WRexe3KagUfjRyDm09U21k2tqO72WKWP9w1uqo-sd0sjWKuR9Sxb4Vk265ff7JrJ2x6KzGQy"
 }
 
 class TestLyrics(unittest.TestCase):
@@ -112,7 +112,7 @@ class TestLyrics(unittest.TestCase):
     def test_lyrics_dont_exist(self):
         with self.app.app_context():
 
-            temp_lyrics = db.session.query(Lyrics).filter_by(spotify_track_id=test_lyric_page["spotify_track_id"]).first()
+            temp_lyrics = db.session.query(Lyrics).filter_by(spotify_track_id="Test").first()
             assert temp_lyrics is None
 
             response = self.client.post('/lyrics/lyrics_page', data=json.dumps(dict(songtitle=test_lyric_page["songtitle"],
@@ -124,12 +124,12 @@ class TestLyrics(unittest.TestCase):
             resp = json.loads(response.data.decode())
             error = resp['error']
             result = resp['result']
+
+            assert error is ""
+            assert result is True
 			
-			assert error is not ""
-			assert result is False
-			
-	def test_lyrics_overwiten(self):
-	    with self.app.app_context():
+    def test_lyrics_overwiten(self):
+        with self.app.app_context():
 
             temp_lyrics = db.session.query(Lyrics).filter_by(spotify_track_id=test_lyric_page["spotify_track_id"]).first()
             assert temp_lyrics is not None
@@ -138,14 +138,13 @@ class TestLyrics(unittest.TestCase):
 
             response = self.client.post('/lyrics/edit', data=json.dumps(dict(songtitle=test_lyric_page["songtitle"],
                                                                              spotify_track_id=test_lyric_page["spotify_track_id"],
-                                                                             lyrics=test_lyric_page["lyrics"],
+                                                                             lyrics="New Lyrics",
 																			 timestamps=test_lyric_page["timestamps"])),
                                           content_type='application/json')
 
             resp = json.loads(response.data.decode())
             error = resp['error']
             result = resp['result']
-
             assert error == ""
             assert result is True
 
@@ -153,7 +152,7 @@ class TestLyrics(unittest.TestCase):
 
             assert temp_lyrics.songtitle == test_lyric_page["songtitle"]
             assert temp_lyrics.spotify_track_id == test_lyric_page["spotify_track_id"]
-            assert temp_lyrics.lyrics == test_lyric_page["lyrics"]
+            assert temp_lyrics.lyrics == "New Lyrics"
             assert temp_lyrics.timestamps == test_lyric_page["timestamps"]
         return
 
