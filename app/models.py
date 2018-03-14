@@ -106,6 +106,48 @@ class Lyrics(db.Model):
     @staticmethod
     def get_all():
         return Lyrics.query.all()
+		
+class LyricRating(db.Model):
+    __tablename__ = 'LyricRating'
+
+    id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.Integer, nullable=False)
+
+    lyrics_id = db.Column(db.Integer, db.ForeignKey('Lyrics.id', ondelete='CASCADE'), nullable=False)
+    lyrics_id_rel = db.relationship('Lyrics', backref=db.backref('lyrics_id', passive_deletes=True),
+                                    foreign_keys=lyrics_id)
+
+    rater_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE'), nullable=False)
+    rater_id_rel = db.relationship('User', backref=db.backref('rater_id', passive_deletes=True), foreign_keys=rater_id)
+
+    def __init__(self, rating, lyrics_id, rater_id):
+        self.rating = rating
+        self.lyrics_id = lyrics_id
+        self.rater_id = rater_id
+
+    def __repr__(self):
+        return 'id: {}, rating: {}, lyrics_id: {}, rater_id: {}' \
+            .format(self.id, self.rating, self.lyrics_id, self.rater_id)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def toJSON(self):
+        rating = {
+            "rating": self.rating,
+            "lyrics_id": self.lyrics_id,
+            "rater_id": self.rater_id
+        }
+        return rating
+
+    @staticmethod
+    def get_all():
+        return LyricRating.query.all()
 
 
 class RecentActivity(db.Model):
