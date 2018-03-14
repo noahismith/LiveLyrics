@@ -1,17 +1,20 @@
 import unittest
 import json
 from flask import make_response, redirect
+import datetime
 
 import app
 from app.models import User
 from app import db
 
-test_user = { "username": "TestUser",
-              "spotify_id": "lnxd0zmjpsimn9mivdad7o9sh",
-              "birthdate": "1990",
-              "email": "steamaccount2012@gmail.com",
-              "spotify_access_token": "BQCpoX9BeHL8QS5i73KAhVtCdJGljgcqQ34hJJieDsGoIsv7nPJRrzNe0fHw5DmeZj_I9IIwQcb-GKIcPw5AwiKks7AImHVKTB1ZWJMHiLD37LGsZ3MzKliVjCEh_nPH_qFTScMCgDg1Zi88teglZ5wD63lDPTIJSSiQVND_ekotutQq1fs",
-              "spotify_refresh_token": "AQAhsXsAt99ehZp_4NXeijsUHWug8aotcqN7_cN-LZxoMzgw-MoQd_KWlAl7-juJcXu8wXA-w4FE4KA9k6grdDjlY9NPN_BqBxyjH1lzmcNCgLX17cwL75WqUf4UxdjJg4o"
+spotify_access_token = "BQAMywKUGbLNkXldeWYydTUcV2Fwb3ZSieDsnvF7ugcf8pfFqit7OEGzRqlid0udSatMmGfHUuIfQxzJsnHF-173v6bkr8O1__P2WWHxFdkoqEP4HJRutnebdSsdh_1VrgsuPIbAle0ylCpsLrc6g3lb44JnFyybxRq4_u_yZ4-WJwk6Khs"
+
+test_user = { "username": "",
+              "spotify_id": "",
+              "birthdate": "",
+              "email": "",
+              "spotify_access_token": spotify_access_token,
+              "spotify_refresh_token": ""
 }
 
 class TestUsers(unittest.TestCase):
@@ -20,12 +23,27 @@ class TestUsers(unittest.TestCase):
         self.app = app.create_app("development")
         self.client = self.app.test_client(use_cookies=True)
 
-        self.client.set_cookie("http://127.0.0.1:5000/", "access_token", test_user["spotify_access_token"])
-
         with self.app.app_context():
+            self.client.set_cookie("http://127.0.0.1:5000/", "access_token", spotify_access_token)
+            response = self.client.post('/users/info/me', data=json.dumps(dict()), content_type='application/json')
+
+            resp = json.loads(response.data.decode())
+            error = resp['error']
+            if resp['error'] != "":
+                print("Please get a new access token")
+            user = resp['user']
+
+            test_user['username'] = user['username']
+            test_user['spotify_id'] = user['spotify_id']
+            test_user["birthdate"] = datetime.datetime.strptime(user['birthdate'], '%a, %d %b %Y %H:%M:%S GMT')
+            test_user['email'] = user['email']
+            test_user['spotify_refresh_token'] = user['spotify_refresh_token']
             db.create_all()
 
     def test_user_edit(self):
+        edited_username = "TestUserNotInTheDatabase"
+        edited_birthdate = "2012-11-06"
+        edited_email = "TestUserEmailNotInTheDatabase@fakeWebsite.com"
         with self.app.app_context():
 
             temp_user = db.session.query(User).filter_by(spotify_id=test_user["spotify_id"]).first()
@@ -33,12 +51,13 @@ class TestUsers(unittest.TestCase):
 
             id = temp_user.id
 
-            response = self.client.post('/users/edit', data=json.dumps(dict(username=test_user["username"],
-                                                                             birthdate=test_user["birthdate"],
-                                                                             email=test_user["email"])),
+            response = self.client.post('/users/edit', data=json.dumps(dict(username=edited_username,
+                                                                             birthdate=edited_birthdate,
+                                                                             email=edited_email)),
                                           content_type='application/json')
 
             resp = json.loads(response.data.decode())
+            print(resp)
             error = resp['error']
             result = resp['result']
 
@@ -47,9 +66,13 @@ class TestUsers(unittest.TestCase):
 
             temp_user = db.session.query(User).filter_by(id=id).first()
 
-            assert temp_user.username == test_user["username"]
-            assert temp_user.birthdate == test_user["birthdate"]
-            assert temp_user.email == test_user["email"]
+            assert temp_user.username == edited_username
+            assert temp_user.email == edited_email
+
+            temp_user.username = test_user['username']
+            temp_user.birthdate = test_user['birthdate']
+            temp_user.email = test_user['email']
+            temp_user.save()
 
     def test_user_edit_blank_entries(self):
         with self.app.app_context():
@@ -97,11 +120,12 @@ class TestUsers(unittest.TestCase):
 
             assert error == "Invalid username"
             assert result is False
+
+            temp_user.username = test_user['username']
+            temp_user.save()
         return
 
     def test_user_edit_username_spaces(self):
-        # TODO /users/edit call with username containing spaces
-        # TODO: test for proper error code
         with self.app.app_context():
 
             temp_user = db.session.query(User).filter_by(spotify_id=test_user["spotify_id"]).first()
@@ -120,6 +144,9 @@ class TestUsers(unittest.TestCase):
 
             assert error == "Invalid username"
             assert result is False
+
+            temp_user.username = test_user['username']
+            temp_user.save()
         return
 
     def test_user_edit_max_length(self):
@@ -148,6 +175,9 @@ class TestUsers(unittest.TestCase):
             temp_user = db.session.query(User).filter_by(id=id).first()
 
             assert temp_user.username == username_max_length
+
+            temp_user.username = test_user['username']
+            temp_user.save()
         return
 
     def test_user_edit_max_length_plus(self):
@@ -176,9 +206,12 @@ class TestUsers(unittest.TestCase):
             temp_user = db.session.query(User).filter_by(id=id).first()
 
             assert temp_user.username != username_max_length_plus
+
+            temp_user.username = test_user['username']
+            temp_user.save()
         return
 
-    def test_user_edit_duplicate(self):
+    def test_user_edit_duplicate_username(self):
         with self.app.app_context():
             temp_user = db.session.query(User).all()
             temp_user = temp_user[0]
@@ -193,6 +226,24 @@ class TestUsers(unittest.TestCase):
             result = resp['result']
 
             assert error == "Invalid username"
+            assert result is False
+        return
+
+    def test_user_edit_duplicate_email(self):
+        with self.app.app_context():
+            temp_user = db.session.query(User).all()
+            temp_user = temp_user[0]
+
+            response = self.client.post('/users/edit', data=json.dumps(dict(username="",
+                                                                            birthdate="",
+                                                                            email=temp_user.email)),
+                                        content_type='application/json')
+
+            resp = json.loads(response.data.decode())
+            error = resp['error']
+            result = resp['result']
+
+            assert error == "Invalid email"
             assert result is False
         return
 

@@ -1,4 +1,4 @@
-from pymysql import IntegrityError
+from pymysql.err import IntegrityError
 
 from flask import Blueprint, request, jsonify
 from app.spotifyapi import *
@@ -42,7 +42,7 @@ def edit():
 
     spotify_info = get_profile_me(access_token)
     if "error" in spotify_info:
-        return jsonify({'result': False, 'error': spotify_info['error']})
+        return jsonify({'result': False, 'error': spotify_info['error']['message']})
     spotify_id = spotify_info['id']
 
     user = db.session.query(User).filter_by(spotify_id=spotify_id).first()
@@ -56,13 +56,17 @@ def edit():
     if user.valid_email(email) is False and email != "":
         return jsonify({'result': False, 'error': "Invalid email"})
 
+    all_users = db.session.query(User).all()
+    for user in all_users:
+        if email == user.email:
+            return jsonify({'result': False, 'error': "Invalid email"})
+        if username == user.username:
+            return jsonify({'result': False, 'error': "Invalid username"})
+
     user.username = username if username != "" else user.username
     user.birthdate = birthdate if birthdate != "" else user.birthdate
     user.email = email if email != "" else user.email
-    try:
-        user.save()
-    except:
-        return jsonify({'result': False, 'error': "Invalid username"})
+    user.save()
 
     return jsonify({'result': True, 'error': ""})
 
@@ -103,3 +107,20 @@ def getUser():
 		return jsonify({'result': False, 'error': "User does not exist"})
 	   
 	return jsonify({'result': True, 'error': "", 'User': user.toJSON()})
+
+@users_blueprint.route("/info/me", methods=['POST'])
+def info_me():
+    payload = json.loads(request.data.decode())
+    access_token = request.cookies.get('access_token')
+
+    spotify_info = get_profile_me(access_token)
+    if "error" in spotify_info:
+        return jsonify({'result': False, 'error': spotify_info['error']['message']})
+    spotify_id = spotify_info['id']
+
+    user = db.session.query(User).filter_by(spotify_id=spotify_id).first()
+
+    if user is None:
+        return jsonify({'result': False, 'error': "User does not exist"})
+
+    return jsonify({'result': True, 'error': "", 'user': user.toJSON()})
