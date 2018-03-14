@@ -16,7 +16,7 @@ def edit():
 
     spotify_info = get_profile_me(access_token)
     if "error" in spotify_info:
-        return jsonify({'result': False, 'error': spotify_info['error']})
+        return jsonify({'result': False, 'error': spotify_info['error']['message']})
     spotify_id = spotify_info['id']
 
     user = db.session.query(User).filter_by(spotify_id=spotify_id).first()
@@ -50,7 +50,7 @@ def get_lyrics():
 
     spotify_info = get_profile_me(access_token)
     if "error" in spotify_info:
-        return jsonify({'result': False, 'error': spotify_info['error']})
+        return jsonify({'result': False, 'error': spotify_info['error']['message']})
     spotify_id = spotify_info['id']
 
     lyrics_page = db.session.query(Lyrics).filter_by(spotify_track_id=spotify_track_id).first()
@@ -58,7 +58,7 @@ def get_lyrics():
     if lyrics_page is None:
         spotify_track = get_track(access_token, spotify_track_id)
         if "error" in spotify_track:
-            return jsonify({'result': False, 'error': spotify_track['error']})
+            return jsonify({'result': False, 'error': spotify_track['error']['message']})
         track_name = spotify_track['name']
         lyrics_page = Lyrics(track_name, spotify_track_id, "", "")
         lyrics_page.save()
@@ -84,7 +84,7 @@ def search():
 
     resp = search_track(access_token, search_string)
     if "error" in resp:
-        return jsonify({'result': False, 'error': resp['error']})
+        return jsonify({'result': False, 'error': resp['error']['message']})
     tracks = resp['tracks']['items']
 
     artists = (search_artist(access_token, search_string))['artists']['items']

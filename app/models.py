@@ -39,7 +39,8 @@ class User(db.Model):
             "spotify_id": self.spotify_id,
             "birthdate": self.birthdate,
             "email": self.email,
-            "num_of_contributions": self.num_of_contributions
+            "num_of_contributions": self.num_of_contributions,
+            "spotify_refresh_token": self.spotify_refresh_token
         }
         return user
 

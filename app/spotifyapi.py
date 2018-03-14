@@ -87,7 +87,7 @@ def get_artists_by_track(track):
     for artist in artists:
         artists_list.append(artist['name'])
 
-    return ". ".join(artists_list)
+    return ", ".join(artists_list)
 
 
 def get_auth_url():
