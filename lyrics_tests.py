@@ -10,7 +10,7 @@ test_lyric_page = { "songtitle": "Test",
               "spotify_track_id": "00pLvXMdSXJG8HLliuWTWt",
               "lyrics": "Test",
               "timestamps": "Test",
-              "spotify_access_token": "BQABD8DYF_yV9w7noz53rgMB0K7q8Fd0x5bVHEwPqHttnVujRbRfEXWYbiDFfqbsJdc-3RNOBd5ToujyFRj5WRexe3KagUfjRyDm09U21k2tqO72WKWP9w1uqo-sd0sjWKuR9Sxb4Vk265ff7JrJ2x6KzGQy"
+              "spotify_access_token": "BQBDlcIjEQaFWTuEmhyJMs5iIumK84xvA-RFlWbAhpLEVzutNT1yx7OOly6ThBl9KIONAT5uH2IxQdHWbJrtu-leOPkFlRtdI-Dhb2ZWBSXslGqaJNAlkzz1XRwk_9iuJPN1NeaWL1L7NcopO_5yE-cmxW8jtJd6wn9Kcx0TuYN6psQHGFQ"
 }
 
 class TestLyrics(unittest.TestCase):

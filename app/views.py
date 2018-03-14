@@ -32,6 +32,10 @@ def songs():
 def contact():
     return render_template("contact.html")
 
+@views_blueprint.route("/activity")
+def activity():
+    return render_template("activity.html")
+
 
 @views_blueprint.route("/login")
 def login():

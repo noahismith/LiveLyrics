@@ -7,7 +7,7 @@ import app
 from app.models import User
 from app import db
 
-spotify_access_token = "BQAMywKUGbLNkXldeWYydTUcV2Fwb3ZSieDsnvF7ugcf8pfFqit7OEGzRqlid0udSatMmGfHUuIfQxzJsnHF-173v6bkr8O1__P2WWHxFdkoqEP4HJRutnebdSsdh_1VrgsuPIbAle0ylCpsLrc6g3lb44JnFyybxRq4_u_yZ4-WJwk6Khs"
+spotify_access_token = "BQBDlcIjEQaFWTuEmhyJMs5iIumK84xvA-RFlWbAhpLEVzutNT1yx7OOly6ThBl9KIONAT5uH2IxQdHWbJrtu-leOPkFlRtdI-Dhb2ZWBSXslGqaJNAlkzz1XRwk_9iuJPN1NeaWL1L7NcopO_5yE-cmxW8jtJd6wn9Kcx0TuYN6psQHGFQ"
 
 test_user = { "username": "",
               "spotify_id": "",
@@ -267,7 +267,7 @@ class TestUsers(unittest.TestCase):
 
             temp_user_query = db.session.query(User).filter_by(id=id).first()
 
-            assert temp_user_query.toJSON() == user
+            assert temp_user_query.username == user['username']
         return
 
     def test_user_info_nonexisting_user(self):

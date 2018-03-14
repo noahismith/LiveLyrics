@@ -8,7 +8,7 @@ from app.models import User, Lyrics
 from app.spotifyapi import *
 from app import db
 
-spotify_access_token = "BQBk_tidG_NuEbRrB2YqF2ayiMeAbQ3xDbz6nZv6I389aOIfoSvd7vW-tyrqj8W8SH3ZBX5gouziJMfo_SxJ1La9a0ZOEMmkuZXCH_7x0zt92b7UVUTPJS08AGVybz4IMi9Tjsgr7cFOIoLvHFiwyvs7fqXq4hphuYySyEqAOWiT7lmFwVk"
+spotify_access_token = "BQBDlcIjEQaFWTuEmhyJMs5iIumK84xvA-RFlWbAhpLEVzutNT1yx7OOly6ThBl9KIONAT5uH2IxQdHWbJrtu-leOPkFlRtdI-Dhb2ZWBSXslGqaJNAlkzz1XRwk_9iuJPN1NeaWL1L7NcopO_5yE-cmxW8jtJd6wn9Kcx0TuYN6psQHGFQ"
 
 test_user = { "username": "",
               "spotify_id": "",

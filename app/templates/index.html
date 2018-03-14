@@ -27,6 +27,7 @@
           <li><a href="{{ url_for('views.users') }}">Users</a></li>
           <li><a href="{{ url_for('views.songs') }}">Songs</a></li>
           <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link" target="_blank">Contact Us</a></li>
+            <li><a href="{{ url_for('views.activity')}}">Recent Activity</a></li>
             <li><a id = "loginMenu" href="{{ auth_url}}" onclick="return removeCookies();">Login</a></li>
         </ul>
       </div>
@@ -71,16 +72,11 @@
               }
 
           </script>
-      
-    <p> Recent Activity: </p>
+
       </div>
 
-      <div id="activity-feed">
-        <p> Recent Activity </p>
-      </div>
     </div>
   </div>
 
-  <script type="text/javascript" src="../static/activity.js"></script>
 </body>
 </html>
