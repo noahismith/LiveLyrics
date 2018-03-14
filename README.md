@@ -16,7 +16,7 @@ pip install flask flask-sqlalchemy flask-migrate pymysql flask-script
 
 ### Setting up Dev Environment
     1. Clone this repo
-    2. Run 'pip install flask flask-sqlalchemy flask-migrate pymysql flask-script'
+    2. Run 'pip install flask flask-sqlalchemy flask-migrate pymysql flask-script alembic requests'
     3. Run 'export FLASK_CONFIG=development'
     4. Run 'export FLASK_APP=run.py'
     5. Run 'flask run'
@@ -39,7 +39,9 @@ pip install flask flask-sqlalchemy flask-migrate pymysql flask-script
     Frontend Testing
 
 ## Deployment
-    Follow the same steps in 'Setting up Dev Environment'
+    1. Clone this repo
+    2. Run 'chmod +x deploy.sh'
+    3. Run '/deploy.sh'
 
 
 
