@@ -108,63 +108,21 @@ class Lyrics(db.Model):
         return Lyrics.query.all()
 
 
-class LyricRating(db.Model):
-    __tablename__ = 'LyricRating'
-
-    id = db.Column(db.Integer, primary_key=True)
-    rating = db.Column(db.Integer, nullable=False)
-
-    lyrics_id = db.Column(db.Integer, db.ForeignKey('Lyrics.id', ondelete='CASCADE'), nullable=False)
-    lyrics_id_rel = db.relationship('Lyrics', backref=db.backref('lyrics_id', passive_deletes=True),
-                                    foreign_keys=lyrics_id)
-
-    rater_id = db.Column(db.Integer, db.ForeignKey('Users.id', ondelete='CASCADE'), nullable=False)
-    rater_id_rel = db.relationship('User', backref=db.backref('rater_id', passive_deletes=True), foreign_keys=rater_id)
-
-    def __init__(self, rating, lyrics_id, rater_id):
-        self.rating = rating
-        self.lyrics_id = lyrics_id
-        self.rater_id = rater_id
-
-    def __repr__(self):
-        return 'id: {}, rating: {}, lyrics_id: {}, rater_id: {}' \
-            .format(self.id, self.rating, self.lyrics_id, self.rater_id)
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-
-    def toJSON(self):
-        rating = {
-            "rating": self.rating,
-            "lyrics_id": self.lyrics_id,
-            "rater_id": self.rater_id
-        }
-        return rating
-
-    @staticmethod
-    def get_all():
-        return LyricRating.query.all()
-		
 class RecentActivity(db.Model):
     __tablename__ = 'RecentActivity'
-	
+
     id = db.Column(db.Integer, primary_key=True)
     spotify_track_id = db.Column(db.String(255), unique=False, nullable=False)
     spotify_id = db.Column(db.String(255), unique=False, nullable=False)
-	
+
     def __init__(self, spotify_track_id, spotify_id):
         self.spotify_track_id = spotify_track_id
         self.spotify_id = spotify_id
-	
+
     def __repr__(self):
         return 'id: {}, spotify_track_id: {}, spotify_id: {}' \
             .format(self.id, self.spotify_track_id, self.spotify_id)
-			
+
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -176,10 +134,12 @@ class RecentActivity(db.Model):
     def toJSON(self):
         rating = {
             "spotify_track_id": self.spotify_track_id,
-            "spotify_id": self.spotify_id
+            "spotify_id": self.spotify_id,
+            "username": db.session.query(Lyrics).filter_by(spotify_track_id=self.spotify_track_id).first().username
         }
         return rating
 
     @staticmethod
     def get_all():
         return RecentActivity.query.all()
+
