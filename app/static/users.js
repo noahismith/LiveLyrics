@@ -24,6 +24,9 @@ $( "#userForm" ).submit(function( event ) {
     .done(function( msg ) {
       console.log(JSON.stringify(msg));
 
+      if (!msg.result) {
+        alert("Error! " + msg.error)
+      }
       //POPULATE PRETTY HTML
       //make it elegant
 
@@ -95,6 +98,11 @@ $( '#editForm').submit(function(event) {
     })
     .done(function( msg ) {
       console.log(JSON.stringify(msg));
+      if (msg.result) {
+        alert("Success!")
+      } else {
+        alert("Error! " + msg.error)
+      }
     })
     .fail(function( jqXHR, textStatus ) {
       alert( "Request failed: " + textStatus );
