@@ -1,42 +1,16 @@
+function getCookie(name) {
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
+};
 
-urlString = window.location.href
-console.log(urlString)
+function removeCookies() {
+    var cookies = document.cookie.split(";");
 
-var position = urlString.search("code=")
-if (position != -1){
-    position +=5
-    console.log(position)
-    var code = urlString.slice(position)
-    console.log(code)
-
-    var jsonob = {
-        "code": code
-    }
-
-console.log(jsonob)
-    $.ajax({
-        method: "POST",
-        url: "http://127.0.0.1:5000/login",
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(jsonob, null, '\t')
-    })
-    .done(function( msg ) {
-      console.log(JSON.stringify(msg));
-
-
-    myStorage = window.localStorage
-    myStorage.setItem("access_token", msg.access_token)
-
-    console.log(myStorage)
-
-    })
-    .fail(function( jqXHR, textStatus ) {
-      alert( "Request failed: " + textStatus );
-    //});
-
-    
-  });
-
-
-}
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
+};
