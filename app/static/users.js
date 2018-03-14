@@ -9,14 +9,14 @@ $( "#userForm" ).submit(function( event ) {
     user = $form.find( "input[name='username']" ).val(),
     urltar = $form.attr( "action" );
  
-    var jsonob = { "search_string": user }
+    var jsonob = { "username": user }
     console.log(JSON.stringify(jsonob))
 
     console.log(user)
     console.log(urltar)
     $.ajax({
         method: "POST",
-        url: "http://127.0.0.1:5000/users/search",
+        url: "http://127.0.0.1:5000/users/info",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')
@@ -24,40 +24,40 @@ $( "#userForm" ).submit(function( event ) {
     .done(function( msg ) {
       console.log(JSON.stringify(msg));
 
+      if (!msg.result) {
+        alert("Error! " + msg.error)
+      }
       //POPULATE PRETTY HTML
       //make it elegant
 
       $('#searchResults').empty()
+      
+      var result = $('<div/>')
+      var resultLink = $('<a/>').attr('href', "/")
+      resultLink.text(msg.user.username)
+      resultLink.click(function (event) {
+        event.preventDefault()
 
+        var usernameSpan = $('<span/>').text("Username: " + msg.user.username)
+        var emailSpan = $('<span/>').text(" E-mail: " + msg.user.email)
+        var birthdateSpan = $('<span/>').text("Birthdate: " + msg.user.birthdate)
+        var contributionsSpan = $('<span/>').text("Number of Contributions: " + msg.user.num_of_contributions)
 
-      msg.users.forEach(function(element) {
-        var result = $('<div/>')
-        var resultLink = $('<a/>').attr('href', "/")
-        resultLink.text(element.username)
-        resultLink.click(function (event) {
-          event.preventDefault()
+        $('.user-box').empty()
+        $('.user-box').show()
 
-          var usernameSpan = $('<span/>').text("Username: " + element.username)
-          var emailSpan = $('<span/>').text(" E-mail: " + element.email)
-          var birthdateSpan = $('<span/>').text("Birthdate: " + element.birthdate)
-          var contributionsSpan = $('<span/>').text("Number of Contributions: " + element.num_of_contributions)
+        $('.user-box')
+        .append(usernameSpan)
+        .append("<br>")
+        .append(emailSpan)
+        .append("<br>")
+        .append(birthdateSpan)
+        .append("<br>")
+        .append(contributionsSpan)
+      })
 
-          $('.user-box').empty()
-          $('.user-box').show()
-
-          $('.user-box')
-          .append(usernameSpan)
-          .append("<br>")
-          .append(emailSpan)
-          .append("<br>")
-          .append(birthdateSpan)
-          .append("<br>")
-          .append(contributionsSpan)
-        })
-
-        result.append(resultLink)
-        $('#searchResults').append(result)
-      }, this);
+      result.append(resultLink)
+      $('#searchResults').append(result)
 
       $('#searchResults').append('<br>')
   
@@ -98,6 +98,11 @@ $( '#editForm').submit(function(event) {
     })
     .done(function( msg ) {
       console.log(JSON.stringify(msg));
+      if (msg.result) {
+        alert("Success!")
+      } else {
+        alert("Error! " + msg.error)
+      }
     })
     .fail(function( jqXHR, textStatus ) {
       alert( "Request failed: " + textStatus );

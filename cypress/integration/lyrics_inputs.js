@@ -1,42 +1,42 @@
-describe('While on the Lyrics page, checks to make sure all inputs and buttons work INDIVIDUALLY', function () {
+describe('While on the Lyrics page, checks to make sure all inputs and buttons work', function () {
 
     it('Input text check for "new song name"', function () {
-        cy.visit('127.0.0.1:5000/lyrics')
+        cy.visit('http://127.0.0.1:5000/lyrics')
 
         cy.get('input').first().type('Example New Song Input')
 
     })
 
     it('Input text check for "Lyrics"', function () {
-        cy.visit('127.0.0.1:5000/lyrics')
+        cy.visit('http://127.0.0.1:5000/lyrics')
 
         cy.get('.lyricsInputTest').type('Example Lyrics Input')
 
     })
 
     it('Input text check for "Track id"', function () {
-        cy.visit('127.0.0.1:5000/lyrics')
+        cy.visit('http://127.0.0.1:5000/lyrics')
 
         cy.get('.lyricsTrackIDTest').type('Example Track ID Input')
 
     })
 
     it('Input text check for "Timestamps"', function () {
-        cy.visit('127.0.0.1:5000/lyrics')
+        cy.visit('http://127.0.0.1:5000/lyrics')
 
         cy.get('.lyricsTimestampsTest').type('Example Timestamps Input')
 
     })
 
     it('Click submit button (ensure it works)', function () {
-        cy.visit('127.0.0.1:5000/lyrics')
+        cy.visit('http://127.0.0.1:5000/lyrics')
 
         cy.get('form').submit()
 
     })
 
     it('checks all inputs and submit at once', function () {
-        cy.visit('127.0.0.1:5000/lyrics')
+        cy.visit('http://127.0.0.1:5000/lyrics')
 
         cy.get('input').first().type('Example New Song Input')
 
@@ -53,18 +53,69 @@ describe('While on the Lyrics page, checks to make sure all inputs and buttons w
         cy.get('form').submit()
     })
 
-    it ('Login (Should fail if already logged in)', function () {
-        cy.visit('https://accounts.spotify.com/en/authorize?scope=streaming%20user-read-playback-state%20user-modify-playback-state%20user-read-currently-playing%20user-read-email%20user-read-birthdate&redirect_uri=http:%2F%2F127.0.0.1:5000%2Flogin&response_type=code&client_id=91893049176646de8ec8994ea5cd0b27&show_dialog=false')
-        cy.get('a').contains('Log in to Spotify').click()
-        cy.get('input').first().type('LiveLyricsHelp@gmail.com')
-        cy.get('input#login-password.form-control.input-with-feedback.ng-pristine.ng-untouched.ng-empty.ng-invalid.ng-invalid-required').get('#login-password').type('cs408team11')
-        cy.get('button').click()
+    it('Test Add 1: Add lyrics to song on Add Lyrics page (Part 1)', function () {
+
+        cy.visit('http://127.0.0.1:5000')
+        cy.get('a').contains('Login').click()
+
+        cy.visit('http://127.0.0.1:5000/lyrics')
+
+
+        cy.get('input').first().clear()
+        cy.get('.lyricsInputTest').clear()
+        cy.get('.lyricsTrackIDTest').clear()
+        cy.get('.lyricsTimestampsTest').clear()
+
+        cy.get('input').first().type('Hello')
+        cy.get('.lyricsTrackIDTest').type('0ENSn4fwAbCGeFGVUbXEU3')
+
+        cy.get('form').submit();
+
+
+        cy.get('input').first().clear()
+        cy.get('.lyricsTrackIDTest').clear()
+
+        cy.get('input').first().type('Hello')
+
+        cy.get('.lyricsInputTest').type('Hello, it\'s me. I was wondereing if after all these years you\'d like to meet.')
+
+        cy.get('.lyricsTrackIDTest').type('0ENSn4fwAbCGeFGVUbXEU3')
+
+        cy.get('.lyricsTimestampsTest').type('0:09')
+        cy.get('form').submit()
 
     })
 
-    it('Test Add: Add lyrics to song on Add Lyrics page (Part 1)', function () {
+    it ('Test Add 2: Search for updated song on Songs page and check that changes saved (Part 2)', function () {
 
-        cy.visit('127.0.0.1:5000/lyrics')
+        cy.visit('http://127.0.0.1:5000')
+        cy.get('a').contains('Login').click()
+
+        cy.visit('127.0.0.1:5000/songs')
+
+        cy.get('input').first().clear()
+        cy.get('input').first().type('Hello')
+        cy.get('form').submit()
+
+        cy.get('div.indiv-song').contains('0ENSn4fwAbCGeFGVUbXEU3').get('a').contains('Hello').click()
+
+
+        cy.get('input#song-title-input').should('have.value', 'Hello')
+
+        cy.get('.lyricsInputTest').should('have.value', 'Hello, it\'s me. I was wondereing if after all these years you\'d like to meet.')
+
+        cy.get('.lyricsTrackIDTest').should('have.value', '0ENSn4fwAbCGeFGVUbXEU3')
+
+        cy.get('.lyricsTimestampsTest').should('have.value', '0:09')
+
+    })
+
+    it('Test Update: Update lyrics and timestamps of a song', function () {
+
+        cy.visit('http://127.0.0.1:5000')
+        cy.get('a').contains('Login').click()
+
+        cy.visit('http://127.0.0.1:5000/lyrics')
 
 
         cy.get('input').first().clear()
@@ -91,17 +142,109 @@ describe('While on the Lyrics page, checks to make sure all inputs and buttons w
         cy.get('form').submit()
 
 
-    })
-
-    it ('Test Add: Search for updated song on Songs page (Part 2)', function () {
+        cy.visit('http://127.0.0.1:5000')
+        cy.get('a').contains('Login').click()
 
         cy.visit('127.0.0.1:5000/songs')
 
         cy.get('input').first().type('Hello')
         cy.get('form').submit()
 
+        cy.get('div.indiv-song').contains('0ENSn4fwAbCGeFGVUbXEU3').get('a').contains('Hello').click()
+
+
+        cy.get('input#song-title-input').should('have.value', 'Hello')
+        cy.get('.lyricsInputTest').should('have.value', 'Hello, it\'s me. I was wondereing if after all these years you\'d like to meet.')
+
+        cy.get('.lyricsInputTest').clear()
+        cy.get('.lyricsInputTest').type('Hello, it\'s me. I was wondereing if after all these years you\'d like to meet. To go over everything. They say it\'s supposed to heal.')
+
+        cy.get('.lyricsTrackIDTest').should('have.value', '0ENSn4fwAbCGeFGVUbXEU3')
+
+        cy.get('.lyricsTimestampsTest').clear()
+        cy.get('.lyricsTimestampsTest').type('0:09 0:12')
+        cy.get('form').submit()
+
+        cy.visit('127.0.0.1:5000/songs')
+
+        cy.get('input').first().type('Hello')
+        cy.get('form').submit()
+
+        cy.get('div.indiv-song').contains('0ENSn4fwAbCGeFGVUbXEU3').get('a').contains('Hello').click()
+
+        cy.get('input#song-title-input').should('have.value', 'Hello')
+
+        cy.get('.lyricsInputTest').should('have.value', 'Hello, it\'s me. I was wondereing if after all these years you\'d like to meet. To go over everything. They say it\'s supposed to heal.')
+
+        cy.get('.lyricsTrackIDTest').should('have.value', '0ENSn4fwAbCGeFGVUbXEU3')
+
+        cy.get('.lyricsTimestampsTest').should('have.value', '0:09 0:12')
 
     })
 
+    it('Adding a song not on spotify (should not be possible)', function () {
+
+        cy.visit('http://127.0.0.1:5000')
+        cy.get('a').contains('Login').click()
+
+        cy.visit('http://127.0.0.1:5000/lyrics')
+
+        cy.get('input').first().clear()
+        cy.get('.lyricsInputTest').clear()
+        cy.get('.lyricsTrackIDTest').clear()
+        cy.get('.lyricsTimestampsTest').clear()
+
+        cy.get('input').first().type('Not on Spotify')
+
+        cy.get('.lyricsTrackIDTest').type('abc123')
+
+        cy.get('form').submit();
+
+        cy.visit('127.0.0.1:5000/songs')
+
+        cy.get('input').first().type('Not on Spotify')
+        cy.get('form').submit()
+
+        cy.should('not.contain', 'Not on Spotify')
+    })
+
+    it('Changing a songs name', function () {
+
+        cy.visit('http://127.0.0.1:5000')
+        cy.get('a').contains('Login').click()
+
+        cy.visit('http://127.0.0.1:5000/songs')
+
+        cy.get('input').first().clear()
+        cy.get('input').first().clear().type('Hello')
+        cy.get('form').submit()
+        cy.get('div.indiv-song').contains('0ENSn4fwAbCGeFGVUbXEU3').get('a').contains('Hello').click()
+
+        cy.get('input').first().clear()
+        cy.get('input').first().clear().type('NewHello')
+        cy.get('form').submit()
+
+        cy.visit('http://127.0.0.1:5000/songs')
+
+        cy.get('input').first().clear().type('NewHello')
+        cy.get('form').submit()
+        cy.get('div.indiv-song').contains('0ENSn4fwAbCGeFGVUbXEU3').get('a').contains('NewHello').click()
+
+        cy.get('input#song-title-input').should('have.value', 'NewHello')
+
+        cy.get('input').first().clear()
+        cy.get('input').first().clear().type('Hello')
+        cy.get('form').submit()
+
+        cy.visit('http://127.0.0.1:5000/songs')
+
+        cy.get('input').first().clear()
+        cy.get('input').first().clear().type('Hello')
+        cy.get('form').submit()
+        cy.get('div.indiv-song').contains('0ENSn4fwAbCGeFGVUbXEU3').get('a').contains('Hello').click()
+
+        cy.get('input#song-title-input').should('have.value', 'Hello')
+
+    })
 
 })

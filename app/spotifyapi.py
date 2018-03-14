@@ -80,6 +80,7 @@ def get_track(access_token, track_id):
     track_object = requests.get(api_endpoint, headers=authorization_header)
     return json.loads(track_object.text)
 
+
 def get_artists_by_track(track):
     artists = track['artists']
     artists_list = []
@@ -87,7 +88,21 @@ def get_artists_by_track(track):
     for artist in artists:
         artists_list.append(artist['name'])
 
-    return ". ".join(artists_list)
+    return ", ".join(artists_list)
+
+
+def get_current_track(access_token):
+    authorization_header = {"Authorization": "Bearer {}".format(access_token)}
+    api_endpoint = "{}/me/player/currently-playing".format(SPOTIFY_API_URL)
+    try:
+        current_playing_object = requests.get(api_endpoint, headers=authorization_header)
+    except requests.exeptions.RequestException as e:
+        return {"error": e}
+
+    if current_playing_object.status_code == 204 or 200:
+        return {"error": {"message": "NO CONTENT"}}
+
+    return json.loads(current_playing_object.text)
 
 
 def get_auth_url():

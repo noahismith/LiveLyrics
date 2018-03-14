@@ -3,7 +3,7 @@ import urllib
 from app.spotifyapi import *
 import app
 from app import db
-from models import *
+from app.models import *
 
 views_blueprint = Blueprint('views', __name__)
 
@@ -58,17 +58,19 @@ def login():
 @views_blueprint.route("/currSong", methods=['POST'])
 def get_current_track_id():
    access_token = request.cookies.get('access_token')
+   track = get_current_track(access_token)
 
-   authorization_header = {"Authorization": "Bearer {}".format(access_token)}
-   current_playing_api_endpoint = "{}/me/player/currently-playing".format(SPOTIFY_API_URL)
-   current_playing_object = requests.get(current_playing_api_endpoint, headers=authorization_header)
-   if "error" in json.loads(current_playing_object.text):
-       return jsonify({'result': False, 'error': json.loads(current_playing_object.text)["error"]})
-   spotify_track_id = json.loads(current_playing_object.text)['item']['id']
+   if "error" in track:
+       return jsonify({'result': False, 'error': track['error']['message']})
+
+   spotify_track_id = track['item']['id']
+
+   track = get_track(access_token, spotify_track_id)
+
    lyrics_page = db.session.query(Lyrics).filter_by(spotify_track_id=spotify_track_id).first()
    if lyrics_page is None:
-       track_name = json.loads(current_playing_object.text)['item']['name']
-       artist = get_artists_by_track(json.loads(current_playing_object.text)['item'])
+       track_name = track['name']
+       artist = get_artists_by_track(track)
        lyrics_page = Lyrics(track_name, artist, spotify_track_id, "", "")
        lyrics_page.save()    
    return jsonify({'result': True, 'error': "", 'lyric_page': lyrics_page.toJSON()})

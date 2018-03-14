@@ -23,6 +23,10 @@ $( '#songsForm').submit(function(event) {
     .done(function( msg ) {
       console.log(JSON.stringify(msg));
 
+      if (!msg.result) {
+        alert("Error! " + msg.error)
+      }
+
       //clearing the list div
       $('.song-list').text("")
       
@@ -84,6 +88,7 @@ $('#sync-link').on('click', function (event) {
     })
     .fail(function( jqXHR, textStatus ) {
       alert( "Request failed: " + textStatus );
+      event.preventDefault()
     //});
 
     
