@@ -344,6 +344,8 @@ describe('Front end test plan cases', function () {
         cy.visit('http://127.0.0.1:5000')
         cy.get('a').contains('Login').click()
 
+        cy.wait(3000)
+
         /* Ensure username by setting it on User page */
         cy.visit('http://127.0.0.1:5000/users')
         
@@ -355,6 +357,8 @@ describe('Front end test plan cases', function () {
 
         /* Add lyrics to song */
         cy.visit('http://127.0.0.1:5000/lyrics')
+
+        cy.wait(1000)
 
         /* Clear all previous values */
         cy.get('input').first().clear()
@@ -370,14 +374,19 @@ describe('Front end test plan cases', function () {
 
         cy.get('form').first().submit();
 
+        cy.wait(3000)
+
         /* Check the recent activities most recent post to see if it matches */
         cy.visit('http://127.0.0.1:5000/activity')
 
         cy.get('div#activity-feed').get('span').first().should('contain', 'Song: Hello')
 
+        cy.wait(2000)
 
         /* Add another set of lyrics to a song */
         cy.visit('http://127.0.0.1:5000/lyrics')
+
+        cy.wait(3000)
 
         /* Clear all previous values */
         cy.get('input').first().clear()
@@ -398,14 +407,19 @@ describe('Front end test plan cases', function () {
         /* Check the recent activities most recent post to see if it matches */
         cy.visit('http://127.0.0.1:5000/activity')
 
+        cy.wait(1000)
+
         cy.get('div#activity-feed').get('span').first().should('contain', 'Song: Juicy')
 
         /* Overkill test to ensure most recent post is not actually second newest post */
         cy.get('div#activity-feed').get('span').first().should('not.contain', '-- Song: Hello')
 
+        cy.wait(1000)
 
         /* Add 3rd set of lyrics to a song (For good measure) */
         cy.visit('http://127.0.0.1:5000/lyrics')
+
+        cy.wait(3000)
 
         /* Clear all previous values */
         cy.get('input').first().clear()
@@ -420,8 +434,12 @@ describe('Front end test plan cases', function () {
 
         cy.get('form').first().submit();
 
+        cy.wait(1000)
+
         /* Check the recent activities most recent post to see if it matches */
         cy.visit('http://127.0.0.1:5000/activity')
+
+        cy.wait(2000)
 
         cy.get('div#activity-feed').get('span').first().should('contain', 'Song: Love Train')
 
