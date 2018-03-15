@@ -42,7 +42,7 @@ describe('Front end test plan cases', function () {
         cy.get('input').first().type('Hello')
         cy.get('.lyricsTrackIDTest').type('0ENSn4fwAbCGeFGVUbXEU3')
 
-        cy.get('form').submit();
+        cy.get('form').first().submit();
 
         /* clear inputs for song and track key */
         cy.get('input').first().clear()
@@ -56,7 +56,7 @@ describe('Front end test plan cases', function () {
         cy.get('.lyricsTrackIDTest').type('0ENSn4fwAbCGeFGVUbXEU3')
 
         cy.get('input#timestamps-input.lyricsTimestampsTest').type('0:09')
-        cy.get('form').submit()
+        cy.get('form').first().submit()
 
     })
 
@@ -242,7 +242,7 @@ describe('Front end test plan cases', function () {
         cy.get('input').first().type('Hello')
         cy.get('.lyricsTrackIDTest').type('0ENSn4fwAbCGeFGVUbXEU3')
 
-        cy.get('form').submit();
+        cy.get('form').first().submit();
 
 
         cy.get('input').first().clear()
@@ -255,7 +255,7 @@ describe('Front end test plan cases', function () {
         cy.get('.lyricsTrackIDTest').type('0ENSn4fwAbCGeFGVUbXEU3')
 
         cy.get('input#timestamps-input.lyricsTimestampsTest').type('0:09')
-        cy.get('form').submit()
+        cy.get('form').first().submit()
 
 
         cy.visit('http://127.0.0.1:5000')
@@ -264,7 +264,7 @@ describe('Front end test plan cases', function () {
         cy.visit('127.0.0.1:5000/songs')
 
         cy.get('input').first().type('Hello')
-        cy.get('form').submit()
+        cy.get('form').first().submit()
 
         cy.get('div.indiv-song').contains('0ENSn4fwAbCGeFGVUbXEU3').get('a').contains('Hello').click()
 
@@ -279,7 +279,7 @@ describe('Front end test plan cases', function () {
 
         cy.get('input#timestamps-input.lyricsTimestampsTest').clear()
         cy.get('input#timestamps-input.lyricsTimestampsTest').type('0:09 0:12')
-        cy.get('form').submit()
+        cy.get('form').first().submit()
 
         /* keeps program from false failure due to race case */
         cy.wait(5000)
@@ -287,7 +287,7 @@ describe('Front end test plan cases', function () {
         cy.visit('127.0.0.1:5000/songs')
 
         cy.get('input').first().type('Hello')
-        cy.get('form').submit()
+        cy.get('form').first().submit()
 
         cy.get('div.indiv-song').contains('0ENSn4fwAbCGeFGVUbXEU3').get('a').contains('Hello').click()
 
@@ -368,7 +368,7 @@ describe('Front end test plan cases', function () {
         cy.get('.lyricsTrackIDTest').type('0ENSn4fwAbCGeFGVUbXEU3')
         cy.get('input#timestamps-input.lyricsTimestampsTest').type('0:09 0:13')
 
-        cy.get('form').submit();
+        cy.get('form').first().submit();
 
         /* Check the recent activities most recent post to see if it matches */
         cy.visit('http://127.0.0.1:5000/activity')
@@ -390,7 +390,7 @@ describe('Front end test plan cases', function () {
         cy.get('.lyricsInputTest').type('Yea, this album is dedicated to all the teachers that told me I\'d never amount to nothing.')
         cy.get('.lyricsTrackIDTest').type('5ByAIlEEnxYdvpnezg7HTX')
 
-        cy.get('form').submit();
+        cy.get('form').first().submit();
 
         /* stops race case from failing test case */
         cy.wait(3000)
@@ -418,7 +418,7 @@ describe('Front end test plan cases', function () {
         cy.get('.lyricsInputTest').type('People all over the world Join hands')
         cy.get('.lyricsTrackIDTest').type('28285KFbyCq8sJofn58qlD')
 
-        cy.get('form').submit();
+        cy.get('form').first().submit();
 
         /* Check the recent activities most recent post to see if it matches */
         cy.visit('http://127.0.0.1:5000/activity')
