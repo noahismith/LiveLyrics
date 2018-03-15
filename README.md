@@ -37,6 +37,11 @@ pip install flask flask-sqlalchemy flask-migrate pymysql flask-script
     6. Run 'python lyrics_tests.py
     
     Frontend Testing
+    1. Ensure the dev environment is setup and running (see Setting up Dev Environment above)
+    2. Open a new terminal and run 'npm install cypress --save-dev'
+    3. cd into the 'LiveLyrics' folder
+    4. run 'node_modules/.bin/cypress open'
+    5. Once the Cypress GUI has opened, double click 'testPlan_cases.js' to run the set of tests
 
 ## Deployment
     1. Clone this repo
