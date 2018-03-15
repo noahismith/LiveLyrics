@@ -16,7 +16,7 @@ describe('Front end test plan cases', function () {
 
     })
 
-    it('Test case 003 (returning user): Logging in to LiveLyrics Account', function () {
+    it('Test case 003 / 004 / 008 (returning user): Logging in to LiveLyrics Account, Create Live Lyrics Account, and Link Media Account to LiveLyrics', function () {
 
         cy.visit('http://127.0.0.1:5000')
         cy.get('a').contains('Login').click()
@@ -36,7 +36,7 @@ describe('Front end test plan cases', function () {
         cy.get('input').first().clear()
         cy.get('.lyricsInputTest').clear()
         cy.get('.lyricsTrackIDTest').clear()
-        cy.get('.lyricsTimestampsTest').clear()
+        cy.get('input#timestamps-input.lyricsTimestampsTest').clear()
 
         /* test input of song, 'Hello', and track key, '0ENSn4fwAbCGeFGVUbXEU3' then submit */
         cy.get('input').first().type('Hello')
@@ -55,12 +55,12 @@ describe('Front end test plan cases', function () {
 
         cy.get('.lyricsTrackIDTest').type('0ENSn4fwAbCGeFGVUbXEU3')
 
-        cy.get('.lyricsTimestampsTest').type('0:09')
+        cy.get('input#timestamps-input.lyricsTimestampsTest').type('0:09')
         cy.get('form').submit()
 
     })
 
-    it ('Test case 001 (part2): Adding lyrics', function () {
+    it('Test case 001 (part2): Adding lyrics', function () {
 
         /* ensure logged in and have Spotify token */
         cy.visit('http://127.0.0.1:5000')
@@ -84,18 +84,18 @@ describe('Front end test plan cases', function () {
 
         cy.get('.lyricsTrackIDTest').should('have.value', '0ENSn4fwAbCGeFGVUbXEU3')
 
-        cy.get('.lyricsTimestampsTest').should('have.value', '0:09')
+        cy.get('input#timestamps-input.lyricsTimestampsTest').should('have.value', '0:09')
 
     })
 
-    it ('Test Case 005: View Contributed Lyrics', function () {
+    it('Test Case 005: View Contributed Lyrics', function () {
 
         /* ensure logged in and have Spotify token */
         cy.visit('http://127.0.0.1:5000')
         cy.get('a').contains('Login').click()
 
         /* go to songs page */
-        cy.visit('127.0.0.1:5000/songs')
+        cy.visit('http://127.0.0.1:5000/songs')
 
         /* input search of 'Hello' and click link for song */
         cy.get('input').first().type('Hello')
@@ -103,6 +103,31 @@ describe('Front end test plan cases', function () {
         cy.get('form').submit()
 
         cy.get('div.indiv-song').get('a').contains('Hello').click()
+
+    })
+
+    it('Test Case 006: Rating Lyrics Page', function () {
+
+        /* ensure logged in and have Spotify token */
+        cy.visit('http://127.0.0.1:5000')
+        cy.get('a').contains('Login').click()
+
+        /* go to songs page */
+        cy.visit('http://127.0.0.1:5000/songs')
+
+        /* input search of 'Hello' and click link for song */
+        cy.get('input').first().type('Hello')
+
+        cy.get('form').submit()
+    
+        cy.get('div.indiv-song').get('a').contains('Hello').click()
+
+        /* rate the lyrics */
+        cy.get('label.star').first().click()
+        cy.get('button').contains('Submit Rating').click()
+
+        /* WAIT FOR 3 SECONDS AT LEAST, OTHERWISE BLEEDS INTO TEST CASE 009 AND CAUSES FALSE FAILURE */
+        cy.wait(4000)
 
     })
 
@@ -120,7 +145,7 @@ describe('Front end test plan cases', function () {
         cy.get('form').first().submit()
 
         /* click user name link to view user's information */
-        cy.get('div').contains('LiveLyrics').click()
+        cy.get('div#searchResults').contains('LiveLyrics').click()
         cy.contains('Username: LiveLyrics')
         cy.contains('E-mail:')
         cy.contains('Birthdate:')
@@ -138,12 +163,12 @@ describe('Front end test plan cases', function () {
 
         /* search for 'LiveLyricsTest' user on user page */
         cy.visit('127.0.0.1:5000/users')
-        cy.get('input').first().type('LiveLyricsTest')
+        cy.get('input').first().type('wojtr')
         cy.get('form').first().submit()
 
         /* click user name link to view user's information */
-        cy.get('div').contains('LiveLyricsTest').click()
-        cy.contains('Username: LiveLyricsTest')
+        cy.get('div').contains('wojtr').click()
+        cy.contains('Username: wojtr')
         cy.contains('E-mail:')
         cy.contains('Birthdate:')
         cy.contains('Number of Contributions:')
@@ -170,10 +195,6 @@ describe('Front end test plan cases', function () {
 
     })
 
-    it('Test Case 015: Nothing is typed into the search bar', function () {
-        
-    })
-
     it('Test Case 016: User searches for an invalid user', function () {
 
         /* ensure logged in and have Spotify token */
@@ -188,7 +209,7 @@ describe('Front end test plan cases', function () {
 
     })
 
-    it('Test Case 017: User searches for lyrics that do not', function () {
+    it('Test Case 017: User searches for lyrics that do not exist', function () {
 
         /* ensure logged in and have Spotify token */
         cy.visit('http://127.0.0.1:5000')
@@ -204,7 +225,7 @@ describe('Front end test plan cases', function () {
 
     })
 
-    it ('Test Case 019 / 020: User tries to add lyrics that they', function () {
+    it ('Test Case 019 / 020: User tries to add lyrics that they have already added before', function () {
    
         /* ensure logged in and have Spotify token */
         cy.visit('http://127.0.0.1:5000')
@@ -216,7 +237,7 @@ describe('Front end test plan cases', function () {
         cy.get('input').first().clear()
         cy.get('.lyricsInputTest').clear()
         cy.get('.lyricsTrackIDTest').clear()
-        cy.get('.lyricsTimestampsTest').clear()
+        cy.get('input#timestamps-input.lyricsTimestampsTest').clear()
 
         cy.get('input').first().type('Hello')
         cy.get('.lyricsTrackIDTest').type('0ENSn4fwAbCGeFGVUbXEU3')
@@ -233,7 +254,7 @@ describe('Front end test plan cases', function () {
 
         cy.get('.lyricsTrackIDTest').type('0ENSn4fwAbCGeFGVUbXEU3')
 
-        cy.get('.lyricsTimestampsTest').type('0:09')
+        cy.get('input#timestamps-input.lyricsTimestampsTest').type('0:09')
         cy.get('form').submit()
 
 
@@ -256,9 +277,12 @@ describe('Front end test plan cases', function () {
 
         cy.get('.lyricsTrackIDTest').should('have.value', '0ENSn4fwAbCGeFGVUbXEU3')
 
-        cy.get('.lyricsTimestampsTest').clear()
-        cy.get('.lyricsTimestampsTest').type('0:09 0:12')
+        cy.get('input#timestamps-input.lyricsTimestampsTest').clear()
+        cy.get('input#timestamps-input.lyricsTimestampsTest').type('0:09 0:12')
         cy.get('form').submit()
+
+        /* keeps program from false failure due to race case */
+        cy.wait(5000)
 
         cy.visit('127.0.0.1:5000/songs')
 
@@ -273,11 +297,16 @@ describe('Front end test plan cases', function () {
 
         cy.get('.lyricsTrackIDTest').should('have.value', '0ENSn4fwAbCGeFGVUbXEU3')
 
-        cy.get('.lyricsTimestampsTest').should('have.value', '0:09 0:12')
+        cy.get('input#timestamps-input.lyricsTimestampsTest').should('have.value', '0:09 0:12')
+
+        /* keeps program from false failure due to race case */
+        cy.wait(5000)
 
     })
 
     it('Test Case 022: User tries to access the Live Lyrics', function () {
+
+        cy.wait(5000)
 
         /* Ensure user is logged in (shouldn't matter in this case) */
         cy.visit('http://127.0.0.1:5000')
@@ -289,7 +318,7 @@ describe('Front end test plan cases', function () {
         cy.get('a').contains('LiveLyrics').click()
 
         cy.url()
-            .should('eq', '127.0.0.1:5000')
+            .should('eq', 'http://127.0.0.1:5000/')
 
         /* Check Home route from Users page */
         cy.visit('http://127.0.0.1:5000/users')
@@ -297,7 +326,7 @@ describe('Front end test plan cases', function () {
         cy.get('a').contains('LiveLyrics').click()
 
         cy.url()
-            .should('eq', '127.0.0.1:5000')
+            .should('eq', 'http://127.0.0.1:5000/')
 
         /* Check Home route from Songs page */
         cy.visit('http://127.0.0.1:5000/songs')
@@ -305,7 +334,152 @@ describe('Front end test plan cases', function () {
         cy.get('a').contains('LiveLyrics').click()
 
         cy.url()
-            .should('eq', '127.0.0.1:5000')
+            .should('eq', 'http://127.0.0.1:5000/')
+
+    })
+
+    it('Test Case 023: Recent contributions are updated correctly and consistently', function () {
+
+        /* Ensure user is logged in (shouldn't matter in this case) */
+        cy.visit('http://127.0.0.1:5000')
+        cy.get('a').contains('Login').click()
+
+        /* Ensure username by setting it on User page */
+        cy.visit('http://127.0.0.1:5000/users')
+        
+        cy.get('input.newUserTest').clear()
+
+        cy.get('input.newUserTest').type('LiveLyrics')
+
+        cy.get('form#editForm').first().submit()
+
+        /* Add lyrics to song */
+        cy.visit('http://127.0.0.1:5000/lyrics')
+
+        /* Clear all previous values */
+        cy.get('input').first().clear()
+        cy.get('.lyricsInputTest').clear()
+        cy.get('.lyricsTrackIDTest').clear()
+        cy.get('input#timestamps-input.lyricsTimestampsTest').clear()
+
+        /* Insert new values and post */
+        cy.get('input').first().type('Hello')
+        cy.get('.lyricsInputTest').type('Hello, it\'s me\n I was wondering if after all these years you\'d like to meet\n To go over everything\n They say that time\'s supposed to heal ya\n But I ain\'t done much healing')
+        cy.get('.lyricsTrackIDTest').type('0ENSn4fwAbCGeFGVUbXEU3')
+        cy.get('input#timestamps-input.lyricsTimestampsTest').type('0:09 0:13')
+
+        cy.get('form').submit();
+
+        /* Check the recent activities most recent post to see if it matches */
+        cy.visit('http://127.0.0.1:5000/activity')
+
+        cy.get('div#activity-feed').get('span').first().should('contain', 'Song: Hello')
+
+
+        /* Add another set of lyrics to a song */
+        cy.visit('http://127.0.0.1:5000/lyrics')
+
+        /* Clear all previous values */
+        cy.get('input').first().clear()
+        cy.get('.lyricsInputTest').clear()
+        cy.get('.lyricsTrackIDTest').clear()
+        cy.get('input#timestamps-input.lyricsTimestampsTest').clear()
+
+        /* Insert new values and post */
+        cy.get('input').first().type('Juicy')
+        cy.get('.lyricsInputTest').type('Yea, this album is dedicated to all the teachers that told me I\'d never amount to nothing.')
+        cy.get('.lyricsTrackIDTest').type('5ByAIlEEnxYdvpnezg7HTX')
+
+        cy.get('form').submit();
+
+        /* stops race case from failing test case */
+        cy.wait(3000)
+
+        /* Check the recent activities most recent post to see if it matches */
+        cy.visit('http://127.0.0.1:5000/activity')
+
+        cy.get('div#activity-feed').get('span').first().should('contain', 'Song: Juicy')
+
+        /* Overkill test to ensure most recent post is not actually second newest post */
+        cy.get('div#activity-feed').get('span').first().should('not.contain', '-- Song: Hello')
+
+
+        /* Add 3rd set of lyrics to a song (For good measure) */
+        cy.visit('http://127.0.0.1:5000/lyrics')
+
+        /* Clear all previous values */
+        cy.get('input').first().clear()
+        cy.get('.lyricsInputTest').clear()
+        cy.get('.lyricsTrackIDTest').clear()
+        cy.get('input#timestamps-input.lyricsTimestampsTest').clear()
+
+        /* Insert new values and post */
+        cy.get('input').first().type('Love Train')
+        cy.get('.lyricsInputTest').type('People all over the world Join hands')
+        cy.get('.lyricsTrackIDTest').type('28285KFbyCq8sJofn58qlD')
+
+        cy.get('form').submit();
+
+        /* Check the recent activities most recent post to see if it matches */
+        cy.visit('http://127.0.0.1:5000/activity')
+
+        cy.get('div#activity-feed').get('span').first().should('contain', 'Song: Love Train')
+
+        /* Overkill test to ensure most recent post is not actually second newest post */
+        cy.get('div#activity-feed').get('span').first().should('not.contain', '-- Song: Juicy')
+
+        cy.wait(5000)
+    })
+
+    it('Test Case 025 / 026: User\'s own profile page and other users\' profile pages are updated correctly when statistics change', function () {
+
+        /* Ensure user has Spotify token */
+        cy.visit('http://127.0.0.1:5000')
+        cy.get('a').contains('Login').click()
+
+        cy.visit('http://127.0.0.1:5000/users')
+        
+        /* Clear credentials */
+        cy.get('input.newUserTest').clear()
+        cy.get('input.emailTest').clear()
+
+        /* Set default credentials */
+        cy.get('input.newUserTest').type('LiveLyricsTest1')
+        cy.get('input.emailTest').type('LiveLyricsHelp1@gmail.com')
+
+        cy.get('form#editForm').first().submit()
+
+        /* Check that the default credentials were set */
+        cy.visit('http://127.0.0.1:5000/users')
+        cy.get('input').first().type('LiveLyricsTest1')
+        cy.get('form').first().submit()
+
+        cy.get('div').contains('LiveLyricsTest1').click()
+        cy.contains('Username: LiveLyricsTest1')
+        cy.contains('E-mail: LiveLyricsHelp1@gmail.com')
+        cy.contains('Birthdate:')
+        cy.contains('Number of Contributions:')
+
+        /* Change default credentials */
+        cy.visit('http://127.0.0.1:5000/users')
+        cy.get('input.newUserTest').clear()
+        cy.get('input.emailTest').clear()
+
+        cy.get('input.newUserTest').type('LiveLyricsTest2')
+        cy.get('input.emailTest').type('LiveLyricsHelp2@gmail.com')
+
+        cy.get('form#editForm').first().submit()
+
+        /* Check that the changes were saved */
+        cy.visit('http://127.0.0.1:5000/users')
+        cy.get('input').first().type('LiveLyricsTest2')
+        cy.get('form').first().submit()
+
+        cy.get('div').contains('LiveLyricsTest2').click()
+        cy.contains('Username: LiveLyricsTest2')
+        cy.contains('E-mail: LiveLyricsHelp2@gmail.com')
+        cy.contains('Birthdate:')
+        cy.contains('Number of Contributions:')
 
     })
 
