@@ -1,7 +1,7 @@
 import json
 import requests
 import base64
-import urllib
+import urllib.parse
 
 #  Client Keys
 CLIENT_ID = "91893049176646de8ec8994ea5cd0b27"
@@ -36,11 +36,14 @@ def get_tokens(auth_token):
     payload = {
         "grant_type": "authorization_code",
         "code": str(auth_token),
-        "redirect_uri": REDIRECT_URI
+        "redirect_uri": REDIRECT_URI,
+        "client_secret": CLIENT_SECRET,
+        "client_id": CLIENT_ID
     }
-    base64encoded = base64.b64encode("{}:{}".format(CLIENT_ID, CLIENT_SECRET))
-    headers = {"Authorization": "Basic {}".format(base64encoded)}
-    post_response = requests.post(SPOTIFY_TOKEN_URL, data=payload, headers=headers)
+    #base64encoded = base64.b64encode("{}:{}".format(CLIENT_ID, CLIENT_SECRET))
+    #headers = {"Authorization": "Basic {}".format(base64encoded)}
+    #post_response = requests.post(SPOTIFY_TOKEN_URL, data=payload, headers=headers)
+    post_response = requests.post(SPOTIFY_TOKEN_URL, data=payload)
     return json.loads(post_response.text)
 
 
@@ -99,13 +102,13 @@ def get_current_track(access_token):
     except requests.exeptions.RequestException as e:
         return {"error": e}
 
-    if current_playing_object.status_code == 204 or 200:
-        return {"error": {"message": "NO CONTENT"}}
+    #if current_playing_object.status_code == 204 or 200:
+        #return {"error": {"message": "NO CONTENT"}}
 
     return json.loads(current_playing_object.text)
 
 
 def get_auth_url():
-    url_args = "&".join(["{}={}".format(key, urllib.quote(val)) for key, val in auth_query_parameters.iteritems()])
+    url_args = "&".join(["{}={}".format(key, urllib.parse.quote(val)) for key, val in auth_query_parameters.items()])
     auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
     return auth_url

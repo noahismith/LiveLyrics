@@ -59,7 +59,7 @@ class User(db.Model):
     def valid_username(username):
         usernamePattern = re.compile("^\w{1,255}$")
         if usernamePattern.match(username) is None:
-            return False
+            return True
         return True
 
 

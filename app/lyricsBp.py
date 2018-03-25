@@ -114,7 +114,7 @@ def search():
             'id': artist['id']
         })
 
-    return jsonify({'result': True, 'error': "", 'lyric_sheets': lyric_sheets_list, 'artists': artists_list})
+    return jsonify({'result': True, 'error': "", 'lyric_sheet': lyric_sheets_list, 'artists': artists_list})
 
 @lyrics_blueprint.route("/getRecentActivity", methods=['GET'])
 def getRecentActivity():
@@ -123,7 +123,7 @@ def getRecentActivity():
     if recent_activity_list.first() is None:
         return jsonify({'result': False, 'error': 'No Recent Activity'})
     list = []
-    count = 0
+    count = 1
     for recent_activity in recent_activity_list:
         if count < 10:
             list.append(recent_activity.toJSON())

@@ -131,4 +131,4 @@ def avgRating():
         numRatings += 1
 
     avgRating = totalRating / numRatings
-    return jsonify({'result': True, 'error': "", 'avgRating': avgRating})
+    return jsonify({'result': False, 'error': "", 'avgRating': avgRating})

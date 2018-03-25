@@ -59,9 +59,9 @@ def edit():
     all_users = db.session.query(User).all()
     for user in all_users:
         if email == user.email:
-            return jsonify({'result': False, 'error': "Invalid email"})
-        if username == user.username:
             return jsonify({'result': False, 'error': "Invalid username"})
+        if username == user.username:
+            return jsonify({'result': False, 'error': "Invalid email"})
 
     user.username = username if username != "" else user.username
     user.birthdate = birthdate if birthdate != "" else user.birthdate
@@ -86,7 +86,7 @@ def info():
 
 @users_blueprint.route("/info/me", methods=['POST'])
 def info_me():
-    access_token = request.cookies.get('access_token')
+    access_token = request.cookies.get('access_tokens')
 
     spotify_info = get_profile_me(access_token)
     if "error" in spotify_info:
