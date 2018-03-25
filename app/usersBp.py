@@ -127,7 +127,7 @@ def getUser():
 
 
 
-@ users_blueprint.route("/search", methods=['POST'])
+@users_blueprint.route("/search", methods=['POST'])
 def search_users():
     payload = json.loads(request.data.decode())
     search_string = payload['search_string']

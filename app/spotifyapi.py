@@ -1,7 +1,7 @@
 import json
 import requests
 import base64
-import urllib.parse
+import urllib
 
 #  Client Keys
 CLIENT_ID = "91893049176646de8ec8994ea5cd0b27"
@@ -36,14 +36,14 @@ def get_tokens(auth_token):
     payload = {
         "grant_type": "authorization_code",
         "code": str(auth_token),
-        "redirect_uri": REDIRECT_URI,
-        "client_secret": CLIENT_SECRET,
-        "client_id": CLIENT_ID
+        "redirect_uri": REDIRECT_URI
+        #"client_secret": CLIENT_SECRET,
+        #"client_id": CLIENT_ID
     }
-    #base64encoded = base64.b64encode("{}:{}".format(CLIENT_ID, CLIENT_SECRET))
-    #headers = {"Authorization": "Basic {}".format(base64encoded)}
-    #post_response = requests.post(SPOTIFY_TOKEN_URL, data=payload, headers=headers)
-    post_response = requests.post(SPOTIFY_TOKEN_URL, data=payload)
+    base64encoded = base64.b64encode("{}:{}".format(CLIENT_ID, CLIENT_SECRET))
+    headers = {"Authorization": "Basic {}".format(base64encoded)}
+    post_response = requests.post(SPOTIFY_TOKEN_URL, data=payload, headers=headers)
+    #post_response = requests.post(SPOTIFY_TOKEN_URL, data=payload)
     return json.loads(post_response.text)
 
 
@@ -109,6 +109,6 @@ def get_current_track(access_token):
 
 
 def get_auth_url():
-    url_args = "&".join(["{}={}".format(key, urllib.parse.quote(val)) for key, val in auth_query_parameters.items()])
+    url_args = "&".join(["{}={}".format(key, urllib.quote(val)) for key, val in auth_query_parameters.iteritems()])
     auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
     return auth_url
