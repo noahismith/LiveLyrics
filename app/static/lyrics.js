@@ -88,9 +88,10 @@ $( '#songEditForm').submit(function(event) {
     .done(function( msg ) {
       console.log(JSON.stringify(msg));
 
-      if (msg.result) {
+      if (!msg.result) {
         alert("Success!")
-      } else {
+      } 
+      if (msg.result) {
         alert("Error! " + msg.error)
       }
       

@@ -127,7 +127,7 @@ def avgRating():
     totalRating = 0
     numRatings = 0
     for rating in lyricRatings:
-        totalRating += rating.rating
+        totalRating = rating.rating
         numRatings += 1
 
     avgRating = totalRating / numRatings
