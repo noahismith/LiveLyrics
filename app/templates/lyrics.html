@@ -113,7 +113,7 @@ label.star:before {
 	
   </form>
   
-	<button type="button" style="margin-left: 100px" onclick="sendRating()">Submit Rating</button>
+	<button type="button" style="margin-left: 100px" onclick="getRating()">Submit Rating</button>
  
 </div>
 <script>
@@ -137,19 +137,19 @@ label.star:before {
 						var rating = result.avgRating;
 						console.log("Average rating of " + rating + " found");
 						if (rating > 0) {
-							document.getElementsByName('rating')[4].checked = true;
+							document.getElementsByName('rating')[0].checked = true;
 						}
 						if (rating > 1) {
-							document.getElementsByName('rating')[3].checked = true;
+							document.getElementsByName('rating')[1].checked = true;
 						}
 						if (rating> 2) {
 							document.getElementsByName('rating')[2].checked = true;
 						}
 						if (rating> 3) {
-							document.getElementsByName('rating')[1].checked = true;
+							document.getElementsByName('rating')[3].checked = true;
 						}
 						if (rating > 4) {
-							document.getElementsByName('rating')[0].checked = true;
+							document.getElementsByName('rating')[4].checked = true;
 						}						
 					}
 				}
@@ -175,7 +175,7 @@ label.star:before {
 					console.log(result);
 					var userid = result.User.username;
 					console.log(userid);	
-					var trackid = document.getElementsByName('spotify_track_id')[0].value;	
+					var trackid = document.getElementsByName('spotify_track_id')[0];	
 					console.log(trackid);
 						
 					for (i = 0; i < document.getElementsByName('rating').length; i++) {
@@ -203,7 +203,7 @@ label.star:before {
 							http2.open("POST", 'http://127.0.0.1:5000/lyricrating/rate', true);
 							http2.setRequestHeader("Content-type", "application/json");
 							console.log(http2);
-							http2.send(JSON.stringify(data2, null, '\t') );	
+							http2.send(JSON.stringify(data, null, '\t') );	
 							
 								
 						
@@ -214,7 +214,7 @@ label.star:before {
 					return;
 				}
 			}
-			http.open("POST", 'http://127.0.0.1:5000/users/getUser', true);
+			http.open("GET", 'http://127.0.0.1:5000/users/getUser', true);
 			http.setRequestHeader("Content-type", "application/json");
 			var token = document.getElementsByName('access_token')[0].value;
 			console.log(token);
