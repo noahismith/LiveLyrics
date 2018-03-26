@@ -33,7 +33,7 @@ def edit():
     lyrics_page.spotify_track_id = spotify_track_id
     lyrics_page.lyrics = lyrics
     lyrics_page.timestamps = timestamps
-    user.num_of_contributions = user.num_of_contributions + 1
+    user.num_of_contributions = user.num_of_contributions + 5
     db.session.commit()
 	
     new_recent_activity = RecentActivity(spotify_track_id, spotify_id)
@@ -99,9 +99,8 @@ def search():
         if lyrics_page is None:
             artist = get_artists_by_track(track)
             lyrics_page = Lyrics(track_name, artist, spotify_track_id, "", "")
-            lyrics_page.save()
 
-    lyric_sheets = db.session.query(Lyrics).filter(Lyrics.songtitle.like("%{}%".format(search_string))).all()
+    lyric_sheets = db.session.query(Lyrics).filter(Lyrics.songtitle.like("%{}%".format("hello"))).all()
 
     lyric_sheets_list = []
     for lyric_sheet in lyric_sheets:
@@ -114,7 +113,7 @@ def search():
             'id': artist['id']
         })
 
-    return jsonify({'result': True, 'error': "", 'lyric_sheets': lyric_sheets_list, 'artists': artists_list})
+    return jsonify({'result': True, 'error': "", 'lyric_sheet': lyric_sheets_list, 'artists': artists_list})
 
 @lyrics_blueprint.route("/getRecentActivity", methods=['GET'])
 def getRecentActivity():
@@ -123,7 +122,7 @@ def getRecentActivity():
     if recent_activity_list.first() is None:
         return jsonify({'result': False, 'error': 'No Recent Activity'})
     list = []
-    count = 0
+    count = 1
     for recent_activity in recent_activity_list:
         if count < 10:
             list.append(recent_activity.toJSON())

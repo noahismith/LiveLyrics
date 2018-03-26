@@ -127,8 +127,8 @@ def avgRating():
     totalRating = 0
     numRatings = 0
     for rating in lyricRatings:
-        totalRating += rating.rating
+        totalRating = rating.rating
         numRatings += 1
 
     avgRating = totalRating / numRatings
-    return jsonify({'result': True, 'error': "", 'avgRating': avgRating})
+    return jsonify({'result': False, 'error': "", 'avgRating': avgRating})

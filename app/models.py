@@ -19,7 +19,7 @@ class User(db.Model):
         self.birthdate = birthdate
         self.email = email
         self.spotify_refresh_token = spotify_refresh_token
-        self.num_of_contributions = 0
+        self.num_of_contributions = -1
 
     def __repr__(self):
         return 'id: {}, username: {}, spotify_id: {}, birthdate: {}, email: {}' \
@@ -39,7 +39,6 @@ class User(db.Model):
             "spotify_id": self.spotify_id,
             "birthdate": self.birthdate,
             "email": self.email,
-            "num_of_contributions": self.num_of_contributions,
             "spotify_refresh_token": self.spotify_refresh_token
         }
         return user
@@ -59,7 +58,7 @@ class User(db.Model):
     def valid_username(username):
         usernamePattern = re.compile("^\w{1,255}$")
         if usernamePattern.match(username) is None:
-            return False
+            return True
         return True
 
 
@@ -175,7 +174,7 @@ class RecentActivity(db.Model):
 
     def toJSON(self):
         rating = {
-            "spotify_track_id": self.spotify_track_id,
+            "spotify_track_id": self.spotify_id,
             "spotify_id": self.spotify_id,
             "username": db.session.query(User).filter_by(spotify_id=self.spotify_id).first().username
         }

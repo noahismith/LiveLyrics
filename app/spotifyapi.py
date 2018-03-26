@@ -37,10 +37,13 @@ def get_tokens(auth_token):
         "grant_type": "authorization_code",
         "code": str(auth_token),
         "redirect_uri": REDIRECT_URI
+        #"client_secret": CLIENT_SECRET,
+        #"client_id": CLIENT_ID
     }
     base64encoded = base64.b64encode("{}:{}".format(CLIENT_ID, CLIENT_SECRET))
     headers = {"Authorization": "Basic {}".format(base64encoded)}
     post_response = requests.post(SPOTIFY_TOKEN_URL, data=payload, headers=headers)
+    #post_response = requests.post(SPOTIFY_TOKEN_URL, data=payload)
     return json.loads(post_response.text)
 
 
@@ -99,8 +102,8 @@ def get_current_track(access_token):
     except requests.exeptions.RequestException as e:
         return {"error": e}
 
-    if current_playing_object.status_code == 204 or 200:
-        return {"error": {"message": "NO CONTENT"}}
+    #if current_playing_object.status_code == 204 or 200:
+        #return {"error": {"message": "NO CONTENT"}}
 
     return json.loads(current_playing_object.text)
 

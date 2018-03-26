@@ -39,7 +39,7 @@ var jsonob;
   console.log(jsonob)
 
   $.ajax({
-        type: "POST",
+        type: "GET",
         url: "http://127.0.0.1:5000/lyrics/lyrics_page",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -88,9 +88,10 @@ $( '#songEditForm').submit(function(event) {
     .done(function( msg ) {
       console.log(JSON.stringify(msg));
 
-      if (msg.result) {
+      if (!msg.result) {
         alert("Success!")
-      } else {
+      } 
+      if (msg.result) {
         alert("Error! " + msg.error)
       }
       
