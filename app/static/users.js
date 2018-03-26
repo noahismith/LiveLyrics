@@ -1,7 +1,6 @@
 $( "#userForm" ).submit(function( event ) {
  
   // Stop form from submitting normally
-  event.preventDefault();
  
   // Get some values from elements on the page:
   
@@ -29,8 +28,6 @@ $( "#userForm" ).submit(function( event ) {
       }
       //POPULATE PRETTY HTML
       //make it elegant
-
-      $('#searchResults').empty()
       
       var result = $('<div/>')
       var resultLink = $('<a/>').attr('href', "/")
