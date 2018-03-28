@@ -12,7 +12,7 @@ class Development(Config):
 class Production(Config):
     DEBUG = False
     SQLALCHEMY_ECHO = False
-    CLIENT_URL = "http://18.219.32.232"
+    CLIENT_URL = "http://18.188.140.44"
 
 
 app_config = {

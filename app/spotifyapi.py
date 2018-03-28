@@ -4,8 +4,8 @@ import base64
 import urllib
 
 #  Client Keys
-CLIENT_ID = "91893049176646de8ec8994ea5cd0b27"
-CLIENT_SECRET = "9ff3c3b4f73b4420b4243f354cb1a525"
+CLIENT_ID = "7ba9cd74b12549a380a2c3e11ec093c7"
+CLIENT_SECRET = "9160980bb1fa4be9bb5275247304229b"
 
 # URLS
 SPOTIFY_AUTH_URL = "https://accounts.spotify.com/authorize"
@@ -16,7 +16,7 @@ SPOTIFY_API_URL = "{}/{}".format(SPOTIFY_API_BASE_URL, API_VERSION)
 
 # Authorization parameters
 # TODO: assign CLIENT_SIDE_URL based on config file
-CLIENT_SIDE_URL = "http://127.0.0.1:5000"
+CLIENT_SIDE_URL = "http://18.188.140.44"
 REDIRECT_URI = CLIENT_SIDE_URL + "/login"
 SCOPE = "streaming user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-email user-read-birthdate"
 STATE = ""
