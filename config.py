@@ -1,6 +1,6 @@
 class Config(object):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:cxYv23gm9PjYfMLtWd@livelyrics.cnfthxsaxcoe.us-east-2.rds.amazonaws.com/livelyrics'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:cxYv23gm9PjYfMLtWd@livelyricsbugged.cnfthxsaxcoe.us-east-2.rds.amazonaws.com/livelyricsbugged'
 
 
 class Development(Config):
