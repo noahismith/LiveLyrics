@@ -8,7 +8,7 @@ var jsonob;
 
   $.ajax({
         type: "POST",
-        url: "http://127.0.0.1:5000/lyrics/lyrics_page",
+        url: "http://18.219.242.5/lyrics/lyrics_page",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')
@@ -40,7 +40,7 @@ var jsonob;
 
   $.ajax({
         type: "GET",
-        url: "http://127.0.0.1:5000/lyrics/lyrics_page",
+        url: "http://18.219.242.5/lyrics/lyrics_page",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')
@@ -80,7 +80,7 @@ $( '#songEditForm').submit(function(event) {
 
   $.ajax({
         type: "POST",
-        url: "http://127.0.0.1:5000/lyrics/edit",
+        url: "http://18.219.242.5/lyrics/edit",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')

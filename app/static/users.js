@@ -15,7 +15,7 @@ $( "#userForm" ).submit(function( event ) {
     console.log(urltar)
     $.ajax({
         method: "POST",
-        url: "http://127.0.0.1:5000/users/info",
+        url: "http://18.219.242.5/users/info",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')
@@ -88,7 +88,7 @@ $( '#editForm').submit(function(event) {
 
   $.ajax({
         type: "POST",
-        url: "http://127.0.0.1:5000/users/edit",
+        url: "http://18.219.242.5/users/edit",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')
