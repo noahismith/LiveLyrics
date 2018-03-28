@@ -15,7 +15,7 @@ $( '#songsForm').submit(function(event) {
 
   $.ajax({
         type: "POST",
-        url: "http://127.0.0.1:5000/lyrics/search",
+        url: "http://18.188.140.44/lyrics/search",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')
@@ -73,7 +73,7 @@ $('#sync-link').on('click', function (event) {
 
   $.ajax({
         method: "POST",
-        url: "http://127.0.0.1:5000/currSong",
+        url: "http://18.188.140.44/currSong",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')

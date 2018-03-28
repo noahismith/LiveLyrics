@@ -8,7 +8,7 @@ $('#content').append(activityFeedDiv)
 
 $.ajax({
         method: "GET",
-        url: "http://127.0.0.1:5000/lyrics/getRecentActivity",
+        url: "http://18.188.140.44/lyrics/getRecentActivity",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')
@@ -25,7 +25,7 @@ $.ajax({
 
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:5000/lyrics/lyrics_page",
+            url: "http://18.188.140.44/lyrics/lyrics_page",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(jsonob, null, '\t')
