@@ -86,7 +86,7 @@ def info():
 
 @users_blueprint.route("/info/me", methods=['POST'])
 def info_me():
-    access_token = request.cookies.get('access_tokens')
+    access_token = request.cookies.get('access_token')
 
     spotify_info = get_profile_me(access_token)
     if "error" in spotify_info:
