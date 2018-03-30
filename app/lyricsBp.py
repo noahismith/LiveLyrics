@@ -75,7 +75,6 @@ def getAllLyricPages():
         lyric_pages_list.append(lyric_page.toJSON())
     return jsonify({'result': True, 'error': "", 'lyric_pages': lyric_pages_list})
 
-
 @lyrics_blueprint.route("/search", methods=['POST'])
 def search():
     payload = json.loads(request.data.decode())
@@ -99,8 +98,9 @@ def search():
         if lyrics_page is None:
             artist = get_artists_by_track(track)
             lyrics_page = Lyrics(track_name, artist, spotify_track_id, "", "")
+            lyrics_page.save()
 
-    lyric_sheets = db.session.query(Lyrics).filter(Lyrics.songtitle.like("%{}%".format("hello"))).all()
+    lyric_sheets = db.session.query(Lyrics).filter(Lyrics.songtitle.like("%{}%".format(search_string))).all()
 
     lyric_sheets_list = []
     for lyric_sheet in lyric_sheets:
