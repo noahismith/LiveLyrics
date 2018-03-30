@@ -174,7 +174,7 @@ class RecentActivity(db.Model):
 
     def toJSON(self):
         rating = {
-            "spotify_track_id": self.spotify_id,
+            "spotify_track_id": self.spotify_track_id,
             "spotify_id": self.spotify_id,
             "username": db.session.query(User).filter_by(spotify_id=self.spotify_id).first().username
         }
