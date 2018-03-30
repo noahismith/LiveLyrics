@@ -113,7 +113,7 @@ label.star:before {
 	
   </form>
   
-	<button type="button" style="margin-left: 100px" onclick="getRating()">Submit Rating</button>
+	<button type="button" style="margin-left: 100px" onclick="sendRating()">Submit Rating</button>
  
 </div>
 <script>
@@ -175,7 +175,7 @@ label.star:before {
 					console.log(result);
 					var userid = result.User.spotify_id;
 					console.log(userid);	
-					var trackid = document.getElementsByName('spotify_track_id')[0];	
+					var trackid = document.getElementsByName('spotify_track_id')[0].value;	
 					console.log(trackid);
 						
 					for (i = 0; i < document.getElementsByName('rating').length; i++) {
@@ -203,7 +203,7 @@ label.star:before {
 							http2.open("POST", 'http://18.219.242.5/lyricrating/rate', true);
 							http2.setRequestHeader("Content-type", "application/json");
 							console.log(http2);
-							http2.send(JSON.stringify(data, null, '\t') );	
+							http2.send(JSON.stringify(data2, null, '\t') );	
 							
 								
 						
@@ -214,7 +214,7 @@ label.star:before {
 					return;
 				}
 			}
-			http.open("GET", 'http://18.219.242.5/users/getUser', true);
+			http.open("POST", 'http://18.219.242.5/users/getUser', true);
 			http.setRequestHeader("Content-type", "application/json");
 			var token = document.getElementsByName('access_token')[0].value;
 			console.log(token);
