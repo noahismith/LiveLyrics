@@ -51,14 +51,14 @@ class User(db.Model):
     def valid_email(email):
         emailPattern = re.compile("[^@]+@[^@]+\.[^@]+")
         if emailPattern.match(email) is None:
-            return False
+            return True
         return True
 
     @staticmethod
     def valid_username(username):
         usernamePattern = re.compile("^\w{1,255}$")
         if usernamePattern.match(username) is None:
-            return True
+            return False
         return True
 
 

@@ -173,7 +173,7 @@ label.star:before {
 				if (http.readyState == XMLHttpRequest.DONE) {
 					var result = JSON.parse(http.responseText);
 					console.log(result);
-					var userid = result.User.username;
+					var userid = result.User.spotify_id;
 					console.log(userid);	
 					var trackid = document.getElementsByName('spotify_track_id')[0];	
 					console.log(trackid);

@@ -113,7 +113,7 @@ def search():
             'id': artist['id']
         })
 
-    return jsonify({'result': True, 'error': "", 'lyric_sheet': lyric_sheets_list, 'artists': artists_list})
+    return jsonify({'result': True, 'error': "", 'lyric_sheets': lyric_sheets_list, 'artists': artists_list})
 
 @lyrics_blueprint.route("/getRecentActivity", methods=['GET'])
 def getRecentActivity():
