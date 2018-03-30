@@ -39,7 +39,7 @@ var jsonob;
   console.log(jsonob)
 
   $.ajax({
-        type: "GET",
+        type: "POST",
         url: "http://18.219.242.5/lyrics/lyrics_page",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
