@@ -99,7 +99,7 @@ def get_current_track(access_token):
     except requests.exeptions.RequestException as e:
         return {"error": e}
 
-    if current_playing_object.status_code == 204 or 200:
+    if current_playing_object.status_code == 204:
         return {"error": {"message": "NO CONTENT"}}
 
     return json.loads(current_playing_object.text)

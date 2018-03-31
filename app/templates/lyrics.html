@@ -75,7 +75,7 @@ label.star:before {
       
       <div id="content">
   
-        <form action="http://18.188.140.44:5000/lyrics/edit" id="songEditForm">
+        <form action="http://18.188.140.44/lyrics/edit" id="songEditForm">
           <div class="form_settings">
 
             <p style="padding-bottom: 4px"><span>New song name:</span><input id="song-title-input" type="text" name="songtitle"><br></p>
@@ -154,7 +154,7 @@ label.star:before {
 					}
 				}
 			}
-			http.open("POST", 'http://18.188.140.44:5000/lyricrating/avgRating', true);
+			http.open("POST", 'http://18.188.140.44/lyricrating/avgRating', true);
 			http.setRequestHeader("Content-type", "application/json");
 			console.log(http);
 			http.send(JSON.stringify(data, null, '\t') );
@@ -173,7 +173,7 @@ label.star:before {
 				if (http.readyState == XMLHttpRequest.DONE) {
 					var result = JSON.parse(http.responseText);
 					console.log(result);
-					var userid = result.User.username;
+					var userid = result.User.spotify_id;
 					console.log(userid);	
 					var trackid = document.getElementsByName('spotify_track_id')[0].value;	
 					console.log(trackid);
@@ -200,7 +200,7 @@ label.star:before {
 							}
 							
 							
-							http2.open("POST", 'http://18.188.140.44:5000/lyricrating/rate', true);
+							http2.open("POST", 'http://18.188.140.44/lyricrating/rate', true);
 							http2.setRequestHeader("Content-type", "application/json");
 							console.log(http2);
 							http2.send(JSON.stringify(data2, null, '\t') );	
@@ -214,7 +214,7 @@ label.star:before {
 					return;
 				}
 			}
-			http.open("POST", 'http://18.188.140.44:5000/users/getUser', true);
+			http.open("POST", 'http://18.188.140.44/users/getUser', true);
 			http.setRequestHeader("Content-type", "application/json");
 			var token = document.getElementsByName('access_token')[0].value;
 			console.log(token);

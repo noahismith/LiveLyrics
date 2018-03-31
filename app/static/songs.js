@@ -84,14 +84,12 @@ $('#sync-link').on('click', function (event) {
       localStorage.setItem("spotify_track_id", msg.lyric_page.spotify_track_id)
       console.log(localStorage)
 
-
+	window.location.href = "lyrics"
     })
     .fail(function( jqXHR, textStatus ) {
-      alert( "Request failed: " + textStatus );
-      event.preventDefault()
-    //});
-
-    
+      console.log(jqXHR)
+      alert( " SYNC LINK Request failed: " + textStatus );
+      //event.preventDefault()
   });
 
 })
