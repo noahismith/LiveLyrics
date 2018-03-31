@@ -5,7 +5,7 @@
     <meta name="description" content="Real Time Lyrics" />
     <meta name="keywords" content="website keywords, website keywords" />
     <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
-    <link rel="stylesheet" type="text/css" href="../static/style.css" title="style" />
+    <link rel="stylesheet" type="text/css" href="#" title="style" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="../static/login.js"></script>
 </head>
@@ -23,12 +23,12 @@
       <div id="menubar">
         <ul id="menu">
 
-          <li class=><a href="{{ url_for('views.index') }}">Home</a></li>
-          <li><a href="{{ url_for('views.users') }}">Users</a></li>
-          <li><a href="{{ url_for('views.songs') }}">Songs</a></li>
-          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link" target="_blank">Contact Us</a></li>
+          <li class=><a href="#">Home</a></li>
+          <li><a href="{{ url_for('views.songs') }}">Users</a></li>
+          <li><a href="{{ url_for('views.users') }}">Songs</a></li>
+          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link" >Contact Us</a></li>
             <li class="selected"><a href="{{ url_for('views.activity')}}">Recent Activity</a></li>
-
+            <li><a id = "loginMenu" href="#">Login</a></li>
         </ul>
       </div>
     </div>

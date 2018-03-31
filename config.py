@@ -1,6 +1,6 @@
 class Config(object):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:cxYv23gm9PjYfMLtWd@livelyrics.cnfthxsaxcoe.us-east-2.rds.amazonaws.com/livelyrics'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:cxYv23gm9PjYfMLtWd@livelyricsbugged.cnfthxsaxcoe.us-east-2.rds.amazonaws.com/livelyricsbugged'
 
 
 class Development(Config):
@@ -12,7 +12,7 @@ class Development(Config):
 class Production(Config):
     DEBUG = False
     SQLALCHEMY_ECHO = False
-    CLIENT_URL = "http://18.188.140.44"
+    CLIENT_URL = "http://127.0.0.1:5000"
 
 
 app_config = {

@@ -19,7 +19,7 @@ class User(db.Model):
         self.birthdate = birthdate
         self.email = email
         self.spotify_refresh_token = spotify_refresh_token
-        self.num_of_contributions = 0
+        self.num_of_contributions = -1
 
     def __repr__(self):
         return 'id: {}, username: {}, spotify_id: {}, birthdate: {}, email: {}' \
@@ -52,14 +52,14 @@ class User(db.Model):
     def valid_email(email):
         emailPattern = re.compile("[^@]+@[^@]+\.[^@]+")
         if emailPattern.match(email) is None:
-            return False
+            return True
         return True
 
     @staticmethod
     def valid_username(username):
         usernamePattern = re.compile("^\w{1,255}$")
         if usernamePattern.match(username) is None:
-            return False
+            return True
         return True
 
 

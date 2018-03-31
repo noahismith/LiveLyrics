@@ -24,10 +24,10 @@
       <div id="menubar">
         <ul id="menu">
  
-		  <li class="selected"><a href="{{ url_for('views.index') }}">Home</a></li>
-          <li><a href="{{ url_for('views.users') }}">Users</a></li>
-          <li><a href="{{ url_for('views.songs') }}">Songs</a></li>
-          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link" target="_blank">Contact Us</a></li>
+		  <li class="selected"><a href="#">Home</a></li>
+           <li><a href="{{ url_for('views.songs') }}">Users</a></li>
+          <li><a href="{{ url_for('views.users') }}">Songs</a></li>
+          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link">Contact Us</a></li>
              <li><a href="{{ url_for('views.activity')}}">Recent Activity</a></li>
         </ul>
       </div>
@@ -37,7 +37,7 @@
       
       <div id="content">
   
-          <form action="http://18.188.140.44/users/info" id="userForm">
+          <form action="http://127.0.0.1:5000/users/info" id="userForm">
             <div class="form_settings">
               <p><span>Search for users:</span><input type="text" name="username"><br></p>
               <p style="padding-top: 15px"><span>&nbsp;</span><input class="submit" type="submit" name="userSearch_submitted" value="submit" size="20"/></p>
@@ -52,7 +52,7 @@
 
 
       <div id="editFormID">
-        <form action="http://18.188.140.44/users/edit" id="editForm">
+        <form action="http://127.0.0.1:5000/users/edit" id="editForm">
           <div class="form_settings">
             <p> Edit your username! Inputs in the following fields will become your new parameters when you submit</p><br>
             <p style="padding-bottom: 4px"><span>New Username:</span><input type="text" name="username" class="newUserTest"><br></p>

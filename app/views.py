@@ -75,6 +75,7 @@ def get_current_track_id():
    if lyrics_page is None:
        track_name = track['name']
        artist = get_artists_by_track(track)
-       lyrics_page = Lyrics(track_name, artist, spotify_track_id, "", "")
-       lyrics_page.save()    
+       lyrics_page = Lyrics(spotify_track_id, artist, track_name, "", "")
+       lyrics_page.save()
+
    return jsonify({'result': True, 'error': "", 'lyric_page': lyrics_page.toJSON()})

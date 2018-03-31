@@ -33,7 +33,7 @@ def edit():
     lyrics_page.spotify_track_id = spotify_track_id
     lyrics_page.lyrics = lyrics
     lyrics_page.timestamps = timestamps
-    user.num_of_contributions = user.num_of_contributions + 1
+    user.num_of_contributions = user.num_of_contributions - 1
     db.session.commit()
 	
     new_recent_activity = RecentActivity(spotify_track_id, spotify_id)
@@ -125,9 +125,10 @@ def getRecentActivity():
     list = []
     count = 0
     for recent_activity in recent_activity_list:
-        if count < 10:
+        if count < 9:
             list.append(recent_activity.toJSON())
             count = count + 1
+    list.reverse()
     return jsonify({'result': True, 'error': '', 'recent_activity': list})
 	
 

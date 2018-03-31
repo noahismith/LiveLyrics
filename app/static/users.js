@@ -16,7 +16,7 @@ $( "#userForm" ).submit(function( event ) {
     console.log(urltar)
     $.ajax({
         method: "POST",
-        url: "http://18.188.140.44/users/info",
+        url: "http://127.0.0.1:5000/users/getAll",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')
@@ -30,36 +30,40 @@ $( "#userForm" ).submit(function( event ) {
       //POPULATE PRETTY HTML
       //make it elegant
 
-      $('#searchResults').empty()
-      
-      var result = $('<div/>')
-      var resultLink = $('<a/>').attr('href', "/")
-      resultLink.text(msg.user.username)
-      resultLink.click(function (event) {
-        event.preventDefault()
 
-        var usernameSpan = $('<span/>').text("Username: " + msg.user.username)
-        var emailSpan = $('<span/>').text(" E-mail: " + msg.user.email)
-        var birthdateSpan = $('<span/>').text("Birthdate: " + msg.user.birthdate)
-        var contributionsSpan = $('<span/>').text("Number of Contributions: " + msg.user.num_of_contributions)
 
-        $('.user-box').empty()
-        $('.user-box').show()
 
-        $('.user-box')
-        .append(usernameSpan)
-        .append("<br>")
-        .append(emailSpan)
-        .append("<br>")
-        .append(birthdateSpan)
-        .append("<br>")
-        .append(contributionsSpan)
-      })
+      msg.users.forEach(function(element) {
+        var result = $('<div/>')
+        var resultLink = $('<a/>').attr('href', "/")
+        resultLink.text(element.username)
+        resultLink.click(function (event) {
+          event.preventDefault()
 
-      result.append(resultLink)
-      $('#searchResults').append(result)
+          var usernameSpan = $('<span/>').text("Username: " + element.username)
+          var emailSpan = $('<span/>').text(" E-mail: " + element.email)
+          var birthdateSpan = $('<span/>').text("Birthdate: " + element.birthdate)
+          var contributionsSpan = $('<span/>').text("Number of Contributions: " + element.num_of_contributions)
+
+          $('.user-box').empty()
+          $('.user-box').show()
+
+          $('.user-box')
+          .append(usernameSpan)
+          .append("<br>")
+          .append(emailSpan)
+          .append("<br>")
+          .append(birthdateSpan)
+          .append("<br>")
+          .append(contributionsSpan)
+        })
+
+        result.append(resultLink)
+        $('#searchResults').append(result)
+      }, this);
 
       $('#searchResults').append('<br>')
+      alert("Error!");
   
     })
     .fail(function( jqXHR, textStatus ) {
@@ -91,7 +95,7 @@ $( '#editForm').submit(function(event) {
 
   $.ajax({
         type: "POST",
-        url: "http://18.188.140.44/users/edit",
+        url: "http://127.0.0.1:5000/users/edit",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')

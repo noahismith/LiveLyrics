@@ -8,7 +8,7 @@ $('#content').append(activityFeedDiv)
 
 $.ajax({
         method: "GET",
-        url: "http://18.188.140.44/lyrics/getRecentActivity",
+        url: "http://127.0.0.1:5000/lyrics/getRecentActivity",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(jsonob, null, '\t')
@@ -21,11 +21,11 @@ $.ajax({
             "access_token": localStorage.getItem("access_token"),
             "spotify_track_id": element.spotify_track_id
         }
-        var activityDiv = $('<div/>').text("User: " + element.username)
+        var activityDiv = $('<div/>').text("User: " )
 
         $.ajax({
             type: "POST",
-            url: "http://18.188.140.44/lyrics/lyrics_page",
+            url: "http://127.0.0.1:5000/lyrics/lyrics_page",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(jsonob, null, '\t')

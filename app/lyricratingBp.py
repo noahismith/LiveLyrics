@@ -3,6 +3,7 @@ from app.spotifyapi import *
 from app import db
 from .models import *
 from sqlalchemy import and_
+import math
 
 lyricrating_blueprint = Blueprint('lyricrating', __name__)
 
@@ -15,6 +16,8 @@ def rate():
     rating = payload['rating']
     lyrics_id = payload['lyric_id']
     rater_id = payload['rater_id']
+
+    print(rating)
 
     lyric_sheet = db.session.query(Lyrics).filter_by(spotify_track_id=lyrics_id).first()
     rater = db.session.query(User).filter_by(spotify_id=rater_id).first()
@@ -124,11 +127,12 @@ def avgRating():
     if lyricRatings.first() is None:
 	    return jsonify({'result': False, 'error': "The requested lyrics page has no ratings."})
 		
-    totalRating = 0
-    numRatings = 0
+    totalRating = 0.0
+    numRatings = 0.0
     for rating in lyricRatings:
         totalRating += rating.rating
         numRatings += 1
 
     avgRating = totalRating / numRatings
+    avgRating = math.ceil(avgRating)
     return jsonify({'result': True, 'error': "", 'avgRating': avgRating})

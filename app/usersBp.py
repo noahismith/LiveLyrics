@@ -26,7 +26,7 @@ def login(access_token, refresh_token):
         user.spotify_refresh_token = refresh_token
         return
 
-    new_user = User(username, spotify_id, birthdate, email, refresh_token)
+    new_user = User(username, spotify_id, birthdate, email, refresh_token, )
     new_user.save()
     return
 
@@ -57,15 +57,16 @@ def edit():
         return jsonify({'result': False, 'error': "Invalid email"})
 
     all_users = db.session.query(User).all()
-    for user in all_users:
-        if email == user.email:
+    for user_i in all_users:
+        if email == user_i.email:
             return jsonify({'result': False, 'error': "Invalid email"})
-        if username == user.username:
+        if username == user_i.username:
             return jsonify({'result': False, 'error': "Invalid username"})
 
     user.username = username if username != "" else user.username
-    user.birthdate = birthdate if birthdate != "" else user.birthdate
+    user.birthdate = user.birthdate
     user.email = email if email != "" else user.email
+
     user.save()
 
     return jsonify({'result': True, 'error': ""})
@@ -124,7 +125,13 @@ def getUser():
 	return jsonify({'result': True, 'error': "", 'User': user.toJSON()})
 
 
-
+@users_blueprint.route("/getAll", methods=['POST'])
+def getUserAll():
+    users = User.get_all()
+    list = []
+    for user in users:
+        list.append(user.toJSON())
+    return jsonify({'result': True, 'error': "", 'users': list})
 
 
 @ users_blueprint.route("/search", methods=['POST'])

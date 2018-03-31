@@ -23,13 +23,13 @@
       <div id="menubar">
         <ul id="menu">
          
-          <li class="selected"><a href="{{ url_for('views.index') }}">Home</a></li>
-          <li><a href="{{ url_for('views.users') }}">Users</a></li>
-          <li><a href="{{ url_for('views.songs') }}">Songs</a></li>
-          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link" target="_blank">Contact Us</a></li>
+          <li class="selected"><a href="#">Home</a></li>
+           <li><a href="{{ url_for('views.songs') }}">Users</a></li>
+          <li><a href="{{ url_for('views.users') }}">Songs</a></li>
+          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link" >Contact Us</a></li>
             <li><a href="{{ url_for('views.activity')}}">Recent Activity</a></li>
             <li><a id = "loginMenu" href="{{ auth_url}}">Login</a></li>
-             <li><a id = "logoutMenu" href="" onclick="return removeCookies();">Logout</a></li>
+             <li><a id = "logoutMenu" href="#" onclick="">Logout</a></li>
             <li>
         </ul>
       </div>
@@ -54,14 +54,14 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://18.188.140.44/users/info/me",
+                    url: "http://127.0.0.1:5000/users/info/me",
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify(jsonob, null, '\t')
                 })
                 .done(function( msg ) {
                 console.log(JSON.stringify(msg));
-                document.getElementById("access_token").innerHTML = "You are logged in as: " + msg.user.username;
+                document.getElementById("access_token").innerHTML = "You are logged in as: " + msg.user.email;
                 })
                 .fail(function( jqXHR, textStatus ) {
                     alert( "Request failed: " + textStatus );

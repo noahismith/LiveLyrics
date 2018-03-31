@@ -62,10 +62,10 @@ label.star:before {
       <div id="menubar">
         <ul id="menu">
         
-			<li class="selected"><a href="{{ url_for('views.index') }}">Home</a></li>
-          <li><a href="{{ url_for('views.users') }}">Users</a></li>
-          <li><a href="{{ url_for('views.songs') }}">Songs</a></li>
-          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link" target="_blank">Contact Us</a></li>
+			<li class="selected"><a href="#">Home</a></li>
+         <li><a href="{{ url_for('views.songs') }}">Users</a></li>
+          <li><a href="{{ url_for('views.users') }}">Songs</a></li>
+          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfkYm6pUmVJ7It-f96yoRxCMMzvktP9RRao0aAWooRUGMQW7Q/viewform?usp=sf_link" >Contact Us</a></li>
              <li><a href="{{ url_for('views.activity')}}">Recent Activity</a></li>
         </ul>
       </div>
@@ -75,7 +75,7 @@ label.star:before {
       
       <div id="content">
   
-        <form action="http://18.188.140.44/lyrics/edit" id="songEditForm">
+        <form action="http://127.0.0.1:5000/lyrics/edit" id="songEditForm">
           <div class="form_settings">
 
             <p style="padding-bottom: 4px"><span>New song name:</span><input id="song-title-input" type="text" name="songtitle"><br></p>
@@ -99,8 +99,8 @@ label.star:before {
 	
 	<div class="stars" style="margin-left: 450px;">
 	<form class = "rating" method = "POST" >
-    <input class="star " id="star-5" type="radio" name="rating" value="5"/>
-    <label class="star " for="star-5"></label>
+    <input hidden class="star " id="star-5" type="radio" name="rating" value="5"/>
+    <label hidden class="star " for="star-5"></label>
     <input class="star " id="star-4" type="radio" name="rating" value="4"/>
     <label class="star " for="star-4" ></label>
     <input class="star " id="star-3" type="radio" name="rating" value="3"/>
@@ -154,7 +154,7 @@ label.star:before {
 					}
 				}
 			}
-			http.open("POST", 'http://18.188.140.44/lyricrating/avgRating', true);
+			http.open("POST", 'http://127.0.0.1:5000/lyricrating/avgRating', true);
 			http.setRequestHeader("Content-type", "application/json");
 			console.log(http);
 			http.send(JSON.stringify(data, null, '\t') );
@@ -162,7 +162,7 @@ label.star:before {
 		}
 			
 
-		setTimeout(function() { loadRatings(); }, 6000);	
+		setTimeout(function() { loadRatings(); }, 2000);
 	</script>
 
 	<script>
@@ -200,21 +200,21 @@ label.star:before {
 							}
 							
 							
-							http2.open("POST", 'http://18.188.140.44/lyricrating/rate', true);
+							http2.open("POST", 'http://127.0.0.1:5000/lyricrating/rate', true);
 							http2.setRequestHeader("Content-type", "application/json");
 							console.log(http2);
 							http2.send(JSON.stringify(data2, null, '\t') );	
 							
 								
 						
-						} 
+						}
 						
 						
 					}	
 					return;
 				}
 			}
-			http.open("POST", 'http://18.188.140.44/users/getUser', true);
+			http.open("POST", 'http://127.0.0.1:5000/users/getUser', true);
 			http.setRequestHeader("Content-type", "application/json");
 			var token = document.getElementsByName('access_token')[0].value;
 			console.log(token);
