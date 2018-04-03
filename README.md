@@ -47,6 +47,10 @@ pip install flask flask-sqlalchemy flask-migrate pymysql flask-script
     1. Clone this repo
     2. Run 'chmod +x deploy.sh'
     3. Run '/deploy.sh'
+    
+## Hosted Versions
+    Non-Bugged version: http://18.188.140.44/
+    Bugged version: http://18.219.242.5/
 
 
 
